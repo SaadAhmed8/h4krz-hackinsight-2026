@@ -1,0 +1,72 @@
+{
+  "last_run_timestamp_utc": "2026-10-19T18:37:09.870335+00:00",
+  "pipeline_status": "completed_with_warnings",
+  "has_warnings": true,
+  "failed_stations": [
+    "model_town_link_rd"
+  ],
+  "sources": {
+    "openaq": {
+      "status": "partial_failures",
+      "stations_total": 10,
+      "stations_failed": 1,
+      "station_status": {
+        "hbfc_society": {
+          "status": "ok",
+          "error": null,
+          "files_generated": 5
+        },
+        "sandha_road": {
+          "status": "ok",
+          "error": null,
+          "files_generated": 5
+        },
+        "model_town": {
+          "status": "ok",
+          "error": null,
+          "files_generated": 5
+        },
+        "college_road": {
+          "status": "ok",
+          "error": null,
+          "files_generated": 5
+        },
+        "pak_arab": {
+          "status": "ok",
+          "error": null,
+          "files_generated": 5
+        },
+        "ieee_punjab_univ": {
+          "status": "ok",
+          "error": null,
+          "files_generated": 5
+        },
+        "allama_iqbal_town": {
+          "status": "ok",
+          "error": null,
+          "files_generated": 1
+        },
+        "model_town_link_rd": {
+          "status": "failed",
+          "error": "OpenAQ upstream HTTP 500 Internal Server Error on /v3/sensors/16034758/hours and /measurements endpoints. Confirmed via /v3/locations/6318826 that sensor 16034758 is the only listed sensor for this location, but the backend endpoint is currently non-responsive.",
+          "files_generated": 0
+        },
+        "forman_christian_college": {
+          "status": "ok",
+          "error": null,
+          "files_generated": 5
+        },
+        "trinity_school": {
+          "status": "ok",
+          "error": null,
+          "files_generated": 1
+        }
+      }
+    },
+    "open_meteo": {
+      "status": "healthy",
+      "weather_files_generated": 2,
+      "weather_cleaned_exists": true
+    }
+  }
+}

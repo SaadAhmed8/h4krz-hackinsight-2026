@@ -1,0 +1,13 @@
+# Explicit Exclusion List for Stations & Sensors
+# Records stations that have verified upstream failures and cannot provide valid observations.
+# Do not delete stations silently from the pipeline or discovery.
+exclusions:
+  - station_slug: model_town_link_rd
+    station_name: Model Town Link Rd B LHE
+    location_id: 6318826
+    sensor_id: 16034758
+    parameter: pm25
+    provider: Hawanama
+    excluded_since: '2026-10-19'
+    reason: "OpenAQ upstream HTTP 500 Internal Server Error on /v3/sensors/16034758/hours and /measurements endpoints. Confirmed via /v3/locations/6318826 that sensor 16034758 is the only listed sensor for this location, but the backend endpoint is currently non-responsive."
+    action: "flagged_and_excluded_from_fetch"

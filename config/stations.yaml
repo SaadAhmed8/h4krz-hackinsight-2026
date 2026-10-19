@@ -1,0 +1,169 @@
+stations:
+- slug: hbfc_society
+  name: HBFC Society, DHA Phase 5 (Hussainy House)
+  target_query_name: HBFC Society, DHA Phase 5
+  location_id: 4527402
+  provider: AirGradient
+  owner: The Urban Unit
+  licence: CC BY 4.0
+  licence_verified: true
+  since: '2025-05-26'
+  coordinates:
+    latitude: 31.4571645
+    longitude: 74.4106586
+  pm25_sensor_id: 13156083
+  aux_sensors:
+    pm1: 13156082
+    relativehumidity: 13156084
+    temperature: 13156085
+    um003: 13156086
+- slug: sandha_road
+  name: Sandha Road
+  target_query_name: Sandha Road
+  location_id: 4554729
+  provider: AirGradient
+  owner: The Urban Unit
+  licence: CC BY 4.0
+  licence_verified: true
+  since: '2025-05-29'
+  coordinates:
+    latitude: 31.562302
+    longitude: 74.3027031
+  pm25_sensor_id: 13182280
+  aux_sensors:
+    pm1: 13182279
+    relativehumidity: 13182281
+    temperature: 13182282
+    um003: 13182283
+- slug: model_town
+  name: Model Town
+  target_query_name: Model Town
+  location_id: 4568423
+  provider: AirGradient
+  owner: The Urban Unit
+  licence: CC BY 4.0
+  licence_verified: true
+  since: '2025-05-30'
+  coordinates:
+    latitude: 31.491676
+    longitude: 74.313288
+  pm25_sensor_id: 13192746
+  aux_sensors:
+    pm1: 13192745
+    relativehumidity: 13192747
+    temperature: 13192748
+    um003: 13192749
+- slug: college_road
+  name: College Road
+  target_query_name: College Road
+  location_id: 4605119
+  provider: AirGradient
+  owner: The Urban Unit
+  licence: CC BY 4.0
+  licence_verified: true
+  since: '2025-06-02'
+  coordinates:
+    latitude: 31.421799
+    longitude: 74.274837
+  pm25_sensor_id: 13223107
+  aux_sensors:
+    pm1: 13223106
+    relativehumidity: 13223108
+    temperature: 13223109
+    um003: 13223110
+- slug: pak_arab
+  name: Pak Arab
+  target_query_name: Pak Arab
+  location_id: 4699919
+  provider: AirGradient
+  owner: The Urban Unit
+  licence: CC BY 4.0
+  licence_verified: true
+  since: '2025-09-19'
+  coordinates:
+    latitude: 31.418387
+    longitude: 74.345283
+  pm25_sensor_id: 14152835
+  aux_sensors:
+    pm1: 14152834
+    relativehumidity: 14152836
+    temperature: 14152837
+    um003: 14152838
+- slug: ieee_punjab_univ
+  name: IEEE, Punjab University, LHR
+  target_query_name: IEEE, Punjab Univers
+  location_id: 4565933
+  provider: AirGradient
+  owner: unverified
+  licence: CC BY 4.0
+  licence_verified: true
+  since: '2025-05-30'
+  coordinates:
+    latitude: 31.495322
+    longitude: 74.295056
+  pm25_sensor_id: 13190998
+  aux_sensors:
+    pm1: 13190997
+    relativehumidity: 13190999
+    temperature: 13191000
+    um003: 13191001
+- slug: allama_iqbal_town
+  name: Allama Iqbal Town B LHE
+  target_query_name: Allama Iqbal Town B LHE
+  location_id: 6135360
+  provider: Hawanama
+  owner: Pakistan Air Quality Initiative (PAQI)
+  licence: CC BY 4.0
+  licence_verified: true
+  since: '2025-11-18'
+  coordinates:
+    latitude: 31.5169
+    longitude: 74.2849
+  pm25_sensor_id: 14671535
+  aux_sensors: {}
+- slug: model_town_link_rd
+  name: Model Town Link Rd B LHE
+  target_query_name: Model Town Link Rd B
+  location_id: 6318826
+  provider: Hawanama
+  owner: Pakistan Air Quality Initiative (PAQI)
+  licence: CC BY 4.0
+  licence_verified: true
+  since: '2026-04-23'
+  coordinates:
+    latitude: 31.4638
+    longitude: 74.3154
+  pm25_sensor_id: 16034758
+  aux_sensors: {}
+- slug: forman_christian_college
+  name: Forman Christian College & Chartered University
+  target_query_name: Forman Christian College & Chartered University
+  location_id: 4757305
+  provider: AirGradient
+  owner: The Urban Unit
+  licence: CC BY 4.0
+  licence_verified: true
+  since: '2025-06-16'
+  coordinates:
+    latitude: 31.521146
+    longitude: 74.333954
+  pm25_sensor_id: 13341452
+  aux_sensors:
+    pm1: 13341451
+    relativehumidity: 13341453
+    temperature: 13341454
+    um003: 13341455
+- slug: trinity_school
+  name: Trinity School Lahore
+  target_query_name: Trinity School Lahore
+  location_id: 6135333
+  provider: Hawanama
+  owner: Pakistan Air Quality Initiative (PAQI)
+  licence: CC BY 4.0
+  licence_verified: true
+  since: '2025-11-18'
+  coordinates:
+    latitude: 31.4746
+    longitude: 74.2786
+  pm25_sensor_id: 14671508
+  aux_sensors: {}

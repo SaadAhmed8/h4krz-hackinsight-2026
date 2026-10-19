@@ -1,0 +1,10 @@
+# Core dependencies pinned for Python 3.11+
+pandas==3.0.6
+pyarrow==26.0.0
+requests==2.34.2
+python-dotenv==1.2.4
+pyyaml==6.0.3
+pytest==9.1.1
+numpy==2.5.4
+python-dateutil==2.9.0.post0
+tzdata==2026.5

@@ -1,0 +1,10 @@
+station_slug,station_name,first_timestamp_utc,last_timestamp_utc,calendar_hours,real_pm25_hours,flagged_hours,unflagged_valid_hours,pct_missing,longest_gap_hours,total_pkt_days,valid_pkt_days,invalid_pkt_days,valid_day_pct,daily_mart_agreement_mismatches
+allama_iqbal_town,Allama Iqbal Town B LHE,2025-11-18 14:00:00+00:00,2026-10-19 16:00:00+00:00,8043,5020,0,5020,37.59,1950,336,191,145,56.85,0
+college_road,College Road,2025-06-02 18:00:00+00:00,2026-10-19 17:00:00+00:00,12096,9421,0,9421,22.11,443,505,366,139,72.48,0
+forman_christian_college,Forman Christian College & Chartered University,2025-06-16 10:00:00+00:00,2026-10-19 17:00:00+00:00,11768,10583,0,10583,10.07,156,491,426,65,86.76,0
+hbfc_society,"HBFC Society, DHA Phase 5 (Hussainy House)",2025-05-26 13:00:00+00:00,2026-10-19 17:00:00+00:00,12269,10689,0,10689,12.88,156,512,433,79,84.57,0
+ieee_punjab_univ,"IEEE, Punjab University, LHR",2025-05-30 07:00:00+00:00,2026-10-19 17:00:00+00:00,12179,10185,0,10185,16.37,405,508,407,101,80.12,0
+model_town,Model Town,2025-05-30 12:00:00+00:00,2026-10-19 17:00:00+00:00,12174,11258,0,11258,7.52,51,508,464,44,91.34,0
+pak_arab,Pak Arab,2025-09-19 00:00:00+00:00,2026-10-19 17:00:00+00:00,9498,6948,0,6948,26.85,766,396,283,113,71.46,0
+sandha_road,Sandha Road,2025-05-29 08:00:00+00:00,2026-10-19 17:00:00+00:00,12202,8846,0,8846,27.5,331,509,318,191,62.48,0
+trinity_school,Trinity School Lahore,2025-11-18 14:00:00+00:00,2026-10-19 16:00:00+00:00,8043,2834,0,2834,64.76,4929,336,117,219,34.82,0
