@@ -96,8 +96,9 @@ def build_hourly_all(cleaned_dir: Path = CLEANED_DIR, processed_dir: Path = PROC
     df_hourly["pkt_date"] = df_hourly["timestamp_pkt"].dt.date.astype(str)
 
     processed_dir.mkdir(parents=True, exist_ok=True)
-    df_hourly.to_parquet(HOURLY_ALL_FILE, index=False)
-    logger.info(f"Built {HOURLY_ALL_FILE} with {len(df_hourly)} rows across {df_hourly['station_slug'].nunique()} stations.")
+    out_hourly = processed_dir / "hourly_all.parquet"
+    df_hourly.to_parquet(out_hourly, index=False)
+    logger.info(f"Built {out_hourly} with {len(df_hourly)} rows across {df_hourly['station_slug'].nunique()} stations.")
     return df_hourly
 
 
@@ -210,9 +211,10 @@ def build_daily_mart(hourly_df: Optional[pd.DataFrame] = None, processed_dir: Pa
     all_daily_df = all_daily_df.sort_values(["station_slug", "pkt_date"]).reset_index(drop=True)
 
     processed_dir.mkdir(parents=True, exist_ok=True)
-    all_daily_df.to_parquet(DAILY_FILE, index=False)
+    out_daily = processed_dir / "daily.parquet"
+    all_daily_df.to_parquet(out_daily, index=False)
     logger.info(
-        f"Built {DAILY_FILE} with {len(all_daily_df)} daily records ({all_daily_df['is_valid_day'].sum()} valid days)."
+        f"Built {out_daily} with {len(all_daily_df)} daily records ({all_daily_df['is_valid_day'].sum()} valid days)."
     )
     return all_daily_df
 

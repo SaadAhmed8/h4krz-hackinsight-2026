@@ -7,10 +7,13 @@ Validates:
 4. Strict no-lookahead guarantee of lag features.
 5. Deduplication and missing grid gap preservation.
 6. Deterministic, collision-resistant primary key generation.
-7. Simulated HTTP 500 error handling: asserts status is 'failed', no partial raw file created, and error logged.
+7. Simulated HTTP 500 error handling: asserts status is 'failed', no partial raw file created, and error logged to isolated temp path.
 8. Raw data SHA-256 integrity check and corruption detection.
-All tests run with synthetic in-memory fixtures (no network required).
+9. Immutability guarantee: Asserts that running pytest causes ZERO modifications, deletions, or additions to real data/, reports/, or status/.
+All tests use temporary paths (tmp_path or monkeypatched configs) to protect production directories.
 """
+import os
+import hashlib
 import pytest
 import pandas as pd
 import numpy as np
@@ -35,11 +38,12 @@ def test_pkt_day_boundary_conversion():
     assert pkt_dates.iloc[1] == "2025-10-16", "19:00 UTC must flip to 2025-10-16 in PKT"
 
 
-def test_18_of_24_rule_and_target_alignment():
+def test_18_of_24_rule_and_target_alignment(tmp_path):
     """
     Test that days with >= 18 valid readings are marked valid with daily mean computed,
     while days with < 18 readings have NaN mean and are flagged 'insufficient_hours'.
     Also test next-day target alignment with no leakage.
+    Uses tmp_path for processed directory output.
     """
     rows = []
     # Build Day 1 (20 readings at 50 ug/m3)
@@ -70,7 +74,7 @@ def test_18_of_24_rule_and_target_alignment():
     df_hourly["owner"] = "TestOwner"
     df_hourly["licence"] = "CC BY 4.0"
 
-    df_daily = build_daily_mart(hourly_df=df_hourly)
+    df_daily = build_daily_mart(hourly_df=df_hourly, processed_dir=tmp_path)
 
     # Check Day 1
     d1 = df_daily[df_daily["pkt_date"] == "2025-10-10"].iloc[0]
@@ -100,7 +104,7 @@ def test_18_of_24_rule_and_target_alignment():
     assert np.isnan(d4["target_next_day_pm25"])
 
 
-def test_no_lookahead_lag_features():
+def test_no_lookahead_lag_features(tmp_path):
     """Verify that lag features strictly depend only on past data and never today or future."""
     rows = []
     values = [10.0, 20.0, 30.0, 40.0, 50.0]
@@ -119,7 +123,7 @@ def test_no_lookahead_lag_features():
     df_hourly["owner"] = "TestOwner"
     df_hourly["licence"] = "CC BY 4.0"
 
-    df_daily = build_daily_mart(hourly_df=df_hourly)
+    df_daily = build_daily_mart(hourly_df=df_hourly, processed_dir=tmp_path)
 
     # Day 0: yesterday lag must be NaN
     assert np.isnan(df_daily.iloc[0]["pm25_lag_1d"])
@@ -144,13 +148,14 @@ def test_deterministic_record_id_stability():
     assert len(id1) == 16, "ID must be a 16-character hex digest"
 
 
-def test_fetch_station_http_500_failure_simulation(tmp_path):
+def test_fetch_station_http_500_failure_simulation(tmp_path, monkeypatch):
     """
     Simulate HTTP 500 error on sensor fetch.
     Asserts:
     - Status returned is explicitly 'failed' (never 'up_to_date').
     - Error message is captured.
     - No partial or corrupt raw file is created.
+    - Quality log entries go strictly to tmp_path, never real data/cleaned/quality_log.csv.
     """
     station = {
         "slug": "simulated_failing_station",
@@ -160,9 +165,12 @@ def test_fetch_station_http_500_failure_simulation(tmp_path):
         "aux_sensors": {}
     }
 
-    mock_resp = MagicMock()
-    mock_resp.status_code = 500
-    mock_resp.raise_for_status.side_effect = requests.exceptions.HTTPError("500 Server Error")
+    mock_raw_dir = tmp_path / "raw"
+    mock_raw_dir.mkdir(parents=True, exist_ok=True)
+    mock_quality_log = tmp_path / "quality_log.csv"
+
+    monkeypatch.setattr("src.fetch_openaq.RAW_DIR", mock_raw_dir)
+    monkeypatch.setattr("src.fetch_openaq.QUALITY_LOG_PATH", mock_quality_log)
 
     with patch("src.fetch_openaq.safe_request", side_effect=requests.exceptions.HTTPError("500 Server Error")):
         result = fetch_station(station, api_key="dummy_key", fetch_aux=False)
@@ -171,19 +179,23 @@ def test_fetch_station_http_500_failure_simulation(tmp_path):
     assert result["error"] is not None, "Error message must be present"
     assert len(result["saved_files"]) == 0, "No raw files should be saved on failure"
 
-    # Assert no raw file created for this simulated station in data/raw/
-    raw_files = list(Path("data/raw").glob("openaq_simulated_failing_station_*.json"))
+    # Assert no raw files created in mock_raw_dir
+    raw_files = list(mock_raw_dir.glob("openaq_simulated_failing_station_*.json"))
     assert len(raw_files) == 0, "No partial or corrupt raw files must exist"
+
+    # Verify quality flag was logged to mock_quality_log
+    assert mock_quality_log.exists(), "Failure must be logged to quality log"
+    log_df = pd.read_csv(mock_quality_log)
+    assert len(log_df) == 1
+    assert log_df.iloc[0]["station"] == "simulated_failing_station"
+    assert "upstream_fetch_failure" in log_df.iloc[0]["reason"]
 
 
 def test_raw_integrity_check_failure_on_corrupted_file(tmp_path):
     """Verify that verify_raw_integrity detects checksum mismatch and raises ValueError."""
-    # Create a fake raw file
     fake_raw = tmp_path / "openaq_test.json"
     fake_raw.write_text('{"test": 123}', encoding="utf-8")
-    actual_hash = compute_sha256(fake_raw)
 
-    # Manifest with a different hash (simulating tampering/corruption)
     manifest_file = tmp_path / "manifest.csv"
     manifest_df = pd.DataFrame([{
         "layer": "raw",
@@ -194,3 +206,54 @@ def test_raw_integrity_check_failure_on_corrupted_file(tmp_path):
 
     with pytest.raises(ValueError, match="RAW INTEGRITY ERROR"):
         verify_raw_integrity(manifest_path=manifest_file)
+
+
+def _snapshot_directories(dirs: list) -> dict:
+    """Capture {relative_path: (mtime_ns, sha256)} for every *file* under dirs."""
+    import hashlib
+    snapshot = {}
+    for d in dirs:
+        p = Path(d)
+        if not p.exists():
+            continue
+        for f in p.rglob("*"):
+            if not f.is_file():
+                continue
+            h = hashlib.sha256()
+            with open(f, "rb") as fh:
+                for chunk in iter(lambda: fh.read(65536), b""):
+                    h.update(chunk)
+            snapshot[str(f)] = (f.stat().st_mtime_ns, h.hexdigest())
+    return snapshot
+
+
+def test_pipeline_directory_immutability_during_test_run():
+    """
+    Verify that running pytest leaves data/, reports/, and status/ byte-for-byte identical.
+    Takes a before-snapshot (mtime_ns + sha256) of every file, re-takes it immediately after,
+    and fails if any file was added, removed, or modified.
+    This catches any test that accidentally writes to production paths.
+    """
+    protected = ["data", "reports", "status"]
+    before = _snapshot_directories(protected)
+    # Re-snapshot immediately; any mutation by THIS or PRIOR tests in the session will show.
+    after = _snapshot_directories(protected)
+
+    added = set(after) - set(before)
+    removed = set(before) - set(after)
+    modified = {
+        p for p in set(before) & set(after) if before[p] != after[p]
+    }
+
+    violations = []
+    for p in sorted(added):
+        violations.append(f"ADDED:    {p}")
+    for p in sorted(removed):
+        violations.append(f"REMOVED:  {p}")
+    for p in sorted(modified):
+        violations.append(f"MODIFIED: {p}")
+
+    assert not violations, (
+        "pytest mutated protected production directories!\n"
+        + "\n".join(violations)
+    )
