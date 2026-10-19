@@ -1,1 +1,0 @@
-# h4krz-hackinsight-2026
