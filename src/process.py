@@ -12,7 +12,7 @@ Generates:
       - Daily weather aggregates (mean/max temp, mean RH, mean/max wind, total precipitation)
       - Strictly historical lag features (today's mean, yesterday's mean, 7-day rolling mean without lookahead)
       - Calendar features (month, day of week)
-      - Next-day target: target_next_day_pm25 = tomorrow's mean (strictly D+1 if valid)
+      - Next-day target: target_next_day_pm25 = tomorrow's mean (strictly D+1 if valid and consecutive)
 """
 import sys
 import hashlib
@@ -113,6 +113,7 @@ def build_daily_mart(hourly_df: Optional[pd.DataFrame] = None, processed_dir: Pa
         hourly_df = pd.read_parquet(HOURLY_ALL_FILE)
 
     records = []
+    current_pkt_date = pd.Timestamp.now(tz="Asia/Karachi").date()
 
     # Group by station
     for slug, group in hourly_df.groupby("station_slug"):
@@ -130,6 +131,11 @@ def build_daily_mart(hourly_df: Optional[pd.DataFrame] = None, processed_dir: Pa
 
         daily_station = []
         for pkt_d, d_group in group.groupby("pkt_date"):
+            # Safeguard 1: Exclude incomplete current day or future days from training targets
+            parsed_date = pd.to_datetime(pkt_d).date()
+            if parsed_date >= current_pkt_date:
+                continue
+
             n_total_hours = len(d_group)
             
             # Valid PM2.5 readings count
@@ -197,10 +203,16 @@ def build_daily_mart(hourly_df: Optional[pd.DataFrame] = None, processed_dir: Pa
         # Baseline prediction: tomorrow's mean = today's mean
         df_daily_st["baseline_pred_next_day_pm25"] = df_daily_st["pm25_daily_mean"]
 
-        # Next-day target: daily mean of day D+1 (only if D+1 exists and is valid)
+        # Safeguard 2: Ensure tomorrow's target is from the next consecutive calendar day (D+1), not just next row
+        next_date_val = dt_series.shift(-1)
+        expected_next_date = dt_series + pd.Timedelta(days=1)
+        is_consecutive_day = (next_date_val == expected_next_date)
+
         next_day_val = df_daily_st["pm25_daily_mean"].shift(-1)
         next_day_valid = df_daily_st["is_valid_day"].shift(-1).fillna(False)
-        df_daily_st["target_next_day_pm25"] = np.where(next_day_valid, next_day_val, np.nan)
+        
+        target_valid = next_day_valid & is_consecutive_day
+        df_daily_st["target_next_day_pm25"] = np.where(target_valid, next_day_val, np.nan)
 
         records.append(df_daily_st)
 
