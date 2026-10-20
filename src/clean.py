@@ -63,9 +63,10 @@ def log_quality_action(
         "rows_affected": int(rows_affected)
     }])
 
+    import csv
     # Header only if file doesn't exist
     header = not log_path.exists()
-    entry.to_csv(log_path, mode="a", index=False, header=header)
+    entry.to_csv(log_path, mode="a", index=False, header=header, quoting=csv.QUOTE_NONNUMERIC)
 
 
 def load_raw_station_records(station_slug: str, raw_dir: Path = RAW_DIR) -> pd.DataFrame:

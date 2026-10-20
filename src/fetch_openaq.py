@@ -64,6 +64,7 @@ def log_quality_flag(
         timestamp_utc = datetime.now(timezone.utc).isoformat()
 
     import pandas as pd
+    import csv
     entry = pd.DataFrame([{
         "timestamp_utc": timestamp_utc,
         "station": station,
@@ -73,7 +74,7 @@ def log_quality_flag(
         "rows_affected": int(rows_affected)
     }])
     header = not QUALITY_LOG_PATH.exists()
-    entry.to_csv(QUALITY_LOG_PATH, mode="a", index=False, header=header)
+    entry.to_csv(QUALITY_LOG_PATH, mode="a", index=False, header=header, quoting=csv.QUOTE_NONNUMERIC)
 
 
 def get_latest_fetched_timestamp(station_slug: str, sensor_id: int) -> Optional[str]:
