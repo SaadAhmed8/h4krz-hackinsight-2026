@@ -124,11 +124,11 @@ def test_short_and_long_gaps(tmp_path):
 def test_stale_source_triggers_fail(tmp_path):
     df = _make_base_df(12)
     out, status = _run(df, tmp_path, df["ts_utc"].max() + timedelta(hours=5))
-    assert status["level"] == "FAIL"
+    assert status["level"] == "WARN_STALE"
     assert len(status["stale_sources"]) == 1
 
     saved_status = json.loads((tmp_path / "dq_status.json").read_text())
-    assert saved_status["level"] == "FAIL"
+    assert saved_status["level"] == "WARN_STALE"
     log_df = pd.read_csv(tmp_path / "dq_log.csv")
     assert any(r in log_df["rule"].values for r in ("STALE_SOURCE", "STALE_STATION"))
 

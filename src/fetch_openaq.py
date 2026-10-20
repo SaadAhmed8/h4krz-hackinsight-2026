@@ -185,7 +185,7 @@ def save_raw_openaq_batch(
             "parameter": parameter_name,
             "provider": station.get("provider"),
             "owner": station.get("owner"),
-            "licence": station.get("licence", "CC BY 4.0"),
+            "licence": station.get("licence", "UNKNOWN"),
             "fetched_at_utc": fetched_at,
             "source_url": f"https://api.openaq.org/v3/sensors/{sensor_id}/hours",
             "query": f"GET https://api.openaq.org/v3/sensors/{sensor_id}/hours?limit=1000&page=1..N"
@@ -247,6 +247,23 @@ def fetch_station(
             "saved_files": [],
             "error": reason,
             "is_excluded": True
+        }
+
+    # Check licence verification (must be verified in config/licence_evidence.csv or API)
+    if not station.get("licence_verified", False) or station.get("licence") == "UNKNOWN":
+        reason = f"Licence not verified or UNKNOWN for station {station_name} (licence={station.get('licence')})"
+        logger.warning(f"[{station_slug}] {reason}. Skipping fetch per licensing governance.")
+        log_quality_flag(
+            station=station_slug,
+            column="licence",
+            reason="unverified_or_unknown_licence",
+            rows_affected=0
+        )
+        return {
+            "station_slug": station_slug,
+            "status": "skipped_licence",
+            "saved_files": [],
+            "error": reason
         }
 
     # 1. PM2.5 sensor (required)
@@ -359,7 +376,17 @@ def fetch_all_stations(fetch_aux: bool = True) -> Dict[str, Any]:
         "all_succeeded": bool
     }
     """
-    api_key = get_openaq_api_key()
+    try:
+        api_key = get_openaq_api_key()
+    except Exception as e:
+        logger.warning(f"OpenAQ API Key unavailable: {e}. Skipping remote OpenAQ fetch.")
+        return {
+            "saved_files": [],
+            "station_results": {},
+            "failed_stations": [],
+            "all_succeeded": False,
+            "error": str(e)
+        }
     stations = load_stations_config()
     all_saved_files = []
     station_results = {}

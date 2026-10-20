@@ -117,7 +117,7 @@ def inspect_raw_openaq_file(file_path: Path) -> Dict[str, Any]:
         "sensor_id": meta.get("sensor_id"),
         "provider": meta.get("provider"),
         "owner": meta.get("owner"),
-        "licence": meta.get("licence", "CC BY 4.0"),
+        "licence": meta.get("licence", "UNKNOWN"),
         "source_url": meta.get("source_url"),
         "query": meta.get("query") or (
             f"GET {meta.get('source_url')} parameter={meta.get('parameter')} "
@@ -160,7 +160,7 @@ def inspect_raw_weather_file(file_path: Path) -> Dict[str, Any]:
         "sensor_id": f"N/A ({w_source})",
         "provider": "Open-Meteo",
         "owner": "Copernicus ERA5 / Open-Meteo",
-        "licence": meta.get("licence", "CC BY 4.0"),
+        "licence": meta.get("licence", "UNKNOWN"),
         "source_url": endpoint_url,
         "query": meta.get("query") or meta.get("source_url") or endpoint_url,
         "fetched_at_utc": fetched_at,
@@ -184,12 +184,15 @@ def inspect_parquet_file(file_path: Path, layer: str, existing_manifest_df: Opti
     elif "pkt_date" in df.columns and not df.empty:
         first_ts = str(df["pkt_date"].min())
         last_ts = str(df["pkt_date"].max())
+    elif "date_pkt" in df.columns and not df.empty:
+        first_ts = str(df["date_pkt"].min())
+        last_ts = str(df["date_pkt"].max())
 
     st_name = df["station_name"].iloc[0] if "station_name" in df.columns and not df.empty else "All Stations / Multi"
     loc_id = df["location_id"].iloc[0] if "location_id" in df.columns and not df.empty else "All"
     provider = df["provider"].iloc[0] if "provider" in df.columns and not df.empty else "Various"
     owner = df["owner"].iloc[0] if "owner" in df.columns and not df.empty else "Various"
-    licence = df["licence"].iloc[0] if "licence" in df.columns and not df.empty else "CC BY 4.0"
+    licence = df["licence"].iloc[0] if "licence" in df.columns and not df.empty else "UNKNOWN"
 
     rel_path_str = str(file_path.relative_to(REPO_ROOT)).replace("\\", "/")
     

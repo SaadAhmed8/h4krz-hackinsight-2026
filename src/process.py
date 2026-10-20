@@ -47,7 +47,10 @@ def build_hourly_all(cleaned_dir: Path = CLEANED_DIR, processed_dir: Path = PROC
     Detects and logs any PM2.5 readings that have no matching weather to quality_log.csv.
     Saves to data/processed/hourly_all.parquet.
     """
-    station_files = sorted(cleaned_dir.glob("station_*.parquet"))
+    station_files = [
+        sf for sf in sorted(cleaned_dir.glob("station_*.parquet"))
+        if "ieee" not in sf.name.lower()
+    ]
     weather_file = cleaned_dir / "weather_cleaned.parquet"
 
     if not station_files:
@@ -126,7 +129,7 @@ def build_daily_mart(hourly_df: Optional[pd.DataFrame] = None, processed_dir: Pa
         loc_id = group["location_id"].iloc[0] if "location_id" in group else None
         provider = group["provider"].iloc[0] if "provider" in group else None
         owner = group["owner"].iloc[0] if "owner" in group else None
-        licence = group["licence"].iloc[0] if "licence" in group else "CC BY 4.0"
+        licence = group["licence"].iloc[0] if "licence" in group and pd.notna(group["licence"].iloc[0]) else "UNKNOWN"
 
         daily_station = []
         for pkt_d, d_group in group.groupby("pkt_date"):

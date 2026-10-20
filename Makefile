@@ -3,13 +3,17 @@
 
 PYTHON ?= python
 
-.PHONY: all data fetch clean process manifest discover test report clean-data help
+.PHONY: all data fetch clean process manifest warehouse discover test report clean-data help
 
 all: data
 
-## data: Run full end-to-end data acquisition and warehouse pipeline (fetch -> verify -> clean -> process -> manifest -> status)
+## data: Run full end-to-end data acquisition and warehouse pipeline (fetch -> verify -> clean -> process -> manifest -> warehouse -> status)
 data:
 	$(PYTHON) -m src.pipeline
+
+## warehouse: Build or refresh data/warehouse.duckdb from processed layers
+warehouse:
+	$(PYTHON) -m src.warehouse
 
 ## discover: Discover Lahore stations and generate config/stations.yaml
 discover:

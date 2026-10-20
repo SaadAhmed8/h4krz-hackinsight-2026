@@ -11,3 +11,6 @@ tzdata==2026.5
 pandera
 prefect
 streamlit
+scikit-learn
+google-genai==2.31.0
+pymupdf==2.0

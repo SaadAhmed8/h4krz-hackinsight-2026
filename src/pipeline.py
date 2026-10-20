@@ -23,6 +23,7 @@ from src.fetch_weather import fetch_weather
 from src.clean import clean_all
 from src.process import process_all
 from src.manifest import generate_manifest, verify_raw_integrity
+from src.warehouse import build_duckdb_warehouse
 
 logging.basicConfig(
     level=logging.INFO,
@@ -120,6 +121,10 @@ def run_pipeline() -> bool:
     logger.info("=== STEP 6: MANIFEST & INTEGRITY AUDIT ===")
     generate_manifest()
 
+    # Step 6B: DuckDB Warehouse (Guide Chapter 5)
+    logger.info("=== STEP 6B: DUCKDB WAREHOUSE SYNC ===")
+    build_duckdb_warehouse()
+
     # Step 7: Quality checks + short summary (guide ch.5, make data step 5)
     logger.info("=== STEP 7: DATA QUALITY AGENT CHECKS ===")
     try:
@@ -145,6 +150,15 @@ def run_pipeline() -> bool:
     except Exception as e:
         logger.error(f"Data Quality checks failed to run: {e}")
         warnings_list.append(f"DQ checks error: {e}")
+
+    # Step 7B: Model, Uncertainty & Group Fairness Module (Chapters 7 & 8)
+    logger.info("=== STEP 7B: MODEL TRAINING, UNCERTAINTY & FAIRNESS ===")
+    try:
+        from src.model import run_model_pipeline
+        run_model_pipeline()
+    except Exception as e:
+        logger.error(f"Model pipeline failed to run: {e}")
+        warnings_list.append(f"Model pipeline error: {e}")
 
     # Step 8: Status File
     has_warnings = len(warnings_list) > 0

@@ -1,0 +1,279 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "forman_christian_college",
+    "station_name": "Forman Christian College & Chartered University",
+    "location_id": 4757305,
+    "sensor_id": 13341455,
+    "parameter": "um003",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261020T205616Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13341455/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/13341455/hours?limit=1000&page=1..N&datetime_from=2026-10-20T15:00:00Z",
+    "record_count": 5
+  },
+  "results": [
+    {
+      "value": 5360.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 125,
+        "name": "um003",
+        "units": "particles/cm³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-20T15:00:00Z",
+          "local": "2026-10-20T20:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-20T16:00:00Z",
+          "local": "2026-10-20T21:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 5364.0,
+        "q02": 5364.0,
+        "q25": 5364.0,
+        "median": 5364.0,
+        "q75": 5364.0,
+        "q98": 5364.0,
+        "max": 5364.0,
+        "avg": 5364.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-20T15:00:00Z",
+          "local": "2026-10-20T20:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-20T16:00:00Z",
+          "local": "2026-10-20T21:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 5900.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 125,
+        "name": "um003",
+        "units": "particles/cm³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-20T16:00:00Z",
+          "local": "2026-10-20T21:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-20T17:00:00Z",
+          "local": "2026-10-20T22:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 5898.0,
+        "q02": 5898.0,
+        "q25": 5898.0,
+        "median": 5898.0,
+        "q75": 5898.0,
+        "q98": 5898.0,
+        "max": 5898.0,
+        "avg": 5898.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-20T16:00:00Z",
+          "local": "2026-10-20T21:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-20T17:00:00Z",
+          "local": "2026-10-20T22:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 6590.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 125,
+        "name": "um003",
+        "units": "particles/cm³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-20T17:00:00Z",
+          "local": "2026-10-20T22:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-20T18:00:00Z",
+          "local": "2026-10-20T23:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 6588.0,
+        "q02": 6588.0,
+        "q25": 6588.0,
+        "median": 6588.0,
+        "q75": 6588.0,
+        "q98": 6588.0,
+        "max": 6588.0,
+        "avg": 6588.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-20T17:00:00Z",
+          "local": "2026-10-20T22:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-20T18:00:00Z",
+          "local": "2026-10-20T23:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 6730.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 125,
+        "name": "um003",
+        "units": "particles/cm³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-20T18:00:00Z",
+          "local": "2026-10-20T23:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-20T19:00:00Z",
+          "local": "2026-10-21T00:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 6727.0,
+        "q02": 6727.0,
+        "q25": 6727.0,
+        "median": 6727.0,
+        "q75": 6727.0,
+        "q98": 6727.0,
+        "max": 6727.0,
+        "avg": 6727.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-20T18:00:00Z",
+          "local": "2026-10-20T23:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-20T19:00:00Z",
+          "local": "2026-10-21T00:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 6980.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 125,
+        "name": "um003",
+        "units": "particles/cm³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-20T19:00:00Z",
+          "local": "2026-10-21T00:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-20T20:00:00Z",
+          "local": "2026-10-21T01:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 6981.0,
+        "q02": 6981.0,
+        "q25": 6981.0,
+        "median": 6981.0,
+        "q75": 6981.0,
+        "q98": 6981.0,
+        "max": 6981.0,
+        "avg": 6981.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-20T19:00:00Z",
+          "local": "2026-10-21T00:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-20T20:00:00Z",
+          "local": "2026-10-21T01:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

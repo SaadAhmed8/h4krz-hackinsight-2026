@@ -162,7 +162,9 @@ def test_fetch_station_http_500_failure_simulation(tmp_path, monkeypatch):
         "name": "Simulated Failing Station",
         "location_id": 11111,
         "pm25_sensor_id": 22222,
-        "aux_sensors": {}
+        "aux_sensors": {},
+        "licence": "CC BY 4.0",
+        "licence_verified": True
     }
 
     mock_raw_dir = tmp_path / "raw"

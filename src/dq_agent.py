@@ -291,11 +291,11 @@ def run_dq_agent(
                 rule="STALE_STATION",
                 station_id=st_id,
                 rows_affected=int(len(group)),
-                decision="FLAG",
+                decision="WARN_STALE",
                 reason=f"Station lag {lag_hours:.2f}h exceeds limit {limit_h}h.",
             )
 
-    # 7. Overall Status Assessment (Probe 17 & P1)
+    # 7. Overall Status Assessment (Probe 17 & Chapter 6 Staleness Policy)
     status_reasons: List[str] = []
     level = "OK"
 
@@ -309,11 +309,12 @@ def run_dq_agent(
             )
 
     if stale_entities:
-        level = "FAIL"
+        if level != "FAIL":
+            level = "WARN_STALE"
         status_reasons.append(f"{len(stale_entities)} stations/sources are stale.")
 
     n_flagged = int((work["dq_flags"] != "").sum())
-    if level != "FAIL" and (n_flagged > 0 or len(log_entries) > 0):
+    if level not in ("FAIL", "WARN_STALE") and (n_flagged > 0 or len(log_entries) > 0):
         level = "WARN"
 
     status_dict = {

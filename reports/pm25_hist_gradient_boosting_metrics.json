@@ -1,0 +1,269 @@
+{
+  "model": "HistGradientBoostingRegressor",
+  "target_column": "target_next_day_pm25",
+  "prediction_time_information": "end of completed prediction day",
+  "features": {
+    "categorical": [
+      "station_slug"
+    ],
+    "numeric": [
+      "pm25_daily_mean",
+      "pm25_lag_1d",
+      "pm25_lag_2d",
+      "pm25_lag_7d_rolling_mean",
+      "weather_temp_mean_c",
+      "weather_temp_max_c",
+      "weather_rh_mean_pct",
+      "weather_wind_mean_kmh",
+      "weather_wind_max_kmh",
+      "weather_precip_sum_mm",
+      "calendar_month",
+      "calendar_day_of_week",
+      "is_weekend",
+      "n_valid_pm25_hours"
+    ],
+    "excluded": [
+      "target_next_day_pm25",
+      "baseline_pred_next_day_pm25",
+      "record_id",
+      "station_name",
+      "location_id",
+      "provider",
+      "owner",
+      "licence",
+      "is_valid_day",
+      "validity_flag",
+      "n_total_hours",
+      "calendar_day_name",
+      "prediction_next_day_pm25",
+      "residual",
+      "absolute_error"
+    ]
+  },
+  "model_selection": {
+    "selection_metric": "validation_mae",
+    "candidates": [
+      {
+        "candidate_index": 0,
+        "params": {
+          "max_iter": 100,
+          "learning_rate": 0.1,
+          "max_leaf_nodes": 31,
+          "min_samples_leaf": 20,
+          "l2_regularization": 0.0
+        },
+        "validation_mae": 10.483287484348356
+      },
+      {
+        "candidate_index": 1,
+        "params": {
+          "max_iter": 200,
+          "learning_rate": 0.05,
+          "max_leaf_nodes": 15,
+          "min_samples_leaf": 20,
+          "l2_regularization": 1.0
+        },
+        "validation_mae": 10.201893813252143
+      },
+      {
+        "candidate_index": 2,
+        "params": {
+          "max_iter": 300,
+          "learning_rate": 0.03,
+          "max_leaf_nodes": 7,
+          "min_samples_leaf": 30,
+          "l2_regularization": 2.0
+        },
+        "validation_mae": 10.328346949787532
+      }
+    ],
+    "selected_candidate_index": 1,
+    "selected_params": {
+      "max_iter": 200,
+      "learning_rate": 0.05,
+      "max_leaf_nodes": 15,
+      "min_samples_leaf": 20,
+      "l2_regularization": 1.0
+    },
+    "selected_validation_mae": 10.201893813252143
+  },
+  "split_method": "chronological by unique eligible PKT dates",
+  "splits": {
+    "train": {
+      "name": "train",
+      "start_date": "2025-05-30",
+      "end_date": "2026-05-20",
+      "unique_dates": 352,
+      "sample_count": 1848,
+      "station_count": 9
+    },
+    "validation": {
+      "name": "validation",
+      "start_date": "2026-05-21",
+      "end_date": "2026-08-03",
+      "unique_dates": 75,
+      "sample_count": 409,
+      "station_count": 8
+    },
+    "test": {
+      "name": "test",
+      "start_date": "2026-08-04",
+      "end_date": "2026-10-18",
+      "unique_dates": 76,
+      "sample_count": 519,
+      "station_count": 9
+    }
+  },
+  "test_metrics": {
+    "overall": {
+      "sample_count": 519,
+      "persistence": {
+        "mae": 13.400364192379476,
+        "rmse": 17.6287888214321
+      },
+      "ml": {
+        "mae": 12.58613650645029,
+        "rmse": 16.442383812867195
+      },
+      "mae_improvement_pct": 6.076160873241202,
+      "rmse_improvement_pct": 6.729929211713848
+    },
+    "by_station": [
+      {
+        "station_slug": "allama_iqbal_town",
+        "sample_count": 68,
+        "persistence": {
+          "mae": 15.048643529598237,
+          "rmse": 20.787359586218873
+        },
+        "ml": {
+          "mae": 14.602722385237628,
+          "rmse": 19.25152256718209
+        },
+        "mae_improvement_pct": 2.963198267561821,
+        "rmse_improvement_pct": 7.388321795592441,
+        "station_name": "Allama Iqbal Town B LHE"
+      },
+      {
+        "station_slug": "college_road",
+        "sample_count": 66,
+        "persistence": {
+          "mae": 12.313227632051742,
+          "rmse": 15.560372860881271
+        },
+        "ml": {
+          "mae": 11.890513799108085,
+          "rmse": 15.218243551915062
+        },
+        "mae_improvement_pct": 3.43300591506421,
+        "rmse_improvement_pct": 2.198721791727247,
+        "station_name": "College Road"
+      },
+      {
+        "station_slug": "forman_christian_college",
+        "sample_count": 69,
+        "persistence": {
+          "mae": 15.358552656703342,
+          "rmse": 20.23313207679341
+        },
+        "ml": {
+          "mae": 13.627268764478766,
+          "rmse": 17.78163343603968
+        },
+        "mae_improvement_pct": 11.272441687198604,
+        "rmse_improvement_pct": 12.116258775207129,
+        "station_name": "Forman Christian College & Chartered University"
+      },
+      {
+        "station_slug": "hbfc_society",
+        "sample_count": 64,
+        "persistence": {
+          "mae": 11.21812839673913,
+          "rmse": 14.475242967306302
+        },
+        "ml": {
+          "mae": 10.432039795526034,
+          "rmse": 13.828713607600108
+        },
+        "mae_improvement_pct": 7.007306151368313,
+        "rmse_improvement_pct": 4.4664491032478155,
+        "station_name": "HBFC Society, DHA Phase 5 (Hussainy House)"
+      },
+      {
+        "station_slug": "ieee_punjab_univ",
+        "sample_count": 67,
+        "persistence": {
+          "mae": 12.451377710543833,
+          "rmse": 16.85771080813519
+        },
+        "ml": {
+          "mae": 11.888279790994044,
+          "rmse": 15.576188333271155
+        },
+        "mae_improvement_pct": 4.522374412214294,
+        "rmse_improvement_pct": 7.601995843027512,
+        "station_name": "IEEE, Punjab University, LHR"
+      },
+      {
+        "station_slug": "model_town",
+        "sample_count": 74,
+        "persistence": {
+          "mae": 13.717764483851443,
+          "rmse": 17.774279588426698
+        },
+        "ml": {
+          "mae": 11.632139942216423,
+          "rmse": 15.610393222452743
+        },
+        "mae_improvement_pct": 15.203822343576597,
+        "rmse_improvement_pct": 12.174256375391543,
+        "station_name": "Model Town"
+      },
+      {
+        "station_slug": "pak_arab",
+        "sample_count": 59,
+        "persistence": {
+          "mae": 14.731679304192685,
+          "rmse": 18.43980344934989
+        },
+        "ml": {
+          "mae": 13.89186113917238,
+          "rmse": 18.553950956727753
+        },
+        "mae_improvement_pct": 5.700763284884223,
+        "rmse_improvement_pct": -0.6190277878579526,
+        "station_name": "Pak Arab"
+      },
+      {
+        "station_slug": "sandha_road",
+        "sample_count": 43,
+        "persistence": {
+          "mae": 11.120336198179979,
+          "rmse": 14.260573043151046
+        },
+        "ml": {
+          "mae": 13.522429780057376,
+          "rmse": 15.15928891104512
+        },
+        "mae_improvement_pct": -21.600907913832117,
+        "rmse_improvement_pct": -6.302102062621545,
+        "station_name": "Sandha Road"
+      },
+      {
+        "station_slug": "trinity_school",
+        "sample_count": 9,
+        "persistence": {
+          "mae": 16.04527417027417,
+          "rmse": 18.39567660400053
+        },
+        "ml": {
+          "mae": 9.79292586371702,
+          "rmse": 11.967928909266663
+        },
+        "mae_improvement_pct": 38.966914745155236,
+        "rmse_improvement_pct": 34.94162151848233,
+        "station_name": "Trinity School Lahore"
+      }
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "retrieved_at": "2026-10-20",
+  "sources": [
+    {
+      "id": "who-aqg-2021",
+      "title": "WHO global air quality guidelines: particulate matter (PM2.5 and PM10), ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide",
+      "short_title": "WHO Global Air Quality Guidelines 2021",
+      "publisher": "World Health Organization",
+      "publication_date": "2021-09-22",
+      "source_type": "international_health_guideline",
+      "jurisdiction": "Global",
+      "url": "https://www.who.int/publications/i/item/9789240034228",
+      "pdf_url": "https://iris.who.int/server/api/core/bitstreams/551b515e-2a32-4e1a-a58c-cdaecd395b19/content",
+      "local_file": "data/external/sources/who-global-air-quality-guidelines-2021.pdf",
+      "text_file": "data/external/sources/who-global-air-quality-guidelines-2021.txt",
+      "pdf_sha256": "32f3bf1470e20803decb63ab1ee5babf289b4182bc8af94d62b7a5b998642353",
+      "text_sha256": "8be22b89533610dbb928ec69989b077bcaf572ba71f7b1f54ad94848fd19ce0c",
+      "license": "CC BY-NC-SA 3.0 IGO",
+      "citation": "World Health Organization. WHO global air quality guidelines: particulate matter (PM2.5 and PM10), ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide. Geneva: World Health Organization; 2021. ISBN 9789240034228.",
+      "notes": "Official WHO guideline publication. Text passages are extracted from the downloaded PDF."
+    },
+    {
+      "id": "epd-punjab-general-public-advice-2025",
+      "title": "Public Advisory: Advice for General Public under Section 6(1)(o) of the Punjab Environmental Protection Act, 1997",
+      "short_title": "EPA Punjab Public Advisory, 21 November 2025",
+      "publisher": "Environmental Protection Agency, Punjab (Government of the Punjab)",
+      "publication_date": "2025-11-21",
+      "source_type": "government_public_advisory",
+      "jurisdiction": "Punjab, Pakistan",
+      "url": "https://epd.punjab.gov.pk/notification_orders",
+      "pdf_url": "https://epd.punjab.gov.pk/system/files/General%20Public%20Advice.pdf",
+      "local_file": "data/external/sources/epd-punjab-general-public-advice.pdf",
+      "text_file": "data/external/sources/epd-punjab-general-public-advice.txt",
+      "pdf_sha256": "06854ef7a8b84af7cebad39b1fb303da64f2c1fd8a0009ebfa414a80089a7d0d",
+      "text_sha256": "a97941bf14202add8bacc3e8a4cbe978933742c436e5e173f163db3871006992",
+      "license": "No explicit reuse licence stated on the PDF; Government of the Punjab public advisory.",
+      "citation": "Environmental Protection Agency, Punjab. No.406/DG/EPA/2025: Public Advisory, Advice for General Public under Section 6(1)(o) of the Punjab Environmental Protection Act, 1997. Lahore: Government of the Punjab; 21 November 2025.",
+      "notes": "Official text-based public advisory published by EPA Punjab on the provincial Environment Protection Department notifications page."
+    },
+    {
+      "id": "epd-punjab-aqi-forecasting-advisories-2025",
+      "title": "AQI Forecasting and Advisories System by EPA Punjab",
+      "short_title": "EPA Punjab AQI Forecasting and Advisories System, 2025",
+      "publisher": "Environmental Protection Agency, Punjab (Government of the Punjab)",
+      "publication_date": "2025-09-26",
+      "source_type": "government_advisory_system",
+      "jurisdiction": "Punjab, Pakistan",
+      "url": "https://epd.punjab.gov.pk/notification_orders",
+      "pdf_url": "https://epd.punjab.gov.pk/system/files/AQI%20FORECASTING%20AND%20ADVISORIES%20SYSTEM%20BY%20EPA%20PUNJAB_1.pdf",
+      "local_file": "data/external/sources/epd-punjab-aqi-forecasting-advisories.pdf",
+      "text_file": "data/external/sources/epd-punjab-aqi-forecasting-advisories.txt",
+      "pdf_sha256": "052808be49f89d132deba18e2250a1264b68d57d5740f112ecfbae77c70f0785",
+      "text_sha256": "e1273bcc5ce0a7b010e204c322268af4a469918838d95ca9cbf7c5eb7de058cd",
+      "license": "No explicit reuse licence stated on the PDF; Government of the Punjab official communication.",
+      "citation": "Environmental Protection Agency, Punjab. No.350/PA/DG/EPA/2025: AQI Forecasting and Advisories System by EPA Punjab. Lahore: Government of the Punjab; 26 September 2025.",
+      "notes": "Official EPA Punjab communication describing its AQI forecasting and public advisory process."
+    }
+  ]
+}

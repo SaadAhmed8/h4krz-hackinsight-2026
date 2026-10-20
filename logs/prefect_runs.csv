@@ -1,0 +1,33 @@
+run_at_utc,pipeline_status,data_mode,predictions_produced,n_daily_rows,error_trace
+2026-10-20T15:12:30Z,FAILED_DQ,LIVE,0,0,"Traceback (most recent call last):
+  File ""C:\Users\hasan\Downloads\Hack Insight\src\prefect_pipeline.py"", line 169, in hourly_aq_pipeline
+    dq_df, status = dq_agent_task(cleaned_df)
+                    ~~~~~~~~~~~~~^^^^^^^^^^^^
+  File ""C:\Users\hasan\Downloads\Hack Insight\.venv\Lib\site-packages\prefect\tasks.py"", line 1230, in __call__
+    return run_task(
+        task=self,
+    ...<2 lines>...
+        return_type=return_type,
+    )
+  File ""C:\Users\hasan\Downloads\Hack Insight\.venv\Lib\site-packages\prefect\task_engine.py"", line 1929, in run_task
+    return run_task_sync(**kwargs)
+  File ""C:\Users\hasan\Downloads\Hack Insight\.venv\Lib\site-packages\prefect\task_engine.py"", line 1699, in run_task_sync
+    return engine.state if return_type == ""state"" else engine.result()
+                                                       ~~~~~~~~~~~~~^^
+  File ""C:\Users\hasan\Downloads\Hack Insight\.venv\Lib\site-packages\prefect\task_engine.py"", line 619, in result
+    raise self._raised
+  File ""C:\Users\hasan\Downloads\Hack Insight\.venv\Lib\site-packages\prefect\task_engine.py"", line 1027, in run_context
+    yield self
+  File ""C:\Users\hasan\Downloads\Hack Insight\.venv\Lib\site-packages\prefect\task_engine.py"", line 1696, in run_task_sync
+    engine.call_task_fn(txn)
+    ~~~~~~~~~~~~~~~~~~~^^^^^
+  File ""C:\Users\hasan\Downloads\Hack Insight\.venv\Lib\site-packages\prefect\task_engine.py"", line 1044, in call_task_fn
+    result = call_with_parameters(self.task.fn, parameters)
+  File ""C:\Users\hasan\Downloads\Hack Insight\.venv\Lib\site-packages\prefect\utilities\callables\__init__.py"", line 356, in call_with_parameters
+    return fn(*args, **kwargs)
+  File ""C:\Users\hasan\Downloads\Hack Insight\src\prefect_pipeline.py"", line 124, in dq_agent_task
+    raise PipelineExecutionError(f""Data Quality Agent returned status FAIL: {reasons}"")
+PipelineExecutionError: Data Quality Agent returned status FAIL: 9 stations/sources are stale.
+"
+2026-10-20T16:56:53Z,SUCCESS,LIVE,1,2598,
+2026-10-20T20:59:29Z,SUCCESS,LIVE,1,2606,

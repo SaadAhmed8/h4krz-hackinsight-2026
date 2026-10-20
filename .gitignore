@@ -5,6 +5,7 @@ __pycache__/
 .pytest_cache/
 *.tmp
 *.tmp_*
+*.bak
 # IDE / AI-assistant workspace config (not a deliverable)
 .agents/
 # data/raw/ is intentionally NOT ignored: guide ch.5 requires make data to

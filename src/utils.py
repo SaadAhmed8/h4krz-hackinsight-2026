@@ -76,3 +76,40 @@ def safe_request(
     # If reached here, max retries exceeded
     resp.raise_for_status()
     return resp
+
+
+def load_licence_evidence(evidence_csv_path: str = "config/licence_evidence.csv") -> Dict[str, Dict[str, Any]]:
+    """
+    Load verified licence evidence registry.
+    Only stations present in this registry (with valid licence) or with explicit API licences
+    can have licence_verified=True.
+    """
+    import pandas as pd
+    from pathlib import Path
+    path = Path(evidence_csv_path)
+    if not path.exists():
+        return {}
+    try:
+        df = pd.read_csv(path)
+        registry = {}
+        for _, row in df.iterrows():
+            st_key = str(row.get("station", "")).strip()
+            loc_key = str(row.get("location_id", "")).strip()
+            lic = str(row.get("licence", "")).strip()
+            entry = {
+                "station": st_key,
+                "location_id": loc_key,
+                "licence": lic if lic and lic != "nan" else "UNKNOWN",
+                "checked_by": str(row.get("checked_by", "")).strip(),
+                "checked_at": str(row.get("checked_at", "")).strip(),
+                "evidence_path": str(row.get("evidence_path", "")).strip()
+            }
+            if st_key:
+                registry[st_key] = entry
+            if loc_key and loc_key != "nan":
+                registry[f"loc_{loc_key}"] = entry
+        return registry
+    except Exception as e:
+        logger.warning(f"Could not load licence evidence registry: {e}")
+        return {}
+

@@ -1,0 +1,11 @@
+station,location_id,licence,checked_by,checked_at,evidence_path
+hbfc_society,4527402,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4527402.txt
+sandha_road,4554729,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4554729.txt
+model_town,4568423,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4568423.txt
+college_road,4605119,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4605119.txt
+pak_arab,4699919,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4699919.txt
+ieee_punjab_univ,4565933,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4565933.txt
+allama_iqbal_town,6135360,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_6135360.txt
+forman_christian_college,4757305,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4757305.txt
+trinity_school,6135333,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_6135333.txt
+open_meteo,N/A,CC BY 4.0,Saad,2026-10-19T12:00:00Z,https://open-meteo.com/en/terms

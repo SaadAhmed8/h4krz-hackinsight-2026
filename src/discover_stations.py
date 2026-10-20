@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 import yaml
 
-from src.utils import get_openaq_api_key, safe_request
+from src.utils import get_openaq_api_key, safe_request, load_licence_evidence
 
 logger = logging.getLogger("discover_stations")
 
@@ -211,15 +211,25 @@ def discover_and_build_config(output_path: Path = Path("config/stations.yaml")) 
         # Hard constraint: "Owners: AirGradient stations -> The Urban Unit (IEEE owner not yet confirmed, record as 'unverified'); Hawanama stations -> Pakistan Air Quality Initiative (PAQI)."
         owner = target["expected_owner"]
         
-        # Determine licence
+        # Determine licence strictly - no blind defaults to CC BY 4.0
+        evidence_reg = load_licence_evidence()
         licenses = matched_loc.get("licenses") or []
-        licence_name = licenses[0].get("name") if licenses else "CC BY 4.0"
+        api_licence_name = licenses[0].get("name").strip() if licenses and licenses[0].get("name") else None
         
-        # Check licence is CC BY 4.0
-        licence_flag = None
-        if "CC BY 4.0" not in licence_name:
-            licence_flag = f"Non-standard licence: {licence_name}"
-            logger.warning(f"Station {loc_name} (ID {loc_id}) has licence {licence_name} (expected CC BY 4.0)")
+        evidence_entry = evidence_reg.get(target["slug"]) or evidence_reg.get(f"loc_{loc_id}")
+        evidence_licence = evidence_entry.get("licence") if evidence_entry else None
+        
+        if api_licence_name:
+            licence_name = api_licence_name
+            licence_verified = True
+        elif evidence_licence and evidence_licence != "UNKNOWN":
+            licence_name = evidence_licence
+            licence_verified = True
+            logger.info(f"Station {target['slug']} licence verified via config/licence_evidence.csv: {licence_name}")
+        else:
+            licence_name = "UNKNOWN"
+            licence_verified = False
+            logger.warning(f"Station {loc_name} (ID {loc_id}) has no API licence and no evidence entry. Setting licence=UNKNOWN, licence_verified=False.")
 
         # Fetch sensors for this location
         sensors = fetch_location_sensors(matched_loc, api_key)

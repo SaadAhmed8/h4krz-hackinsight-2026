@@ -1,0 +1,61 @@
+"""Deterministic evidence retrieval and cited answer generation."""
+
+from src.rag.evidence import (
+    DEFAULT_SOURCES,
+    EvidenceIndex,
+    EvidenceItem,
+    EvidenceSources,
+    build_evidence_index,
+)
+from src.rag.retrieval import (
+    RetrievalResult,
+    RetrievalStatus,
+    get_default_index,
+    retrieve,
+    retrieve_evidence,
+)
+from src.rag.answer import (
+    ABSTENTION,
+    AnswerStatus,
+    CitationValidation,
+    GeminiLLMProvider,
+    LLMConfig,
+    LLMConfigurationError,
+    LLMProvider,
+    LLMProviderError,
+    RAGAnswer,
+    answer_question,
+    build_llm_provider,
+    build_user_prompt,
+    extract_citation_ids,
+    load_llm_config,
+    validate_answer_citations,
+)
+
+__all__ = [
+    "ABSTENTION",
+    "AnswerStatus",
+    "CitationValidation",
+    "DEFAULT_SOURCES",
+    "EvidenceIndex",
+    "EvidenceItem",
+    "EvidenceSources",
+    "GeminiLLMProvider",
+    "LLMConfig",
+    "LLMConfigurationError",
+    "LLMProvider",
+    "LLMProviderError",
+    "RAGAnswer",
+    "RetrievalResult",
+    "RetrievalStatus",
+    "answer_question",
+    "build_evidence_index",
+    "build_llm_provider",
+    "build_user_prompt",
+    "extract_citation_ids",
+    "get_default_index",
+    "load_llm_config",
+    "retrieve",
+    "retrieve_evidence",
+    "validate_answer_citations",
+]

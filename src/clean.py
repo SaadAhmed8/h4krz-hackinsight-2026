@@ -143,6 +143,13 @@ def clean_station_series(
     Saves data/cleaned/station_{slug}.parquet.
     """
     slug = station["slug"]
+    if slug == "ieee_punjab_univ" or station.get("owner") == "unverified":
+        logger.info(f"Excluding unverified station {slug} per licensing rules.")
+        st_clean = cleaned_dir / f"station_{slug}.parquet"
+        if st_clean.exists():
+            st_clean.unlink()
+        return None
+
     station_name = station["name"]
     df = load_raw_station_records(slug, raw_dir=raw_dir)
     
@@ -178,7 +185,7 @@ def clean_station_series(
     df_clean["location_id"] = station["location_id"]
     df_clean["provider"] = station["provider"]
     df_clean["owner"] = station["owner"]
-    df_clean["licence"] = station.get("licence", "CC BY 4.0")
+    df_clean["licence"] = station.get("licence", "UNKNOWN")
 
     # Initialize quality flags
     df_clean["is_flagged"] = False
@@ -302,6 +309,49 @@ def clean_weather_series(raw_dir: Path = RAW_DIR, cleaned_dir: Path = CLEANED_DI
     out_path = cleaned_dir / "weather_cleaned.parquet"
     merged.to_parquet(out_path, index=False)
     logger.info(f"Saved cleaned weather ({len(merged)} rows) to {out_path}")
+    
+    # Also build weather_daily.parquet
+    build_weather_daily(cleaned_dir)
+    return out_path
+
+
+def build_weather_daily(cleaned_dir: Path = CLEANED_DIR) -> Path:
+    """
+    Build data/cleaned/weather_daily.parquet from weather_cleaned.parquet.
+    Groups hourly ERA5 weather by PKT day (timestamp_utc + 5h), computes daily aggregates.
+    """
+    cleaned_weather_path = cleaned_dir / "weather_cleaned.parquet"
+    if not cleaned_weather_path.exists():
+        logger.warning(f"{cleaned_weather_path} not found. Cannot build weather_daily.parquet.")
+        return cleaned_dir / "weather_daily.parquet"
+
+    df_w = pd.read_parquet(cleaned_weather_path)
+    if df_w.empty:
+        return cleaned_dir / "weather_daily.parquet"
+
+    df_w["timestamp_utc"] = pd.to_datetime(df_w["timestamp_utc"], utc=True)
+    df_w["timestamp_pkt"] = df_w["timestamp_utc"] + pd.Timedelta(hours=5)
+    df_w["date_pkt"] = df_w["timestamp_pkt"].dt.date.astype(str)
+
+    records = []
+    for date_pkt, grp in df_w.groupby("date_pkt"):
+        records.append({
+            "date_pkt": str(date_pkt),
+            "start_time_utc": grp["timestamp_utc"].min().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "end_time_utc": grp["timestamp_utc"].max().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "weather_temp_mean_c": float(grp["weather_temp_c"].mean()) if "weather_temp_c" in grp else np.nan,
+            "weather_temp_max_c": float(grp["weather_temp_c"].max()) if "weather_temp_c" in grp else np.nan,
+            "weather_temp_min_c": float(grp["weather_temp_c"].min()) if "weather_temp_c" in grp else np.nan,
+            "weather_rh_mean_pct": float(grp["weather_rh_pct"].mean()) if "weather_rh_pct" in grp else np.nan,
+            "weather_wind_mean_kmh": float(grp["weather_wind_speed_kmh"].mean()) if "weather_wind_speed_kmh" in grp else np.nan,
+            "weather_wind_max_kmh": float(grp["weather_wind_speed_kmh"].max()) if "weather_wind_speed_kmh" in grp else np.nan,
+            "weather_precip_sum_mm": float(grp["weather_precip_mm"].sum()) if "weather_precip_mm" in grp else np.nan,
+        })
+
+    df_daily_w = pd.DataFrame(records)
+    out_path = cleaned_dir / "weather_daily.parquet"
+    df_daily_w.to_parquet(out_path, index=False)
+    logger.info(f"Built {out_path} ({len(df_daily_w)} daily rows from {len(df_w)} hourly rows).")
     return out_path
 
 
@@ -315,12 +365,19 @@ def clean_all() -> Dict[str, Any]:
 
     station_files = []
     for s in stations:
+        if s.get("slug") == "ieee_punjab_univ" or s.get("owner") == "unverified":
+            logger.info(f"Skipping unverified station {s.get('slug')} per licensing rules.")
+            st_clean = CLEANED_DIR / f"station_{s.get('slug')}.parquet"
+            if st_clean.exists():
+                st_clean.unlink()
+            continue
         p = clean_station_series(s)
         if p:
             station_files.append(p)
 
     weather_file = clean_weather_series()
-    return {"stations": station_files, "weather": weather_file}
+    weather_daily_file = build_weather_daily()
+    return {"stations": station_files, "weather": weather_file, "weather_daily": weather_daily_file}
 
 
 def main():
