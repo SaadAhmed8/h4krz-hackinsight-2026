@@ -1,12 +1,12 @@
 {
-  "evaluated_at_utc": "2026-10-20T21:23:08Z",
+  "evaluated_at_utc": "2026-10-20T21:40:07Z",
   "level": "WARN",
   "reasons": [],
   "total_rows": 86315,
-  "valid_unimputed_rows": 65817,
+  "valid_unimputed_rows": 65819,
   "imputed_rows": 737,
-  "missing_rows": 19761,
-  "flagged_rows": 20498,
+  "missing_rows": 19759,
+  "flagged_rows": 20496,
   "stale_entities": [],
   "stale_sources": [],
   "stations_evaluated": 8

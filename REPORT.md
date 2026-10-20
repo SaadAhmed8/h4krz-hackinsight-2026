@@ -12,13 +12,14 @@
 
 This report documents the end-to-end data acquisition and three-layer warehouse implementation for monitoring and forecasting next-day PM2.5 air pollution across Lahore, Pakistan.
 
-- **Total Hourly Observations Stored (Cleaned Grid):** 98,272 hourly rows across stations
-- **Total Valid PM2.5 Hourly Measurements:** 75,784 hourly rows
-- **50,000+ Threshold Target:** **PASSED** (75,784 > 50,000 hourly rows)
-- **Total Daily Mart Records (`daily.parquet`):** 4,101 station-days
-- **Valid PKT Days ($\ge 18$ valid hours):** 3,005 days
-- **Weather Observations (Open-Meteo ERA5):** 12,264 hourly records (2025-05-26 to 2026-10-18 UTC)
+- **Total Hourly Observations Stored (Cleaned Grid):** 86,315 hourly rows across 8 verified stations
+- **Total Valid PM2.5 Hourly Measurements:** 65,819 hourly rows
+- **50,000+ Threshold Target:** **PASSED** (65,819 > 50,000 hourly rows)
+- **Total Daily Mart Records (`daily.parquet`):** 3,601 station-days
+- **Valid PKT Days ($\ge 18$ valid hours):** 2,606 days
+- **Weather Observations (Open-Meteo ERA5):** 12,312 hourly records (2025-05-26 to 2026-10-21 UTC)
 - **Licence Compliance:** 100% CC BY 4.0 compliant across all ingested sources
+- **Licensing Contract:** IEEE Punjab University strictly excluded from cleaned/processed layers due to unverified licensing.
 
 ---
 
@@ -33,15 +34,15 @@ All 10 target stations were queried via OpenAQ API v3. 9 stations successfully r
 | `model_town` | Model Town | AirGradient | The Urban Unit | CC BY 4.0 | 2025-05-30 to 2026-10-19 | 12,174 | 11,258 | 92.5% | 508 | 464 |
 | `college_road` | College Road | AirGradient | The Urban Unit | CC BY 4.0 | 2025-06-02 to 2026-10-19 | 12,096 | 9,421 | 77.9% | 505 | 366 |
 | `pak_arab` | Pak Arab | AirGradient | The Urban Unit | CC BY 4.0 | 2025-09-19 to 2026-10-19 | 9,498 | 6,948 | 73.2% | 396 | 283 |
-| `ieee_punjab_univ` | IEEE, Punjab University, LHR | AirGradient | unverified | CC BY 4.0 | 2025-05-30 to 2026-10-19 | 12,179 | 10,185 | 83.6% | 508 | 407 |
-| `allama_iqbal_town` | Allama Iqbal Town B LHE | Hawanama | PAQI | CC BY 4.0 | 2025-11-18 to 2026-10-19 | 8,043 | 5,020 | 62.4% | 336 | 191 |
-| `forman_christian_college` | Forman Christian College & Chartered University | AirGradient | The Urban Unit | CC BY 4.0 | 2025-06-16 to 2026-10-19 | 11,768 | 10,583 | 89.9% | 491 | 426 |
-| `trinity_school` | Trinity School Lahore | Hawanama | PAQI | CC BY 4.0 | 2025-11-18 to 2026-10-19 | 8,043 | 2,834 | 35.2% | 336 | 117 |
+| `ieee_punjab_univ` | IEEE, Punjab University, LHR | AirGradient | unverified | Excluded | Excluded from warehouse per licensing policy | — | — | — | — | — |
+| `allama_iqbal_town` | Allama Iqbal Town B LHE | Hawanama | PAQI | CC BY 4.0 | 2025-11-18 to 2026-10-21 | 8,070 | 5,047 | 62.5% | 337 | 192 |
+| `forman_christian_college` | Forman Christian College & Chartered University | AirGradient | The Urban Unit | CC BY 4.0 | 2025-06-16 to 2026-10-21 | 11,796 | 10,611 | 89.9% | 492 | 427 |
+| `trinity_school` | Trinity School Lahore | Hawanama | PAQI | CC BY 4.0 | 2025-11-18 to 2026-10-21 | 8,070 | 2,859 | 35.4% | 337 | 118 |
 | `model_town_link_rd` | Model Town Link Rd B LHE | Hawanama | PAQI | CC BY 4.0 | N/A (Upstream 500) | 0 | 0 | 0.0% | 0 | 0 |
-| **TOTAL** | — | — | — | — | — | **98,272** | **75,784** | **77.1%** | **4,101** | **3,005** |
+| **TOTAL (WAREHOUSE)** | — | — | — | — | — | **86,315** | **65,819** | **76.3%** | **3,601** | **2,606** |
 
 ### Discovery & Licence Notes
-- **IEEE Punjab University:** As required by project specifications, IEEE station owner is unconfirmed and recorded strictly as `"unverified"` in both config and data marts.
+- **IEEE Punjab University:** Station owner is unconfirmed; raw data is safely archived in `data/raw/` for audit purposes but strictly excluded from `data/cleaned/` and `data/processed/` per licensing compliance rules.
 - **Model Town Link Rd B LHE:** Discovered successfully at OpenAQ location ID `6318826` and sensor `16034758`. When queried, OpenAQ returns `HTTP 500 Internal Server Error` on both `/hours` and `/measurements` endpoints. The pipeline gracefully handles this without breaking, documents the upstream failure, and skips without fabricating data.
 - **Licencing:** All stations provide data under CC BY 4.0. No non-standard licences were encountered.
 
@@ -77,9 +78,13 @@ All 10 target stations were queried via OpenAQ API v3. 9 stations successfully r
 
 | Requirement | Status | Verification Evidence |
 | :--- | :---: | :--- |
-| `make data` / `python -m src.pipeline` | **PASS** | Completes end-to-end cleanly across all layers |
-| Idempotency & Incremental Resume | **PASS** | Second run checks latest stored timestamp and downloads 0 new rows |
-| manifest.csv Integrity | **PASS** | 50 physical files verified with SHA-256 digests and row bounds |
-| quality_log.csv | **PASS** | Explains every fill/flag action taken |
-| Automated Pytest Suite | **PASS** | 18 passed (`tests/test_pipeline.py`, `tests/test_dq_agent.py`), re-run 2026-10-20 |
-| Total PM2.5 Hourly Rows > 50,000 | **PASS** | 75,784 valid hourly PM2.5 measurements acquired |
+| `make data` / `python -m src.pipeline` | **PASS** | Completes end-to-end cleanly across raw, cleaned, processed, and DuckDB layers |
+| Idempotency & Incremental Resume | **PASS** | Re-run checks latest stored timestamps and fetches 0 redundant rows |
+| manifest.csv Integrity | **PASS** | 253 physical files tracked and verified with SHA-256 digests and query strings |
+| quality_log.csv | **PASS** | Transparent audit trail logging every DQ decision with rule and affected row counts |
+| Automated Pytest Suite | **PASS** | **52 passed** (`tests/test_pipeline.py`, `tests/test_dq_agent.py`, `tests/test_rag_evidence.py`, `tests/test_rag_answer.py`) |
+| Total PM2.5 Hourly Rows > 50,000 | **PASS** | **65,819** valid hourly PM2.5 measurements across 8 verified stations |
+| Model Beats Declared Baseline | **PASS** | HistGradientBoosting MAE $11.139\ \mu\text{g/m}^3$ vs Baseline $13.593\ \mu\text{g/m}^3$ (**18.05% improvement**) |
+| 80% Uncertainty Bounds & Fairness | **PASS** | Multi-quantile intervals ($10^{th}$ and $90^{th}$ percentiles) & error breakdowns by station, season, and tier |
+| Insight Agent (RAG) Grounding | **PASS** | Numbers strictly retrieved from gold table row IDs; WHO/EPA cited; "I don't know" on ungrounded queries |
+| Automated Hourly Pipeline | **PASS** | Runs hourly via Prefect with run history logged to `logs/prefect_runs.csv` |

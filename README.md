@@ -110,18 +110,54 @@ Re-running `make data` or `python -m src.pipeline` is completely idempotent. The
 
 ---
 
-## Running Unit Tests
+## Running the Automated Pipeline & Dashboard
 
-Run the test suite with pytest:
+### 1. Automated Hourly Pipeline (Prefect)
+The hourly pipeline runs automatically on its own at `:05` past each hour:
+```bash
+# Run a single immediate cycle (or verify pipeline execution):
+python -m src.prefect_pipeline --once
+
+# Run continuous hourly scheduler loop (triggers at minute :05 past every hour):
+python -m src.prefect_pipeline
+```
+All pipeline runs, statuses (`SUCCESS`), timestamps, and row counts are recorded in [logs/prefect_runs.csv](logs/prefect_runs.csv).
+
+### 2. Streamlit Live Monitoring & Decision Dashboard
+Launch the interactive dashboard:
+```bash
+streamlit run app.py
+```
+The dashboard features three tabs:
+- **📊 Live Monitoring:** Data freshness badges (`🟢 FRESH` / `🟡 LATE`), latest Data Quality Agent status (`logs/dq_status.json`), Prefect execution history, EPA Punjab Smog Action Plan school outdoor safety thresholds, and an Urdu language toggle (`اردو ترجمہ`).
+- **📈 Model & Group Fairness:** Declared persistence baseline vs. HistGradientBoosting model (18.05% MAE reduction), 80% multi-quantile uncertainty intervals, and group fairness breakdown across stations, seasons, and pollution tiers.
+- **🤖 AI Smog & Policy Assistant (RAG):** Evidence-grounded answers citing WHO 2021 guidelines and EPA Punjab advisories. Numerical observations cite exact gold table row IDs (`daily.parquet` / `warehouse.duckdb`). Includes "I don't know" out-of-scope testing and emergency health disclaimers.
+
+---
+
+## Machine Learning & Group Fairness (Chapters 7 & 8)
+
+- **Declared Baseline:** Persistence baseline ($\hat{y}_{t+1} = y_t$, MAE: $13.593\ \mu\text{g/m}^3$).
+- **Final Model:** Histogram Gradient Boosting Regressor with weather forecast leads and cross-station dynamics (MAE: $11.139\ \mu\text{g/m}^3$, **18.05% improvement**).
+- **Uncertainty Bounds:** $10^{th}$ and $90^{th}$ percentile pinball loss regressors producing reliable 80% prediction intervals.
+- **Group Fairness:** Full error audit across stations, smog seasons (Oct-Feb vs Mar-Sep), and pollution tiers documented in [reports/model_errors_by_group.csv](reports/model_errors_by_group.csv).
+
+---
+
+## Running the Test Suite
+
+Run the full automated test suite (52 tests covering pipeline, DQ agent, RAG evidence retrieval, and RAG answer generation):
 ```bash
 python -m pytest tests/
 ```
 Output:
 ```text
-tests/test_pipeline.py ....                                              [100%]
-4 passed in 1.93s
+tests/test_dq_agent.py ...........                                       [ 21%]
+tests/test_pipeline.py .......                                           [ 34%]
+tests/test_rag_answer.py ....................                            [ 73%]
+tests/test_rag_evidence.py ..............                                [100%]
+============================== 52 passed in 21.45s ==============================
 ```
-All unit tests run on synthetic in-memory fixtures without requiring network access.
 
 ---
 
@@ -129,4 +165,7 @@ All unit tests run on synthetic in-memory fixtures without requiring network acc
 
 - **OpenAQ v3 API:** Air quality observations provided under Creative Commons Attribution 4.0 International (CC BY 4.0).
 - **Open-Meteo:** Historical weather reanalysis data provided by Open-Meteo.com under CC BY 4.0.
-- Detailed station metrics, coverage percentages, and validity counts are documented in [REPORT.md](file:///c:/Users/HP/h4krz-hackinsight-2026/REPORT.md).
+- **Licensing Compliance:** Station `ieee_punjab_univ` is strictly excluded from cleaned/processed layers due to unverified licensing.
+- Detailed station metrics, coverage percentages, and validity counts are documented in [REPORT.md](REPORT.md).
+- Dataset declaration and problem analysis are documented in [DATASET_DECLARATION.md](DATASET_DECLARATION.md).
+- AI usage and human verification records are logged in [AI_Use_Log.md](AI_Use_Log.md).
