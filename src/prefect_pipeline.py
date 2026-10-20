@@ -1,4 +1,4 @@
-# src/pipeline.py
+# src/prefect_pipeline.py
 import os
 import sys
 import traceback
@@ -47,31 +47,35 @@ def log_pipeline_run(status_str: str, error_trace: str = "", data_mode: str = "L
     row.to_csv(run_log, mode="a", header=write_header, index=False)
 
 
+def to_dq_contract(hourly: pd.DataFrame) -> pd.DataFrame:
+    """Map data/processed/hourly_all.parquet columns onto the DQ agent contract."""
+    ts = pd.to_datetime(hourly["timestamp_utc"], utc=True)
+    return pd.DataFrame(
+        {
+            "station_id": hourly["station_slug"].astype(str),
+            "ts_utc": ts,
+            "pm25": hourly["pm25"],
+            "source": "openaq",
+            "rh": hourly.get("relativehumidity"),
+            "temp_c": hourly.get("temperature"),
+        }
+    )
+
+
 @task(name="1_fetch_and_clean_layer", retries=3, retry_delay_seconds=30)
-def fetch_and_clean_task(cleaned_data_path: str = "data/cleaned/stations_hourly.parquet") -> Tuple[pd.DataFrame, str]:
+def fetch_and_clean_task(hourly_path: str = "data/processed/hourly_all.parquet") -> Tuple[pd.DataFrame, str]:
+    """Run the real warehouse pipeline (fetch -> verify -> clean -> process), then load the hourly table.
+    No synthetic fallback: if real data is unavailable the run fails and is logged as failed.
+    """
     logger = get_run_logger()
-    path = Path(cleaned_data_path)
+    from src.pipeline import run_pipeline
+    run_pipeline()
 
+    path = Path(hourly_path)
     if not path.exists():
-        # Finding P2: Reject silent mocks unless explicitly permitted
-        if os.getenv("ALLOW_MOCK_FALLBACK", "0") == "1":
-            logger.warning("PROD WARNING: Using synthetic mock data fallback (ALLOW_MOCK_FALLBACK=1)!")
-            from src.mock_data import make_mock_batch
-            # Use 72h mock batch ending at current UTC hour
-            df = make_mock_batch(hours=72)
-            return df, "MOCK"
-        else:
-            raise FileNotFoundError(
-                f"Production file not found at {path}. Silent mock fallback is disabled. "
-                "Saad must output data/cleaned/stations_hourly.parquet."
-            )
+        raise FileNotFoundError(f"Expected warehouse output not found at {path}.")
 
-    try:
-        df = pd.read_parquet(path)
-    except Exception as e:
-        logger.error(f"Parquet file corrupted: {e}")
-        raise
-
+    df = to_dq_contract(pd.read_parquet(path))
     logger.info(f"Loaded {len(df)} rows from {path}")
     return df, "LIVE"
 
@@ -120,8 +124,9 @@ def build_processed_task(dq_df: pd.DataFrame) -> pd.DataFrame:
 @task(name="4_run_model_predictions", retries=2, retry_delay_seconds=15)
 def predict_task(daily_df: pd.DataFrame) -> None:
     logger = get_run_logger()
-    # Ready for Noman's inference script
-    logger.info(f"Model predictions completed for {len(daily_df)} rows.")
+    # UNFINISHED: model inference not yet integrated. Labelled per guide ch.12
+    # ("Label anything simulated or unfinished"). Do NOT log predictions that did not run.
+    logger.warning("UNFINISHED: model inference step not implemented; no predictions produced.")
 
 
 @flow(name="lahore-pm25-hourly-pipeline", log_prints=True)

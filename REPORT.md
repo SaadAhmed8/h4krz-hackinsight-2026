@@ -81,5 +81,5 @@ All 10 target stations were queried via OpenAQ API v3. 9 stations successfully r
 | Idempotency & Incremental Resume | **PASS** | Second run checks latest stored timestamp and downloads 0 new rows |
 | manifest.csv Integrity | **PASS** | 50 physical files verified with SHA-256 digests and row bounds |
 | quality_log.csv | **PASS** | Explains every fill/flag action taken |
-| Automated Pytest Suite | **PASS** | 4 passed in 1.93s (`tests/test_pipeline.py`) |
+| Automated Pytest Suite | **PASS** | 18 passed (`tests/test_pipeline.py`, `tests/test_dq_agent.py`), re-run 2026-10-20 |
 | Total PM2.5 Hourly Rows > 50,000 | **PASS** | 75,784 valid hourly PM2.5 measurements acquired |

@@ -2,4 +2,10 @@
 *.key
 __pycache__/
 .venv/
-data/raw/
+.pytest_cache/
+*.tmp
+*.tmp_*
+# IDE / AI-assistant workspace config (not a deliverable)
+.agents/
+# data/raw/ is intentionally NOT ignored: guide ch.5 requires make data to
+# reload every raw file and verify its SHA-256 against manifest.csv.

@@ -51,7 +51,7 @@ def verify_raw_integrity(manifest_path: Path = MANIFEST_PATH) -> bool:
     missing = []
 
     for _, row in raw_entries.iterrows():
-        f_path = REPO_ROOT / row["file_path"].replace("/", "\\")
+        f_path = REPO_ROOT / Path(row["file_path"])
         expected_sha = row["sha256"]
 
         if not f_path.exists():
@@ -119,6 +119,10 @@ def inspect_raw_openaq_file(file_path: Path) -> Dict[str, Any]:
         "owner": meta.get("owner"),
         "licence": meta.get("licence", "CC BY 4.0"),
         "source_url": meta.get("source_url"),
+        "query": meta.get("query") or (
+            f"GET {meta.get('source_url')} parameter={meta.get('parameter')} "
+            f"(paginated limit/page; datetime_from=last stored ts)"
+        ),
         "fetched_at_utc": fetched_at,
         "rows": row_count,
         "first_timestamp_utc": first_ts,
@@ -158,6 +162,7 @@ def inspect_raw_weather_file(file_path: Path) -> Dict[str, Any]:
         "owner": "Copernicus ERA5 / Open-Meteo",
         "licence": meta.get("licence", "CC BY 4.0"),
         "source_url": endpoint_url,
+        "query": meta.get("query") or meta.get("source_url") or endpoint_url,
         "fetched_at_utc": fetched_at,
         "rows": row_count,
         "first_timestamp_utc": first_ts,
@@ -213,6 +218,7 @@ def inspect_parquet_file(file_path: Path, layer: str, existing_manifest_df: Opti
         "owner": owner,
         "licence": licence,
         "source_url": "Internal Warehouse Transform",
+        "query": "N/A (derived by src/clean.py / src/process.py)",
         "fetched_at_utc": fetched_at,
         "rows": row_count,
         "first_timestamp_utc": first_ts,
@@ -278,6 +284,7 @@ def generate_manifest(output_path: Path = MANIFEST_PATH) -> pd.DataFrame:
         "owner",
         "licence",
         "source_url",
+        "query",
         "fetched_at_utc",
         "rows",
         "first_timestamp_utc",

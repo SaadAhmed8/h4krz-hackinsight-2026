@@ -120,7 +120,33 @@ def run_pipeline() -> bool:
     logger.info("=== STEP 6: MANIFEST & INTEGRITY AUDIT ===")
     generate_manifest()
 
-    # Step 7: Status File
+    # Step 7: Quality checks + short summary (guide ch.5, make data step 5)
+    logger.info("=== STEP 7: DATA QUALITY AGENT CHECKS ===")
+    try:
+        import pandas as pd
+        from src.dq_agent import run_dq_agent
+        from src.prefect_pipeline import to_dq_contract
+
+        hourly = pd.read_parquet("data/processed/hourly_all.parquet")
+        _, dq_status = run_dq_agent(
+            to_dq_contract(hourly),
+            log_path="logs/dq_log.csv",
+            status_path="logs/dq_status.json",
+        )
+        print(
+            f"\nDQ SUMMARY: level={dq_status.get('level')} "
+            f"rows={len(hourly)} valid={dq_status.get('valid_unimputed_rows')} "
+            f"flagged={dq_status.get('flagged_rows')} imputed={dq_status.get('imputed_rows')}"
+        )
+        for reason in dq_status.get("reasons", []):
+            print(f"  - {reason}")
+        if dq_status.get("level") != "OK":
+            warnings_list.append(f"DQ level {dq_status.get('level')}")
+    except Exception as e:
+        logger.error(f"Data Quality checks failed to run: {e}")
+        warnings_list.append(f"DQ checks error: {e}")
+
+    # Step 8: Status File
     has_warnings = len(warnings_list) > 0
     write_run_status(
         openaq_results=openaq_fetch_res,

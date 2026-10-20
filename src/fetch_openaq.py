@@ -159,7 +159,8 @@ def save_raw_openaq_batch(
     sensor_id: int,
     parameter_name: str,
     records: List[Dict[str, Any]],
-    raw_dir: Path = RAW_DIR
+    raw_dir: Path = RAW_DIR,
+    datetime_from: Optional[str] = None
 ) -> Optional[Path]:
     """
     Save fetched raw JSON records to an immutable file in data/raw/.
@@ -187,6 +188,8 @@ def save_raw_openaq_batch(
             "licence": station.get("licence", "CC BY 4.0"),
             "fetched_at_utc": fetched_at,
             "source_url": f"https://api.openaq.org/v3/sensors/{sensor_id}/hours",
+            "query": f"GET https://api.openaq.org/v3/sensors/{sensor_id}/hours?limit=1000&page=1..N"
+                     + (f"&datetime_from={datetime_from}" if datetime_from else ""),
             "record_count": len(records)
         },
         "results": records
@@ -296,7 +299,7 @@ def fetch_station(
         ]
 
     if pm25_records:
-        path = save_raw_openaq_batch(station, pm25_sensor_id, "pm25", pm25_records)
+        path = save_raw_openaq_batch(station, pm25_sensor_id, "pm25", pm25_records, datetime_from=latest_ts)
         if path:
             saved_files.append(path)
         pm25_status = "ok"
@@ -328,7 +331,7 @@ def fetch_station(
                     if ((r.get("period") or {}).get("datetimeTo") or {}).get("utc", "") > aux_latest_ts
                 ]
             if aux_records:
-                path = save_raw_openaq_batch(station, aux_id, param, aux_records)
+                path = save_raw_openaq_batch(station, aux_id, param, aux_records, datetime_from=aux_latest_ts)
                 if path:
                     saved_files.append(path)
 
