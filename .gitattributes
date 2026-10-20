@@ -1,0 +1,3 @@
+﻿data/raw/** -text
+data/cleaned/** binary
+data/processed/** binary

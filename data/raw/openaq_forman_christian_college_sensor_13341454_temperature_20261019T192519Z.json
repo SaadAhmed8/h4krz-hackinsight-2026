@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "forman_christian_college",
+    "station_name": "Forman Christian College & Chartered University",
+    "location_id": 4757305,
+    "sensor_id": 13341454,
+    "parameter": "temperature",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261019T192519Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13341454/hours",
+    "record_count": 1
+  },
+  "results": [
+    {
+      "value": 23.8,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 100,
+        "name": "temperature",
+        "units": "c",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-19T18:00:00Z",
+          "local": "2026-10-19T23:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-19T19:00:00Z",
+          "local": "2026-10-20T00:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 23.8,
+        "q02": 23.8,
+        "q25": 23.8,
+        "median": 23.8,
+        "q75": 23.8,
+        "q98": 23.8,
+        "max": 23.8,
+        "avg": 23.8,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-19T18:00:00Z",
+          "local": "2026-10-19T23:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-19T19:00:00Z",
+          "local": "2026-10-20T00:00:00+05:00"
+        }
+      }
+    }
+  ]
+}
