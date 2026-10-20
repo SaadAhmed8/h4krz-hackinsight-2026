@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "hbfc_society",
+    "station_name": "HBFC Society, DHA Phase 5 (Hussainy House)",
+    "location_id": 4527402,
+    "sensor_id": 13156083,
+    "parameter": "pm25",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261019T192432Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13156083/hours",
+    "record_count": 1
+  },
+  "results": [
+    {
+      "value": 104.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-19T18:00:00Z",
+          "local": "2026-10-19T23:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-19T19:00:00Z",
+          "local": "2026-10-20T00:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 103.5,
+        "q02": 103.5,
+        "q25": 103.5,
+        "median": 103.5,
+        "q75": 103.5,
+        "q98": 103.5,
+        "max": 103.5,
+        "avg": 103.5,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-19T18:00:00Z",
+          "local": "2026-10-19T23:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-19T19:00:00Z",
+          "local": "2026-10-20T00:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

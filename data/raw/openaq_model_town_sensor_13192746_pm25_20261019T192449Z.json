@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "model_town",
+    "station_name": "Model Town",
+    "location_id": 4568423,
+    "sensor_id": 13192746,
+    "parameter": "pm25",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261019T192449Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13192746/hours",
+    "record_count": 1
+  },
+  "results": [
+    {
+      "value": 113.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-19T18:00:00Z",
+          "local": "2026-10-19T23:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-19T19:00:00Z",
+          "local": "2026-10-20T00:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 113.0,
+        "q02": 113.0,
+        "q25": 113.0,
+        "median": 113.0,
+        "q75": 113.0,
+        "q98": 113.0,
+        "max": 113.0,
+        "avg": 113.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-19T18:00:00Z",
+          "local": "2026-10-19T23:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-19T19:00:00Z",
+          "local": "2026-10-20T00:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

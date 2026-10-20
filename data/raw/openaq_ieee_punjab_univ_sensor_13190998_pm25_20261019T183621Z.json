@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "ieee_punjab_univ",
+    "station_name": "IEEE, Punjab University, LHR",
+    "location_id": 4565933,
+    "sensor_id": 13190998,
+    "parameter": "pm25",
+    "provider": "AirGradient",
+    "owner": "unverified",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261019T183621Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13190998/hours",
+    "record_count": 1
+  },
+  "results": [
+    {
+      "value": 140.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-19T17:00:00Z",
+          "local": "2026-10-19T22:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-19T18:00:00Z",
+          "local": "2026-10-19T23:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 140.4,
+        "q02": 140.4,
+        "q25": 140.4,
+        "median": 140.4,
+        "q75": 140.4,
+        "q98": 140.4,
+        "max": 140.4,
+        "avg": 140.4,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-19T17:00:00Z",
+          "local": "2026-10-19T22:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-19T18:00:00Z",
+          "local": "2026-10-19T23:00:00+05:00"
+        }
+      }
+    }
+  ]
+}
