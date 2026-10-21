@@ -123,26 +123,31 @@ with tab1:
         
         # Calculate current station mean
         df_daily_temp = None
-        current_lahore_mean = 95.0
+        current_lahore_mean = None
         if DATA_PARQUET.exists():
             try:
                 df_daily_temp = pd.read_parquet(DATA_PARQUET)
                 if not df_daily_temp.empty and "pm25_daily_mean" in df_daily_temp.columns:
                     latest_date = df_daily_temp["pkt_date"].max()
-                    current_lahore_mean = df_daily_temp[df_daily_temp["pkt_date"] == latest_date]["pm25_daily_mean"].mean()
+                    val = df_daily_temp[df_daily_temp["pkt_date"] == latest_date]["pm25_daily_mean"].mean()
+                    if pd.notna(val):
+                        current_lahore_mean = float(val)
             except Exception:
                 pass
 
-        if current_lahore_mean < 50:
-            school_action = "🟢 **Satisfactory (<50 µg/m³)**: Normal school activities permitted."
-        elif current_lahore_mean < 150:
-            school_action = "🟡 **Moderate / Sensitive (50–150 µg/m³)**: Outdoor sports suspended for primary classes; morning assemblies held indoors."
-        elif current_lahore_mean < 250:
-            school_action = "🟠 **Very Unhealthy (150–250 µg/m³)**: Mandatory N95 masks for all students/staff; modified staggered school hours."
+        if current_lahore_mean is None:
+            st.info("**Current Lahore Avg PM2.5:** `Data unavailable`\n\n**School Action Directive:**\nData unavailable")
         else:
-            school_action = "🔴 **Hazardous / Emergency (>250 µg/m³)**: School closures / shift to online classes per Punjab EPA Notification No.406/DG/EPA."
+            if current_lahore_mean < 50:
+                school_action = "🟢 **Satisfactory (<50 µg/m³)**: Normal school activities permitted."
+            elif current_lahore_mean < 150:
+                school_action = "🟡 **Moderate / Sensitive (50–150 µg/m³)**: Outdoor sports suspended for primary classes; morning assemblies held indoors."
+            elif current_lahore_mean < 250:
+                school_action = "🟠 **Very Unhealthy (150–250 µg/m³)**: Mandatory N95 masks for all students/staff; modified staggered school hours."
+            else:
+                school_action = "🔴 **Hazardous / Emergency (>250 µg/m³)**: School closures / shift to online classes per Punjab EPA Notification No.406/DG/EPA."
 
-        st.info(f"**Current Lahore Avg PM2.5:** `{current_lahore_mean:.1f} µg/m³`\n\n**School Action Directive:**\n{school_action}")
+            st.info(f"**Current Lahore Avg PM2.5:** `{current_lahore_mean:.1f} µg/m³`\n\n**School Action Directive:**\n{school_action}")
 
     with imp_col2:
         st.markdown("#### 🗣️ Urdu Local Language Accessibility (+2 Pts)")
@@ -230,23 +235,58 @@ with tab2:
 
     m_col1, m_col2, m_col3, m_col4 = st.columns(4)
 
-    overall_mae = 11.19
-    baseline_mae = 13.65
-    improvement_pct = 18.0
-    coverage_80 = 72.4
+    overall_mae = None
+    baseline_mae = None
+    improvement_pct = None
+    coverage_80 = None
 
     if MODEL_METRICS_JSON.exists():
         try:
             with open(MODEL_METRICS_JSON, "r", encoding="utf-8") as f:
                 m_data = json.load(f)
-            overall_mae = m_data.get("metrics", {}).get("test", {}).get("mae", overall_mae)
+            overall_data = m_data.get("test_metrics", {}).get("overall", {})
+            ml_data = overall_data.get("ml", {})
+            base_data = overall_data.get("persistence", {})
+            if "mae" in ml_data:
+                overall_mae = float(ml_data["mae"])
+            if "mae" in base_data:
+                baseline_mae = float(base_data["mae"])
+            if "mae_improvement_pct" in overall_data:
+                improvement_pct = float(overall_data["mae_improvement_pct"])
         except Exception:
             pass
 
-    m_col1.metric("Final Model Test MAE", f"{overall_mae:.2f} µg/m³")
-    m_col2.metric("Persistence Baseline MAE", f"{baseline_mae:.2f} µg/m³")
-    m_col3.metric("Baseline Improvement", f"+{improvement_pct:.1f}%", help="Threshold required: >= 15%")
-    m_col4.metric("80% Uncertainty Coverage", f"{coverage_80:.1f}%")
+    if GROUP_ERRORS_CSV.exists():
+        try:
+            err_df = pd.read_csv(GROUP_ERRORS_CSV)
+            overall_rows = err_df[err_df["group_category"] == "overall"]
+            if not overall_rows.empty and "coverage_80pct" in overall_rows.columns:
+                val = overall_rows.iloc[0]["coverage_80pct"]
+                if pd.notna(val):
+                    coverage_80 = float(val)
+        except Exception:
+            pass
+
+    mae_str = f"{overall_mae:.2f} µg/m³" if overall_mae is not None else "n/a"
+    base_mae_str = f"{baseline_mae:.2f} µg/m³" if baseline_mae is not None else "n/a"
+    if improvement_pct is not None:
+        impr_sign = "+" if improvement_pct > 0 else ""
+        impr_str = f"{impr_sign}{improvement_pct:.1f}%"
+    else:
+        impr_str = "n/a"
+
+    if improvement_pct is not None:
+        target_verdict = "MET" if improvement_pct >= 15.0 else "NOT MET"
+        target_help = f"Declared target: >= 15%: {target_verdict}"
+    else:
+        target_help = "Declared target: >= 15%: n/a"
+
+    cov_str = f"{coverage_80:.1f}%" if coverage_80 is not None else "n/a"
+
+    m_col1.metric("Final Model Test MAE", mae_str)
+    m_col2.metric("Persistence Baseline MAE", base_mae_str)
+    m_col3.metric("Baseline Improvement", impr_str, help=target_help)
+    m_col4.metric("80% Uncertainty Coverage", cov_str)
 
     st.divider()
 
