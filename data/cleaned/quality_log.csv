@@ -1037,3 +1037,135 @@
 "2026-10-21T14:21:01.424147+00:00","forman_christian_college","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",1185
 "2026-10-21T14:21:01.734539+00:00","trinity_school","pm25","drop","duplicate_timestamp",2835
 "2026-10-21T14:21:01.739774+00:00","trinity_school","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",5210
+"2026-10-21T15:05:48.718000+00:00","model_town_link_rd","pm25","flag","station_excluded: OpenAQ upstream HTTP 500 Internal Server Error on /v3/sensors/16034758/hours and /measurements endpoints. Confirmed via /v3/locations/6318826 that sensor 16034758 is the only listed sensor for this location, but the backend endpoint is currently non-responsive.",0
+"2026-10-21T15:06:08.913350+00:00","hbfc_society","pm1","drop","duplicate_timestamp",10691
+"2026-10-21T15:06:09.003105+00:00","hbfc_society","pm25","drop","duplicate_timestamp",10691
+"2026-10-21T15:06:09.125821+00:00","hbfc_society","relativehumidity","drop","duplicate_timestamp",10691
+"2026-10-21T15:06:09.217767+00:00","hbfc_society","temperature","drop","duplicate_timestamp",10691
+"2026-10-21T15:06:09.287528+00:00","hbfc_society","um003","drop","duplicate_timestamp",10691
+"2026-10-21T15:06:09.383435+00:00","hbfc_society","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",1580
+"2026-10-21T15:06:14.013922+00:00","sandha_road","pm1","drop","duplicate_timestamp",8848
+"2026-10-21T15:06:14.078039+00:00","sandha_road","pm25","drop","duplicate_timestamp",8848
+"2026-10-21T15:06:14.144225+00:00","sandha_road","relativehumidity","drop","duplicate_timestamp",8848
+"2026-10-21T15:06:14.216928+00:00","sandha_road","temperature","drop","duplicate_timestamp",8848
+"2026-10-21T15:06:14.284686+00:00","sandha_road","um003","drop","duplicate_timestamp",8848
+"2026-10-21T15:06:14.315824+00:00","sandha_road","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",3356
+"2026-10-21T15:06:20.216496+00:00","model_town","pm1","drop","duplicate_timestamp",11260
+"2026-10-21T15:06:20.288379+00:00","model_town","pm25","drop","duplicate_timestamp",11260
+"2026-10-21T15:06:20.372353+00:00","model_town","relativehumidity","drop","duplicate_timestamp",11260
+"2026-10-21T15:06:20.462457+00:00","model_town","temperature","drop","duplicate_timestamp",11260
+"2026-10-21T15:06:20.558691+00:00","model_town","um003","drop","duplicate_timestamp",11260
+"2026-10-21T15:06:20.594062+00:00","model_town","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",916
+"2026-10-21T15:06:25.709224+00:00","college_road","pm1","drop","duplicate_timestamp",9423
+"2026-10-21T15:06:25.775775+00:00","college_road","pm25","drop","duplicate_timestamp",9423
+"2026-10-21T15:06:25.853140+00:00","college_road","relativehumidity","drop","duplicate_timestamp",9423
+"2026-10-21T15:06:25.927146+00:00","college_road","temperature","drop","duplicate_timestamp",9423
+"2026-10-21T15:06:25.998487+00:00","college_road","um003","drop","duplicate_timestamp",9423
+"2026-10-21T15:06:26.030485+00:00","college_road","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",2675
+"2026-10-21T15:06:29.821597+00:00","pak_arab","pm1","drop","duplicate_timestamp",6950
+"2026-10-21T15:06:29.876026+00:00","pak_arab","pm25","drop","duplicate_timestamp",6950
+"2026-10-21T15:06:29.938428+00:00","pak_arab","relativehumidity","drop","duplicate_timestamp",7213
+"2026-10-21T15:06:30.018337+00:00","pak_arab","temperature","drop","duplicate_timestamp",7213
+"2026-10-21T15:06:30.082363+00:00","pak_arab","um003","drop","duplicate_timestamp",7213
+"2026-10-21T15:06:30.115728+00:00","pak_arab","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",2287
+"2026-10-21T15:06:30.724848+00:00","allama_iqbal_town","pm25","drop","duplicate_timestamp",5021
+"2026-10-21T15:06:30.744638+00:00","allama_iqbal_town","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",3024
+"2026-10-21T15:06:36.595893+00:00","forman_christian_college","pm1","drop","duplicate_timestamp",10585
+"2026-10-21T15:06:36.671520+00:00","forman_christian_college","pm25","drop","duplicate_timestamp",10585
+"2026-10-21T15:06:36.761909+00:00","forman_christian_college","relativehumidity","drop","duplicate_timestamp",10585
+"2026-10-21T15:06:36.854215+00:00","forman_christian_college","temperature","drop","duplicate_timestamp",10585
+"2026-10-21T15:06:36.943485+00:00","forman_christian_college","um003","drop","duplicate_timestamp",10585
+"2026-10-21T15:06:36.977337+00:00","forman_christian_college","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",1185
+"2026-10-21T15:06:37.753297+00:00","trinity_school","pm25","drop","duplicate_timestamp",2835
+"2026-10-21T15:06:37.768629+00:00","trinity_school","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",5210
+"2026-10-21T16:05:24.611423+00:00","hbfc_society","pm25","flag","upstream_fetch_failure: HTTP error during fetch on page 1: cannot access local variable 'resp' where it is not associated with a value",0
+"2026-10-21T16:05:39.129816+00:00","sandha_road","pm25","flag","upstream_fetch_failure: HTTP error during fetch on page 1: cannot access local variable 'resp' where it is not associated with a value",0
+"2026-10-21T16:05:53.600072+00:00","model_town","pm25","flag","upstream_fetch_failure: HTTP error during fetch on page 1: cannot access local variable 'resp' where it is not associated with a value",0
+"2026-10-21T16:06:08.064634+00:00","college_road","pm25","flag","upstream_fetch_failure: HTTP error during fetch on page 1: cannot access local variable 'resp' where it is not associated with a value",0
+"2026-10-21T16:06:22.048839+00:00","pak_arab","pm25","flag","upstream_fetch_failure: HTTP error during fetch on page 1: cannot access local variable 'resp' where it is not associated with a value",0
+"2026-10-21T16:06:36.298570+00:00","ieee_punjab_univ","pm25","flag","upstream_fetch_failure: HTTP error during fetch on page 1: cannot access local variable 'resp' where it is not associated with a value",0
+"2026-10-21T16:06:50.106753+00:00","allama_iqbal_town","pm25","flag","upstream_fetch_failure: HTTP error during fetch on page 1: cannot access local variable 'resp' where it is not associated with a value",0
+"2026-10-21T16:06:50.119641+00:00","model_town_link_rd","pm25","flag","station_excluded: OpenAQ upstream HTTP 500 Internal Server Error on /v3/sensors/16034758/hours and /measurements endpoints. Confirmed via /v3/locations/6318826 that sensor 16034758 is the only listed sensor for this location, but the backend endpoint is currently non-responsive.",0
+"2026-10-21T16:07:04.411370+00:00","forman_christian_college","pm25","flag","upstream_fetch_failure: HTTP error during fetch on page 1: cannot access local variable 'resp' where it is not associated with a value",0
+"2026-10-21T16:07:18.041044+00:00","trinity_school","pm25","flag","upstream_fetch_failure: HTTP error during fetch on page 1: cannot access local variable 'resp' where it is not associated with a value",0
+"2026-10-21T16:07:42.345382+00:00","hbfc_society","pm1","drop","duplicate_timestamp",10691
+"2026-10-21T16:07:42.432474+00:00","hbfc_society","pm25","drop","duplicate_timestamp",10691
+"2026-10-21T16:07:42.510521+00:00","hbfc_society","relativehumidity","drop","duplicate_timestamp",10691
+"2026-10-21T16:07:42.593165+00:00","hbfc_society","temperature","drop","duplicate_timestamp",10691
+"2026-10-21T16:07:42.681848+00:00","hbfc_society","um003","drop","duplicate_timestamp",10691
+"2026-10-21T16:07:42.715006+00:00","hbfc_society","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",1580
+"2026-10-21T16:07:48.058942+00:00","sandha_road","pm1","drop","duplicate_timestamp",8848
+"2026-10-21T16:07:48.123435+00:00","sandha_road","pm25","drop","duplicate_timestamp",8848
+"2026-10-21T16:07:48.199581+00:00","sandha_road","relativehumidity","drop","duplicate_timestamp",8848
+"2026-10-21T16:07:48.276769+00:00","sandha_road","temperature","drop","duplicate_timestamp",8848
+"2026-10-21T16:07:48.357505+00:00","sandha_road","um003","drop","duplicate_timestamp",8848
+"2026-10-21T16:07:48.389713+00:00","sandha_road","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",3356
+"2026-10-21T16:07:55.201634+00:00","model_town","pm1","drop","duplicate_timestamp",11260
+"2026-10-21T16:07:55.305001+00:00","model_town","pm25","drop","duplicate_timestamp",11260
+"2026-10-21T16:07:55.408017+00:00","model_town","relativehumidity","drop","duplicate_timestamp",11260
+"2026-10-21T16:07:55.506245+00:00","model_town","temperature","drop","duplicate_timestamp",11260
+"2026-10-21T16:07:55.607384+00:00","model_town","um003","drop","duplicate_timestamp",11260
+"2026-10-21T16:07:55.651104+00:00","model_town","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",916
+"2026-10-21T16:08:00.708712+00:00","college_road","pm1","drop","duplicate_timestamp",9423
+"2026-10-21T16:08:00.798584+00:00","college_road","pm25","drop","duplicate_timestamp",9423
+"2026-10-21T16:08:00.891029+00:00","college_road","relativehumidity","drop","duplicate_timestamp",9423
+"2026-10-21T16:08:00.975881+00:00","college_road","temperature","drop","duplicate_timestamp",9423
+"2026-10-21T16:08:01.052561+00:00","college_road","um003","drop","duplicate_timestamp",9423
+"2026-10-21T16:08:01.085161+00:00","college_road","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",2675
+"2026-10-21T16:08:05.104477+00:00","pak_arab","pm1","drop","duplicate_timestamp",6950
+"2026-10-21T16:08:05.179745+00:00","pak_arab","pm25","drop","duplicate_timestamp",6950
+"2026-10-21T16:08:05.250440+00:00","pak_arab","relativehumidity","drop","duplicate_timestamp",7213
+"2026-10-21T16:08:05.363026+00:00","pak_arab","temperature","drop","duplicate_timestamp",7213
+"2026-10-21T16:08:05.429800+00:00","pak_arab","um003","drop","duplicate_timestamp",7213
+"2026-10-21T16:08:05.463360+00:00","pak_arab","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",2287
+"2026-10-21T16:08:06.089627+00:00","allama_iqbal_town","pm25","drop","duplicate_timestamp",5021
+"2026-10-21T16:08:06.113355+00:00","allama_iqbal_town","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",3024
+"2026-10-21T16:08:11.771339+00:00","forman_christian_college","pm1","drop","duplicate_timestamp",10585
+"2026-10-21T16:08:11.845949+00:00","forman_christian_college","pm25","drop","duplicate_timestamp",10585
+"2026-10-21T16:08:11.930170+00:00","forman_christian_college","relativehumidity","drop","duplicate_timestamp",10585
+"2026-10-21T16:08:12.021062+00:00","forman_christian_college","temperature","drop","duplicate_timestamp",10585
+"2026-10-21T16:08:12.105888+00:00","forman_christian_college","um003","drop","duplicate_timestamp",10585
+"2026-10-21T16:08:12.138471+00:00","forman_christian_college","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",1185
+"2026-10-21T16:08:12.527359+00:00","trinity_school","pm25","drop","duplicate_timestamp",2835
+"2026-10-21T16:08:12.543712+00:00","trinity_school","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",5210
+"2026-10-21T17:06:05.636021+00:00","model_town_link_rd","pm25","flag","station_excluded: OpenAQ upstream HTTP 500 Internal Server Error on /v3/sensors/16034758/hours and /measurements endpoints. Confirmed via /v3/locations/6318826 that sensor 16034758 is the only listed sensor for this location, but the backend endpoint is currently non-responsive.",0
+"2026-10-21T17:06:26.255448+00:00","hbfc_society","pm1","drop","duplicate_timestamp",10691
+"2026-10-21T17:06:26.352499+00:00","hbfc_society","pm25","drop","duplicate_timestamp",10691
+"2026-10-21T17:06:26.438377+00:00","hbfc_society","relativehumidity","drop","duplicate_timestamp",10691
+"2026-10-21T17:06:26.530013+00:00","hbfc_society","temperature","drop","duplicate_timestamp",10691
+"2026-10-21T17:06:26.637806+00:00","hbfc_society","um003","drop","duplicate_timestamp",10691
+"2026-10-21T17:06:26.686040+00:00","hbfc_society","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",1580
+"2026-10-21T17:06:31.880491+00:00","sandha_road","pm1","drop","duplicate_timestamp",8848
+"2026-10-21T17:06:31.949716+00:00","sandha_road","pm25","drop","duplicate_timestamp",8848
+"2026-10-21T17:06:32.022256+00:00","sandha_road","relativehumidity","drop","duplicate_timestamp",8848
+"2026-10-21T17:06:32.098519+00:00","sandha_road","temperature","drop","duplicate_timestamp",8848
+"2026-10-21T17:06:32.173567+00:00","sandha_road","um003","drop","duplicate_timestamp",8848
+"2026-10-21T17:06:32.205838+00:00","sandha_road","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",3356
+"2026-10-21T17:06:38.439844+00:00","model_town","pm1","drop","duplicate_timestamp",11260
+"2026-10-21T17:06:38.532280+00:00","model_town","pm25","drop","duplicate_timestamp",11260
+"2026-10-21T17:06:38.619749+00:00","model_town","relativehumidity","drop","duplicate_timestamp",11260
+"2026-10-21T17:06:38.704380+00:00","model_town","temperature","drop","duplicate_timestamp",11260
+"2026-10-21T17:06:38.795937+00:00","model_town","um003","drop","duplicate_timestamp",11260
+"2026-10-21T17:06:38.829512+00:00","model_town","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",916
+"2026-10-21T17:06:44.274470+00:00","college_road","pm1","drop","duplicate_timestamp",9423
+"2026-10-21T17:06:44.344195+00:00","college_road","pm25","drop","duplicate_timestamp",9423
+"2026-10-21T17:06:44.419222+00:00","college_road","relativehumidity","drop","duplicate_timestamp",9423
+"2026-10-21T17:06:44.494627+00:00","college_road","temperature","drop","duplicate_timestamp",9423
+"2026-10-21T17:06:44.570216+00:00","college_road","um003","drop","duplicate_timestamp",9423
+"2026-10-21T17:06:44.603925+00:00","college_road","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",2675
+"2026-10-21T17:06:48.405637+00:00","pak_arab","pm1","drop","duplicate_timestamp",6950
+"2026-10-21T17:06:48.467372+00:00","pak_arab","pm25","drop","duplicate_timestamp",6950
+"2026-10-21T17:06:48.542288+00:00","pak_arab","relativehumidity","drop","duplicate_timestamp",7213
+"2026-10-21T17:06:48.620837+00:00","pak_arab","temperature","drop","duplicate_timestamp",7213
+"2026-10-21T17:06:48.683762+00:00","pak_arab","um003","drop","duplicate_timestamp",7213
+"2026-10-21T17:06:48.712957+00:00","pak_arab","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",2287
+"2026-10-21T17:06:49.301431+00:00","allama_iqbal_town","pm25","drop","duplicate_timestamp",5021
+"2026-10-21T17:06:49.322262+00:00","allama_iqbal_town","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",3024
+"2026-10-21T17:06:55.034616+00:00","forman_christian_college","pm1","drop","duplicate_timestamp",10585
+"2026-10-21T17:06:55.114283+00:00","forman_christian_college","pm25","drop","duplicate_timestamp",10585
+"2026-10-21T17:06:55.191186+00:00","forman_christian_college","relativehumidity","drop","duplicate_timestamp",10585
+"2026-10-21T17:06:55.269533+00:00","forman_christian_college","temperature","drop","duplicate_timestamp",10585
+"2026-10-21T17:06:55.351729+00:00","forman_christian_college","um003","drop","duplicate_timestamp",10585
+"2026-10-21T17:06:55.385434+00:00","forman_christian_college","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",1185
+"2026-10-21T17:06:55.769665+00:00","trinity_school","pm25","drop","duplicate_timestamp",2835
+"2026-10-21T17:06:55.785606+00:00","trinity_school","timestamp_utc","fill","missing_hourly_timestamp_grid_gap",5210

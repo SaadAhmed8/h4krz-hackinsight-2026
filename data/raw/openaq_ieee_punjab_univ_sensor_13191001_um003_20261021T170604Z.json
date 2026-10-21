@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "ieee_punjab_univ",
+    "station_name": "IEEE, Punjab University, LHR",
+    "location_id": 4565933,
+    "sensor_id": 13191001,
+    "parameter": "um003",
+    "provider": "AirGradient",
+    "owner": "unverified",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T170604Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13191001/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/13191001/hours?limit=1000&page=1..N&datetime_from=2026-10-21T14:00:00Z",
+    "record_count": 2
+  },
+  "results": [
+    {
+      "value": 5010.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 125,
+        "name": "um003",
+        "units": "particles/cm³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T14:00:00Z",
+          "local": "2026-10-21T19:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T15:00:00Z",
+          "local": "2026-10-21T20:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 5005.0,
+        "q02": 5005.0,
+        "q25": 5005.0,
+        "median": 5005.0,
+        "q75": 5005.0,
+        "q98": 5005.0,
+        "max": 5005.0,
+        "avg": 5005.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T14:00:00Z",
+          "local": "2026-10-21T19:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T15:00:00Z",
+          "local": "2026-10-21T20:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 6760.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 125,
+        "name": "um003",
+        "units": "particles/cm³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T15:00:00Z",
+          "local": "2026-10-21T20:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T16:00:00Z",
+          "local": "2026-10-21T21:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 6756.0,
+        "q02": 6756.0,
+        "q25": 6756.0,
+        "median": 6756.0,
+        "q75": 6756.0,
+        "q98": 6756.0,
+        "max": 6756.0,
+        "avg": 6756.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T15:00:00Z",
+          "local": "2026-10-21T20:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T16:00:00Z",
+          "local": "2026-10-21T21:00:00+05:00"
+        }
+      }
+    }
+  ]
+}
