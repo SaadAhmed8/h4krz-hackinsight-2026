@@ -1,0 +1,175 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "trinity_school",
+    "station_name": "Trinity School Lahore",
+    "location_id": 6135333,
+    "sensor_id": 14671508,
+    "parameter": "pm25",
+    "provider": "Hawanama",
+    "owner": "Pakistan Air Quality Initiative (PAQI)",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T120555Z",
+    "source_url": "https://api.openaq.org/v3/sensors/14671508/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/14671508/hours?limit=1000&page=1..N&datetime_from=2026-10-21T07:00:00Z",
+    "record_count": 3
+  },
+  "results": [
+    {
+      "value": 88.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T07:00:00Z",
+          "local": "2026-10-21T12:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T08:00:00Z",
+          "local": "2026-10-21T13:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 88.0,
+        "q02": 88.0,
+        "q25": 88.0,
+        "median": 88.0,
+        "q75": 88.0,
+        "q98": 88.0,
+        "max": 88.0,
+        "avg": 88.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T07:00:00Z",
+          "local": "2026-10-21T12:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T08:00:00Z",
+          "local": "2026-10-21T13:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 85.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T08:00:00Z",
+          "local": "2026-10-21T13:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T09:00:00Z",
+          "local": "2026-10-21T14:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 85.0,
+        "q02": 85.0,
+        "q25": 85.0,
+        "median": 85.0,
+        "q75": 85.0,
+        "q98": 85.0,
+        "max": 85.0,
+        "avg": 85.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T08:00:00Z",
+          "local": "2026-10-21T13:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T09:00:00Z",
+          "local": "2026-10-21T14:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 80.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T09:00:00Z",
+          "local": "2026-10-21T14:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T10:00:00Z",
+          "local": "2026-10-21T15:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 80.0,
+        "q02": 80.0,
+        "q25": 80.0,
+        "median": 80.0,
+        "q75": 80.0,
+        "q98": 80.0,
+        "max": 80.0,
+        "avg": 80.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T09:00:00Z",
+          "local": "2026-10-21T14:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T10:00:00Z",
+          "local": "2026-10-21T15:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

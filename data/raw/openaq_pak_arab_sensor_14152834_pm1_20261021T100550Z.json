@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "pak_arab",
+    "station_name": "Pak Arab",
+    "location_id": 4699919,
+    "sensor_id": 14152834,
+    "parameter": "pm1",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T100550Z",
+    "source_url": "https://api.openaq.org/v3/sensors/14152834/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/14152834/hours?limit=1000&page=1..N&datetime_from=2026-10-21T08:00:00Z",
+    "record_count": 1
+  },
+  "results": [
+    {
+      "value": 49.2,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 19,
+        "name": "pm1",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T08:00:00Z",
+          "local": "2026-10-21T13:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T09:00:00Z",
+          "local": "2026-10-21T14:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 49.2,
+        "q02": 49.2,
+        "q25": 49.2,
+        "median": 49.2,
+        "q75": 49.2,
+        "q98": 49.2,
+        "max": 49.2,
+        "avg": 49.2,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T08:00:00Z",
+          "local": "2026-10-21T13:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T09:00:00Z",
+          "local": "2026-10-21T14:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

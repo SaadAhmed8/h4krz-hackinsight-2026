@@ -499,3 +499,271 @@ logged_at_utc,rule,station_id,rows_affected,decision,reason
 2026-10-21T04:07:07Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
 2026-10-21T04:07:07Z,STALE_STATION,allama_iqbal_town,8076,WARN_STALE,Station lag 3.12h exceeds limit 3.0h.
 2026-10-21T04:07:07Z,STALE_STATION,trinity_school,8076,WARN_STALE,Station lag 3.12h exceeds limit 3.0h.
+2026-10-21T05:07:22Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:22Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:22Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:22Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:22Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:22Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:22Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:22Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:22Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:22Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:22Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:22Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:22Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:22Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:22Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:22Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:34Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:34Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:34Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:34Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:34Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:34Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:34Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:34Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:34Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:34Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:34Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:34Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:34Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:34Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T05:07:34Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T05:07:34Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:47Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:47Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:47Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:47Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:47Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:47Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:47Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:47Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:47Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:47Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:47Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:47Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:47Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:47Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:47Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:47Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:59Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:59Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:59Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:59Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:59Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:59Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:59Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:59Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:59Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:59Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:59Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:59Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:59Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:59Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T06:07:59Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T06:07:59Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:14Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:14Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:14Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:14Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:14Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:14Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:14Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:14Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:14Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:14Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:14Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:14Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:14Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:14Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:14Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:14Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:26Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:26Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:26Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:26Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:26Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:26Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:26Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:26Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:26Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:26Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:26Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:26Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:26Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:26Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T07:08:26Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T07:08:26Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:29Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:29Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:29Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:29Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:29Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:29Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:29Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:29Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:29Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:29Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:29Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:29Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:29Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:29Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:29Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:29Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:29Z,STALE_STATION,allama_iqbal_town,8080,WARN_STALE,Station lag 3.14h exceeds limit 3.0h.
+2026-10-21T08:08:29Z,STALE_STATION,trinity_school,8080,WARN_STALE,Station lag 3.14h exceeds limit 3.0h.
+2026-10-21T08:08:40Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:40Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:40Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:40Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:40Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:40Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:40Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:40Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:40Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:40Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:40Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:40Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:40Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:40Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:40Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T08:08:40Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T08:08:40Z,STALE_STATION,allama_iqbal_town,8080,WARN_STALE,Station lag 3.14h exceeds limit 3.0h.
+2026-10-21T08:08:40Z,STALE_STATION,trinity_school,8080,WARN_STALE,Station lag 3.14h exceeds limit 3.0h.
+2026-10-21T09:10:12Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:12Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:12Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:12Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:12Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:12Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:12Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:12Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:12Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:12Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:12Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:12Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:12Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:12Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:12Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:12Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:18Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:18Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:18Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:18Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:18Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:18Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:18Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:18Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:18Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:18Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:18Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:18Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:18Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:18Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T09:10:18Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T09:10:18Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:40Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:40Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:40Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:40Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:40Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:40Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:40Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:40Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:40Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:40Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:40Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:40Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:40Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:40Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:40Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:40Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:40Z,STALE_STATION,allama_iqbal_town,8082,WARN_STALE,Station lag 3.13h exceeds limit 3.0h.
+2026-10-21T10:07:40Z,STALE_STATION,trinity_school,8082,WARN_STALE,Station lag 3.13h exceeds limit 3.0h.
+2026-10-21T10:07:52Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:52Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:52Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:52Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:52Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:52Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:52Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:52Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:52Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:52Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:52Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:52Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:52Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:52Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:52Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T10:07:52Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T10:07:52Z,STALE_STATION,allama_iqbal_town,8082,WARN_STALE,Station lag 3.13h exceeds limit 3.0h.
+2026-10-21T10:07:52Z,STALE_STATION,trinity_school,8082,WARN_STALE,Station lag 3.13h exceeds limit 3.0h.
+2026-10-21T11:07:54Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T11:07:54Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T11:07:54Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T11:07:54Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T11:07:54Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T11:07:54Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T11:07:54Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T11:07:54Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T11:07:54Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T11:07:54Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T11:07:54Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T11:07:54Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T11:07:54Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T11:07:54Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T11:07:54Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T11:07:54Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T11:07:54Z,STALE_STATION,allama_iqbal_town,8082,WARN_STALE,Station lag 4.13h exceeds limit 3.0h.
+2026-10-21T11:07:54Z,STALE_STATION,trinity_school,8082,WARN_STALE,Station lag 4.13h exceeds limit 3.0h.
+2026-10-21T11:08:05Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T11:08:05Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T11:08:05Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T11:08:05Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T11:08:05Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T11:08:05Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T11:08:05Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T11:08:05Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T11:08:05Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T11:08:05Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T11:08:05Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T11:08:05Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T11:08:05Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T11:08:05Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T11:08:05Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T11:08:05Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T11:08:05Z,STALE_STATION,allama_iqbal_town,8082,WARN_STALE,Station lag 4.13h exceeds limit 3.0h.
+2026-10-21T11:08:05Z,STALE_STATION,trinity_school,8082,WARN_STALE,Station lag 4.13h exceeds limit 3.0h.
+2026-10-21T12:07:16Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:16Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:16Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:16Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:16Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:16Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:16Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:16Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:16Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:16Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:16Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:16Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:16Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:16Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:16Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:16Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:27Z,SHORT_GAP_LE_2H,allama_iqbal_town,238,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:27Z,LONG_GAP_GT_2H,allama_iqbal_town,2786,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:27Z,SHORT_GAP_LE_2H,college_road,104,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:27Z,LONG_GAP_GT_2H,college_road,2571,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:27Z,SHORT_GAP_LE_2H,forman_christian_college,58,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:27Z,LONG_GAP_GT_2H,forman_christian_college,1127,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:27Z,SHORT_GAP_LE_2H,hbfc_society,47,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:27Z,LONG_GAP_GT_2H,hbfc_society,1533,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:27Z,SHORT_GAP_LE_2H,model_town,82,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:27Z,LONG_GAP_GT_2H,model_town,834,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:27Z,SHORT_GAP_LE_2H,pak_arab,32,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:27Z,LONG_GAP_GT_2H,pak_arab,2518,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:27Z,SHORT_GAP_LE_2H,sandha_road,46,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:27Z,LONG_GAP_GT_2H,sandha_road,3310,FLAG,Gap > 2h left missing.
+2026-10-21T12:07:27Z,SHORT_GAP_LE_2H,trinity_school,130,FILL,Interpolated gap <= 2h.
+2026-10-21T12:07:27Z,LONG_GAP_GT_2H,trinity_school,5080,FLAG,Gap > 2h left missing.

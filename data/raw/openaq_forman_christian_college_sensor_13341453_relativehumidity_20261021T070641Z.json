@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "forman_christian_college",
+    "station_name": "Forman Christian College & Chartered University",
+    "location_id": 4757305,
+    "sensor_id": 13341453,
+    "parameter": "relativehumidity",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T070641Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13341453/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/13341453/hours?limit=1000&page=1..N&datetime_from=2026-10-21T05:00:00Z",
+    "record_count": 1
+  },
+  "results": [
+    {
+      "value": 51.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 98,
+        "name": "relativehumidity",
+        "units": "%",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T05:00:00Z",
+          "local": "2026-10-21T10:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T06:00:00Z",
+          "local": "2026-10-21T11:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 51.0,
+        "q02": 51.0,
+        "q25": 51.0,
+        "median": 51.0,
+        "q75": 51.0,
+        "q98": 51.0,
+        "max": 51.0,
+        "avg": 51.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T05:00:00Z",
+          "local": "2026-10-21T10:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T06:00:00Z",
+          "local": "2026-10-21T11:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

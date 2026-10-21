@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "model_town",
+    "station_name": "Model Town",
+    "location_id": 4568423,
+    "sensor_id": 13192748,
+    "parameter": "temperature",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T100538Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13192748/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/13192748/hours?limit=1000&page=1..N&datetime_from=2026-10-21T07:00:00Z",
+    "record_count": 2
+  },
+  "results": [
+    {
+      "value": 30.8,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 100,
+        "name": "temperature",
+        "units": "c",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T07:00:00Z",
+          "local": "2026-10-21T12:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T08:00:00Z",
+          "local": "2026-10-21T13:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 30.8,
+        "q02": 30.8,
+        "q25": 30.8,
+        "median": 30.8,
+        "q75": 30.8,
+        "q98": 30.8,
+        "max": 30.8,
+        "avg": 30.8,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T07:00:00Z",
+          "local": "2026-10-21T12:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T08:00:00Z",
+          "local": "2026-10-21T13:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 31.3,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 100,
+        "name": "temperature",
+        "units": "c",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T08:00:00Z",
+          "local": "2026-10-21T13:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T09:00:00Z",
+          "local": "2026-10-21T14:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 31.3,
+        "q02": 31.3,
+        "q25": 31.3,
+        "median": 31.3,
+        "q75": 31.3,
+        "q98": 31.3,
+        "max": 31.3,
+        "avg": 31.3,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T08:00:00Z",
+          "local": "2026-10-21T13:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T09:00:00Z",
+          "local": "2026-10-21T14:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

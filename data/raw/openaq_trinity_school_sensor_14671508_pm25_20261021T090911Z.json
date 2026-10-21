@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "trinity_school",
+    "station_name": "Trinity School Lahore",
+    "location_id": 6135333,
+    "sensor_id": 14671508,
+    "parameter": "pm25",
+    "provider": "Hawanama",
+    "owner": "Pakistan Air Quality Initiative (PAQI)",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T090911Z",
+    "source_url": "https://api.openaq.org/v3/sensors/14671508/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/14671508/hours?limit=1000&page=1..N&datetime_from=2026-10-21T05:00:00Z",
+    "record_count": 2
+  },
+  "results": [
+    {
+      "value": 109.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T05:00:00Z",
+          "local": "2026-10-21T10:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T06:00:00Z",
+          "local": "2026-10-21T11:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 109.0,
+        "q02": 109.0,
+        "q25": 109.0,
+        "median": 109.0,
+        "q75": 109.0,
+        "q98": 109.0,
+        "max": 109.0,
+        "avg": 109.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T05:00:00Z",
+          "local": "2026-10-21T10:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T06:00:00Z",
+          "local": "2026-10-21T11:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 93.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T06:00:00Z",
+          "local": "2026-10-21T11:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T07:00:00Z",
+          "local": "2026-10-21T12:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 93.0,
+        "q02": 93.0,
+        "q25": 93.0,
+        "median": 93.0,
+        "q75": 93.0,
+        "q98": 93.0,
+        "max": 93.0,
+        "avg": 93.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T06:00:00Z",
+          "local": "2026-10-21T11:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T07:00:00Z",
+          "local": "2026-10-21T12:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

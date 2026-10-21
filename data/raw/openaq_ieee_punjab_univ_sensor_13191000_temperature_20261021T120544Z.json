@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "ieee_punjab_univ",
+    "station_name": "IEEE, Punjab University, LHR",
+    "location_id": 4565933,
+    "sensor_id": 13191000,
+    "parameter": "temperature",
+    "provider": "AirGradient",
+    "owner": "unverified",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T120544Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13191000/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/13191000/hours?limit=1000&page=1..N&datetime_from=2026-10-21T10:00:00Z",
+    "record_count": 1
+  },
+  "results": [
+    {
+      "value": 31.2,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 100,
+        "name": "temperature",
+        "units": "c",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T10:00:00Z",
+          "local": "2026-10-21T15:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 31.2,
+        "q02": 31.2,
+        "q25": 31.2,
+        "median": 31.2,
+        "q75": 31.2,
+        "q98": 31.2,
+        "max": 31.2,
+        "avg": 31.2,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T10:00:00Z",
+          "local": "2026-10-21T15:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        }
+      }
+    }
+  ]
+}
