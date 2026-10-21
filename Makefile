@@ -3,13 +3,17 @@
 
 PYTHON ?= python
 
-.PHONY: all data fetch clean process manifest warehouse discover test report clean-data licence-evidence help
+.PHONY: all data fetch clean process manifest warehouse discover test report clean-data licence-evidence export-prefect help
 
 all: data
 
 ## licence-evidence: Query OpenAQ location APIs and collect raw JSON licence evidence
 licence-evidence:
 	$(PYTHON) -m src.collect_licence_evidence
+
+## export-prefect: Export official Prefect flow run history for the 24h window (run after Wed 4 PM PKT)
+export-prefect:
+	$(PYTHON) scripts/export_prefect_runs.py
 
 ## data: Run full end-to-end data acquisition and warehouse pipeline (fetch -> verify -> clean -> process -> manifest -> warehouse -> status)
 data:

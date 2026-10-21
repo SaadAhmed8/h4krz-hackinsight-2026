@@ -100,6 +100,8 @@ Re-running `make data` or `python -m src.pipeline` is completely idempotent. The
 | Target | Description |
 | :--- | :--- |
 | `make data` | Runs full acquisition and warehouse pipeline (fetch -> clean -> process -> manifest) |
+| `make licence-evidence` | Queries OpenAQ location APIs and collects raw JSON licence evidence into `docs/evidence/licences/` |
+| `make export-prefect` | Exports official Prefect run history to `./prefect_runs.csv` (run after Wed 4:00 PM PKT) |
 | `make discover` | Discovers OpenAQ stations in Lahore and writes `config/stations.yaml` |
 | `make fetch` | Incrementally downloads raw OpenAQ and weather data into `data/raw/` |
 | `make clean` | Reindexes to regular hourly grid, validates values, and logs to `quality_log.csv` |
@@ -123,7 +125,32 @@ python -m src.prefect_pipeline
 ```
 All pipeline runs, statuses (`SUCCESS`), timestamps, and row counts are recorded in [logs/prefect_runs.csv](logs/prefect_runs.csv).
 
-### 2. Streamlit Live Monitoring & Decision Dashboard
+### 2. How to Export the Prefect Run History (Guide Chapter 10)
+
+> [!IMPORTANT]
+> The official Prefect run history export MUST be executed **AFTER Wednesday 21 October 2026, 4:00 PM PKT (11:00:00 UTC)** on the machine whose Prefect server/profile ran the 24-hour hourly flow.
+> Note that `logs/prefect_runs.csv` is our own internal logging registry; the official evaluation export is generated directly from the Prefect server database via `scripts/export_prefect_runs.py`.
+
+To export the unedited flow run records for the 24-hour evaluation window (Tue 20 Oct 4 PM PKT to Wed 21 Oct 4 PM PKT):
+
+```bash
+# Using Makefile:
+make export-prefect
+
+# Or directly using Python:
+python scripts/export_prefect_runs.py
+```
+
+This writes `./prefect_runs.csv` at the repository root with columns:
+`flow_run_id`, `flow_name`, `flow_run_name`, `state_type`, `state_name`, `expected_start_time_utc`, `start_time_utc`, `end_time_utc`, `total_run_time_seconds`, `deployment_id`.
+
+It prints the exact number of runs per state (e.g. COMPLETED, FAILED) without filtering failures or inventing any rows.
+To run a dry run that inspects current runs without writing the root file:
+```bash
+python scripts/export_prefect_runs.py --dry-run
+```
+
+### 3. Streamlit Live Monitoring & Decision Dashboard
 Launch the interactive dashboard:
 ```bash
 streamlit run app.py
