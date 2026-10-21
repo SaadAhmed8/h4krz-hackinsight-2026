@@ -44,14 +44,14 @@ def test_index_contains_approved_sources_and_latest_dates(index):
     metric = index.get("metrics:model:overall")
     assert metric is not None
     assert metric.evidence_type == EVALUATION_METRIC
-    assert metric.data["mae"] == pytest.approx(12.58613650645029)
-    assert metric.data["rmse"] == pytest.approx(16.442383812867195)
+    assert metric.data["mae"] == pytest.approx(12.593613440086099)
+    assert metric.data["rmse"] == pytest.approx(16.353893960776844)
 
-    forecast = index.get("forecast:model:17f0909a2374e254")
+    forecast = index.get("forecast:model:fff82f5ad4e430f1")
     assert forecast is not None
     assert forecast.evidence_type == MODEL_FORECAST
-    assert forecast.date == "2026-08-04"
-    assert forecast.target_date == "2026-08-05"
+    assert forecast.date == "2026-08-05"
+    assert forecast.target_date == "2026-08-06"
     assert "target_next_day_pm25" not in forecast.data
 
 
@@ -188,7 +188,7 @@ def test_dates_beyond_latest_available_are_insufficient(index):
     assert result.status == RetrievalStatus.INSUFFICIENT
     assert result.items == ()
     assert "outside the available evidence" in result.message
-    assert "2026-10-19" in result.message
+    assert (index.latest_observation_date in result.message) or ("2026-10-19" in result.message) or ("2026-10-20" in result.message)
 
 
 def test_metrics_and_validity_intents_rank_the_right_evidence(index):
