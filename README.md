@@ -317,7 +317,7 @@ The repository was initiated on 19 October 2026. Per the Participant Guide, the 
 
 - **Automated Test Suite:** 57 tests passing (`python -m pytest -q`).
 - **Live Decision Dashboard (Hugging Face Space):** [https://huggingface.co/spaces/hasanshahir/lahore-air-quality-decision-system](https://huggingface.co/spaces/hasanshahir/lahore-air-quality-decision-system) 
-- **Demo Video:** TO CONFIRM BY TEAM
+- **Demo Video:**https://youtu.be/uSY8lgxd3pc
 - **Executive Summary:** Exactly 1-page PDF compiled from live repo artifacts ([Summary.pdf](Summary.pdf)).
 - **Audit Ledgers:**
   - Complete acquisition & warehouse report: [REPORT.md](REPORT.md)
