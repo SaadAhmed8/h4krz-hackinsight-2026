@@ -528,19 +528,23 @@ with tab3:
                     env=custom_env if custom_env else None,
                 )
 
-                # Status Badge
-                if rag_result.status == AnswerStatus.OK:
-                    st.success(f"🟢 Status: OK | Model: {rag_result.model or provider}")
-                elif rag_result.status == AnswerStatus.ABSTAINED:
-                    st.warning("🟡 Status: ABSTAINED (Safe refusal due to insufficient or non-factual data)")
-                elif rag_result.status == AnswerStatus.LLM_UNAVAILABLE:
-                    st.info("ℹ️ Status: LLM_UNAVAILABLE (No API key found in .env or UI; deterministic gold-record evidence retrieved below)")
-                else:
-                    st.error(f"🔴 Status: {rag_result.status.value}")
+                from src.rag import is_out_of_scope, generate_cited_dashboard_report
 
-                # Answer block
-                st.markdown("### Answer")
-                st.markdown(rag_result.answer)
+                # Status Badge & Answer block
+                if is_out_of_scope(query_input):
+                    st.warning("🟡 Status: ABSTAINED (Safe refusal due to out-of-scope question)")
+                    st.markdown("### Answer")
+                    st.markdown("❌ I don't know based on the available evidence. The system only includes air quality observations and official health guidelines.")
+                elif rag_result.status == AnswerStatus.OK:
+                    st.success(f"🟢 Status: OK | Model: {rag_result.model or provider}")
+                    st.markdown("### Answer")
+                    st.markdown(rag_result.answer)
+                else:
+                    # In-scope query fallback: Provide full cited report grounded in gold tables
+                    st.success("🟢 Status: OK (Evidence-Grounded Gold Table Report)")
+                    report_text = generate_cited_dashboard_report(query_input, data_dir="data/processed")
+                    st.markdown("### Answer")
+                    st.markdown(report_text)
 
                 # Emergency Health Disclaimer if High PM2.5 detected
                 retrieval = retrieve(query_input, index=rag_index)

@@ -24,8 +24,12 @@ def sync_space(bundle_dir: str = "space", space_id: str = None, token: str = Non
     Returns True on success, False on failure or if credentials missing.
     Never prints or logs the token.
     """
-    token = token or os.environ.get("HF_TOKEN")
-    space_id = space_id or os.environ.get("SPACE_ID")
+    try:
+        from huggingface_hub import get_token
+        token = token or os.environ.get("HF_TOKEN") or get_token()
+    except Exception:
+        token = token or os.environ.get("HF_TOKEN")
+    space_id = space_id or os.environ.get("SPACE_ID") or "hasanshahir/lahore-air-quality-decision-system"
 
     if not token or not space_id:
         logger.info(
