@@ -134,9 +134,9 @@ def build_daily_mart(hourly_df: Optional[pd.DataFrame] = None, processed_dir: Pa
 
         daily_station = []
         for pkt_d, d_group in group.groupby("pkt_date"):
-            # Safeguard 1: Exclude incomplete current day or future days from training targets
+            # Safeguard 1: Exclude future days beyond current PKT date
             parsed_date = pd.to_datetime(pkt_d).date()
-            if parsed_date >= current_pkt_date:
+            if parsed_date > current_pkt_date:
                 continue
 
             n_total_hours = len(d_group)

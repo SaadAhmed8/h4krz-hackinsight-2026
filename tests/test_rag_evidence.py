@@ -24,9 +24,9 @@ def index():
 
 def test_index_contains_approved_sources_and_latest_dates(index):
     assert len(index) > 7000
-    assert index.latest_observation_date in ("2026-10-19", "2026-10-20")
-    assert index.latest_target_date in ("2026-10-19", "2026-10-20")
-    assert index.latest_forecast_date in ("2026-10-19", "2026-10-20")
+    assert index.latest_observation_date in ("2026-10-19", "2026-10-20", "2026-10-21")
+    assert index.latest_target_date in ("2026-10-19", "2026-10-20", "2026-10-21")
+    assert index.latest_forecast_date in ("2026-10-19", "2026-10-20", "2026-10-21")
 
     observation = index.get("daily:15600ddfc49b85a1")
     assert observation is not None

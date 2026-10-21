@@ -346,19 +346,20 @@ def run_model_pipeline(daily_path: Path = DAILY_PATH) -> bool:
     st_col = "station_slug" if "station_slug" in raw_df.columns else "station_id"
     raw_df = raw_df[~raw_df[st_col].str.contains("ieee", case=False, na=False)].copy()
 
-    # Filter to valid station-days with non-null target
     target_col = "target_next_day_pm25"
+    date_col = "pkt_date" if "pkt_date" in raw_df.columns else "date_pkt"
     valid_mask = raw_df[target_col].notna()
     if "is_valid_day" in raw_df.columns:
         valid_mask = valid_mask & raw_df["is_valid_day"].eq(True)
 
-    df = raw_df[valid_mask].copy().reset_index(drop=True)
+    # Benchmark training & evaluation partition (up to 2026-10-19)
+    df = raw_df[valid_mask & (raw_df[date_col] <= "2026-10-19")].copy().reset_index(drop=True)
     if len(df) < 50:
         raise ValueError(f"Insufficient valid daily samples for modeling: {len(df)} rows found.")
 
-    logger.info(f"Loaded {len(df)} valid daily samples across {df[st_col].nunique()} stations.")
+    logger.info(f"Loaded {len(df)} valid daily benchmark samples across {df[st_col].nunique()} stations.")
 
-    # Feature Engineering
+    # Feature Engineering for benchmark models
     df, all_num_cols = prepare_features(df)
     assert not [c for c in all_num_cols if c.startswith("next_") or c.endswith("_change")], \
         "next-day weather leaked into features"
@@ -540,37 +541,45 @@ def run_model_pipeline(daily_path: Path = DAILY_PATH) -> bool:
     fairness_df.to_csv(ERRORS_BY_GROUP_CSV, index=False)
     logger.info(f"Saved group fairness breakdown to {ERRORS_BY_GROUP_CSV}")
 
-    # Generate Full Predictions Output across all valid samples
-    X_full_imp = imputer.transform(df[f_cols])
-    st_full = encoder.transform(df[[st_col]])
+    # Generate Full Predictions Output across all valid station-days
+    valid_days_df = raw_df[raw_df["is_valid_day"].eq(True)].copy().reset_index(drop=True) if "is_valid_day" in raw_df.columns else raw_df.copy().reset_index(drop=True)
+    full_feat_df, _ = prepare_features(valid_days_df)
+
+    X_full_imp = imputer.transform(full_feat_df[f_cols])
+    st_full = encoder.transform(full_feat_df[[st_col]])
     X_full_all = np.hstack([X_full_imp, st_full])
 
-    full_point = df["pm25_daily_mean"].values + best_res["model"].predict(X_full_all)
-    full_lower = df["pm25_daily_mean"].values + lower_model.predict(X_full_all)
-    full_upper = df["pm25_daily_mean"].values + upper_model.predict(X_full_all)
+    full_point = full_feat_df["pm25_daily_mean"].values + best_res["model"].predict(X_full_all)
+    full_lower = full_feat_df["pm25_daily_mean"].values + lower_model.predict(X_full_all)
+    full_upper = full_feat_df["pm25_daily_mean"].values + upper_model.predict(X_full_all)
 
     full_lower = np.minimum(full_lower, full_point)
     full_upper = np.maximum(full_upper, full_point)
 
-    date_col = "pkt_date" if "pkt_date" in df.columns else "date_pkt"
+    date_col = "pkt_date" if "pkt_date" in full_feat_df.columns else "date_pkt"
     split_labels = []
     train_dates = set(train_df[date_col].unique())
     val_dates = set(val_df[date_col].unique())
-    for d in df[date_col]:
-        if d in train_dates:
+    for d, has_target in zip(full_feat_df[date_col], full_feat_df[target_col].notna()):
+        if not has_target:
+            split_labels.append("live_forecast")
+        elif d in train_dates:
             split_labels.append("train")
         elif d in val_dates:
             split_labels.append("validation")
         else:
             split_labels.append("test")
 
+    target_dates = (pd.to_datetime(full_feat_df[date_col]) + pd.Timedelta(days=1)).dt.strftime("%Y-%m-%d")
+
     pred_out_df = pd.DataFrame({
-        "record_id": df["record_id"] if "record_id" in df.columns else df[st_col] + "_" + df[date_col],
-        "station_slug": df[st_col],
-        "pkt_date": df[date_col],
-        "pm25_daily_mean": round(df["pm25_daily_mean"], 2),
-        "target_next_day_pm25": round(df[target_col], 2),
-        "baseline_pred_next_day_pm25": round(df["pm25_daily_mean"], 2),
+        "record_id": full_feat_df["record_id"] if "record_id" in full_feat_df.columns else full_feat_df[st_col] + "_" + full_feat_df[date_col],
+        "station_slug": full_feat_df[st_col],
+        "pkt_date": full_feat_df[date_col],
+        "target_date": target_dates,
+        "pm25_daily_mean": round(full_feat_df["pm25_daily_mean"], 2),
+        "target_next_day_pm25": round(full_feat_df[target_col], 2),
+        "baseline_pred_next_day_pm25": round(full_feat_df["pm25_daily_mean"], 2),
         "pred_lower_10": np.round(full_lower, 2),
         "pred_pm25": np.round(full_point, 2),
         "pred_upper_90": np.round(full_upper, 2),
