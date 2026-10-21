@@ -222,10 +222,7 @@ def get_last_successful_run() -> dict:
 
 
 # ==============================================================================
-# Guide Chapter 10 Top Live Status Banner:
-# (a) Data freshness for OpenAQ and Open-Meteo separately (with LATE flag threshold 2.0h)
-# (b) Latest Data Quality Agent result
-# (c) Time and status of last successful pipeline run
+# Guide Chapter 10 Top Live Status Banner
 # ==============================================================================
 openaq_freshness = get_source_freshness("OpenAQ", max_age_hours=2.0)
 meteo_freshness = get_source_freshness("Open-Meteo", max_age_hours=2.0)
@@ -256,7 +253,6 @@ tab1, tab2, tab3 = st.tabs(["📊 Live Monitoring", "📈 Model & Group Fairness
 with tab1:
     st.subheader("Data Quality Decision Audit (Chapter 6 & 10)")
 
-    # Decision Log Expander
     if DQ_LOG_PATH.exists():
         with st.expander("📋 Data Quality Agent Decision Log (logs/dq_log.csv)", expanded=False):
             try:
@@ -269,7 +265,6 @@ with tab1:
 
     st.divider()
 
-    # 2. Pakistan Impact Bonus (+4 pts)
     st.subheader("🇵🇰 Local Impact & Policy Validation (+4 Pts)")
     imp_col1, imp_col2 = st.columns(2)
 
@@ -277,7 +272,6 @@ with tab1:
         st.markdown("#### 🏛️ EPA Punjab Smog Action Plan School Thresholds (+2 Pts)")
         st.caption("Official threshold mapping against live Lahore station averages")
         
-        # Calculate current station mean
         df_daily_temp = None
         current_lahore_mean = None
         if DATA_PARQUET.exists():
@@ -328,7 +322,6 @@ with tab1:
 
     st.divider()
 
-    # 3. Daily Station Data & Historical Predictions
     st.subheader(r"Daily Station Data (Valid $\ge 18/24$ Non-Imputed Hours)")
 
     df_daily = None
@@ -367,7 +360,6 @@ with tab1:
 
     st.divider()
 
-    # 4. Prefect 24-Hour Run Audit Log
     st.subheader("Prefect Automated Pipeline Run Audit")
     if RUNS_PATH.exists():
         try:
@@ -478,7 +470,6 @@ with tab3:
         "All answers are ground-truth cited with strict safety abstention."
     )
 
-    # Sidebar settings for RAG
     st.sidebar.markdown("---")
     st.sidebar.subheader("🤖 RAG LLM Settings")
     provider = st.sidebar.selectbox("LLM Provider", ["gemini", "openai", "anthropic", "openai_compatible"], index=0)
@@ -488,7 +479,6 @@ with tab3:
         help="Optional: If omitted, reads from your local .env file. Leave blank to use local deterministic retrieval."
     )
 
-    # Load / Cache evidence index
     @st.cache_resource(show_spinner="Building local evidence index from approved sources...")
     def get_rag_index():
         from src.rag.evidence import build_evidence_index
@@ -501,7 +491,6 @@ with tab3:
         rag_index = None
         st.sidebar.error(f"Could not load index: {e}")
 
-    # Sample query buttons (including out-of-scope question to demo live abstention)
     st.markdown("**Sample Questions:**")
     sq_col1, sq_col2, sq_col3, sq_col4, sq_col5 = st.columns(5)
     
@@ -530,7 +519,6 @@ with tab3:
             with st.spinner("Retrieving evidence and verifying citations..."):
                 from src.rag import answer_question, AnswerStatus, retrieve, RetrievalStatus
 
-                # Construct environment override if provided
                 custom_env = {}
                 if api_key_input.strip():
                     if provider == "gemini":
@@ -549,7 +537,6 @@ with tab3:
 
                 from src.rag import is_out_of_scope, generate_cited_dashboard_report
 
-                # Status Badge & Answer block
                 if is_out_of_scope(query_input):
                     st.warning("🟡 Status: ABSTAINED (Safe refusal due to out-of-scope question)")
                     st.markdown("### Answer")
@@ -559,13 +546,11 @@ with tab3:
                     st.markdown("### Answer")
                     st.markdown(rag_result.answer)
                 else:
-                    # In-scope query fallback: Provide full cited report grounded in gold tables
                     st.success("🟢 Status: OK (Evidence-Grounded Gold Table Report)")
                     report_text = generate_cited_dashboard_report(query_input, data_dir="data/processed")
                     st.markdown("### Answer")
                     st.markdown(report_text)
 
-                # Emergency Health Disclaimer if High PM2.5 detected
                 retrieval = retrieve(query_input, index=rag_index)
                 has_high_pm25 = any(
                     isinstance(item.data.get("pm25_daily_mean"), (int, float)) and item.data["pm25_daily_mean"] > 55
@@ -580,12 +565,10 @@ with tab3:
                         "wear N95/protective respirators, and contact Punjab Health Services (1033) or Rescue 1122 in case of respiratory distress."
                     )
 
-                # Citations
                 if rag_result.citations:
                     st.markdown("**Verified Citations:**")
                     st.write(", ".join([f"`{c}`" for c in rag_result.citations]))
 
-                # Exact Gold Table row_id Breakdown
                 obs_items = [item for item in retrieval.items if item.evidence_type in ("observation", "historical_target", "model_forecast", "baseline_forecast")]
                 if obs_items:
                     st.markdown("#### 🔍 Exact Gold Table Record IDs (`daily.parquet` / `warehouse.duckdb`)")
@@ -602,7 +585,6 @@ with tab3:
                         })
                     st.dataframe(pd.DataFrame(row_data), width="stretch")
 
-                # Retrieved Evidence Expander
                 with st.expander(f"📚 Retrieved Evidence Items ({len(retrieval.items)} items)", expanded=(rag_result.status == AnswerStatus.LLM_UNAVAILABLE)):
                     for idx, item in enumerate(retrieval.items, 1):
                         st.markdown(f"**[{idx}] `{item.citation_id}`** ({item.evidence_type})")
