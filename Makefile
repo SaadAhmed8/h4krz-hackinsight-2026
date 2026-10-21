@@ -3,9 +3,13 @@
 
 PYTHON ?= python
 
-.PHONY: all data fetch clean process manifest warehouse discover test report clean-data help
+.PHONY: all data fetch clean process manifest warehouse discover test report clean-data licence-evidence help
 
 all: data
+
+## licence-evidence: Query OpenAQ location APIs and collect raw JSON licence evidence
+licence-evidence:
+	$(PYTHON) -m src.collect_licence_evidence
 
 ## data: Run full end-to-end data acquisition and warehouse pipeline (fetch -> verify -> clean -> process -> manifest -> warehouse -> status)
 data:
