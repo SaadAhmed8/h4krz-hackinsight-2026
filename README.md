@@ -324,3 +324,12 @@ The repository was initiated on 19 October 2026. Per the Participant Guide, the 
   - Dataset declaration & contract: [DATASET_DECLARATION.md](DATASET_DECLARATION.md)
   - AI assistance log with verified commits: [AI_Use_Log.md](AI_Use_Log.md)
   - Physical file hash integrity ledger: [manifest.csv](manifest.csv)
+
+## 👥 Team Members & Roles
+
+| Name | Role | Responsibilities & Contributions |
+| :--- | :--- | :--- |
+| **Saad Ahmed** | **Team Lead / Software Engineer** | Repository architecture, core setup, GitHub release & tagging (`v1.0-final`), and system integration. |
+| **Hasan Shahir** | **MLOps & Pipeline Engineer** | Prefect hourly data orchestration pipeline, OpenAQ & Open-Meteo integrations, and Hugging Face deployment. |
+| **Noman Tariq** | **ML & RAG Architecture Lead** | `HistGradientBoosting` PM2.5 forecasting model, uncertainty interval bounds, and cited RAG policy assistant. |
+| **Arbish** | **Documentation & Compliance Specialist** | Manifest tracking, `AI_Use_Log.md` compliance, data quality audits, and submission deliverables. |
