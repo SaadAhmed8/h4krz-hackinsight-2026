@@ -191,6 +191,18 @@ def hourly_aq_pipeline():
             predictions_produced=preds_ok,
             n_daily_rows=daily_df_len
         )
+
+        # Optional Hugging Face Space sync hook (Guide Ch. 10)
+        if pipeline_status == "SUCCESS":
+            hf_token = os.environ.get("HF_TOKEN")
+            space_id = os.environ.get("SPACE_ID")
+            if hf_token and space_id:
+                try:
+                    logger.info(f"Syncing updated pipeline outputs to Space '{space_id}'...")
+                    from scripts.sync_to_space import sync_space
+                    sync_space(bundle_dir="space", space_id=space_id, token=hf_token)
+                except Exception as sync_exc:
+                    logger.warning(f"Optional Hugging Face Space sync failed (pipeline continues): {sync_exc}")
     except Exception as exc:
         err_trace = traceback.format_exc()
         status_code = "FAILED_DQ" if isinstance(exc, (PipelineExecutionError, ContractError)) else "FAILED_SYS"

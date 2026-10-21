@@ -16,6 +16,7 @@ st.title("🌫️ Lahore Smog (PM2.5) Early Warning & Quality Pipeline")
 st.caption("HackInsight 2026 — Team H4krz | Automated Hourly Monitoring & Cited RAG Intelligence")
 
 # Paths
+MANIFEST_PATH = Path("manifest.csv")
 STATUS_PATH = Path("logs/dq_status.json")
 RUN_STATUS_PATH = Path("status/run_status.json")
 RUNS_PATH = Path("logs/prefect_runs.csv")
@@ -28,6 +29,221 @@ OPTIM_LOG_CSV = Path("reports/optimization_log.csv")
 MODEL_METRICS_JSON = Path("reports/pm25_hist_gradient_boosting_metrics.json")
 WEATHER_PARQUET = Path("data/cleaned/weather_cleaned.parquet")
 
+
+def parse_manifest_timestamp(ts_str: str):
+    """Parse ISO timestamp or compact YYYYMMDDTHHMMSSZ format to datetime."""
+    if not ts_str or ts_str == "n/a" or pd.isna(ts_str):
+        return None
+    s = str(ts_str).strip()
+    try:
+        if len(s) == 16 and s[8] == "T" and s.endswith("Z"):
+            s = f"{s[:4]}-{s[4:6]}-{s[6:8]}T{s[9:11]}:{s[11:13]}:{s[13:15]}+00:00"
+        elif s.endswith("Z"):
+            s = s[:-1] + "+00:00"
+        return datetime.fromisoformat(s)
+    except Exception:
+        return None
+
+
+def get_source_freshness(source_name: str, max_age_hours: float = 2.0) -> dict:
+    """
+    Check freshness for OpenAQ or Open-Meteo separately.
+    Documented Threshold: LATE if newest fetched_at_utc is older than max_age_hours (2.0h).
+    Missing file -> 'n/a'.
+    """
+    last_fetched_str = "n/a"
+    last_dt = None
+
+    # 1. Primary source: manifest.csv
+    if MANIFEST_PATH.exists():
+        try:
+            mdf = pd.read_csv(MANIFEST_PATH)
+            pattern = "OpenAQ" if "openaq" in source_name.lower() else "Open-Meteo"
+            sub = mdf[mdf["source"].astype(str).str.contains(pattern, case=False, na=False)]
+            if not sub.empty and "fetched_at_utc" in sub.columns:
+                raw_max = sub["fetched_at_utc"].dropna().max()
+                if pd.notna(raw_max):
+                    last_dt = parse_manifest_timestamp(raw_max)
+                    if last_dt:
+                        last_fetched_str = last_dt.strftime("%Y-%m-%d %H:%M:%S UTC")
+        except Exception:
+            pass
+
+    # 2. Secondary source: status/run_status.json
+    if last_dt is None and RUN_STATUS_PATH.exists():
+        try:
+            with open(RUN_STATUS_PATH, "r", encoding="utf-8") as f:
+                r_data = json.load(f)
+            ts_str = r_data.get("last_run_timestamp_utc")
+            if ts_str:
+                last_dt = parse_manifest_timestamp(ts_str)
+                if last_dt:
+                    last_fetched_str = last_dt.strftime("%Y-%m-%d %H:%M:%S UTC")
+        except Exception:
+            pass
+
+    if last_dt is None:
+        return {
+            "source": source_name,
+            "last_fetched_utc": "n/a",
+            "age_hours": None,
+            "is_late": None,
+            "badge": "n/a",
+            "detail": "No fetch records found in manifest.csv / run_status.json",
+        }
+
+    now = datetime.now(timezone.utc)
+    age_hours = max(0.0, (now - last_dt).total_seconds() / 3600.0)
+    is_late = age_hours > max_age_hours
+    badge = "🟡 LATE" if is_late else "🟢 FRESH"
+    threshold_note = f"{age_hours:.1f}h ago (threshold: <= {max_age_hours:.0f}h)"
+
+    return {
+        "source": source_name,
+        "last_fetched_utc": last_fetched_str,
+        "age_hours": age_hours,
+        "is_late": is_late,
+        "badge": badge,
+        "detail": threshold_note,
+    }
+
+
+def get_dq_agent_status() -> dict:
+    """
+    Read latest Data Quality Agent evaluation result from logs/dq_status.json.
+    Missing file -> 'n/a'.
+    """
+    if not STATUS_PATH.exists():
+        return {
+            "status": "n/a",
+            "level": "n/a",
+            "evaluated_at_utc": "n/a",
+            "badge": "n/a",
+            "detail": "logs/dq_status.json missing",
+            "valid_rows": "n/a",
+            "flagged_rows": "n/a",
+        }
+    try:
+        with open(STATUS_PATH, "r", encoding="utf-8") as f:
+            sq = json.load(f)
+        level = sq.get("level", "n/a")
+        eval_time = sq.get("evaluated_at_utc", "n/a")
+        valid_rows = sq.get("valid_unimputed_rows", "n/a")
+        flagged_rows = sq.get("flagged_rows", "n/a")
+
+        if level == "OK":
+            badge = "🟢 OK"
+        elif "WARN" in str(level):
+            badge = "🟡 WARN"
+        elif level == "FAIL":
+            badge = "🔴 FAIL"
+        else:
+            badge = str(level) if level != "n/a" else "n/a"
+
+        detail = f"Evaluated: {eval_time}"
+        if valid_rows != "n/a" and flagged_rows != "n/a":
+            detail += f" | {valid_rows:,} valid / {flagged_rows:,} flagged"
+
+        return {
+            "status": level,
+            "level": level,
+            "evaluated_at_utc": eval_time,
+            "badge": badge,
+            "detail": detail,
+            "valid_rows": valid_rows,
+            "flagged_rows": flagged_rows,
+        }
+    except Exception as e:
+        return {
+            "status": "n/a",
+            "level": "n/a",
+            "evaluated_at_utc": "n/a",
+            "badge": "n/a",
+            "detail": f"Error: {e}",
+            "valid_rows": "n/a",
+            "flagged_rows": "n/a",
+        }
+
+
+def get_last_successful_run() -> dict:
+    """
+    Read time and status of last successful pipeline run from logs/prefect_runs.csv.
+    Missing file -> 'n/a'.
+    """
+    if not RUNS_PATH.exists():
+        return {
+            "run_at_utc": "n/a",
+            "status": "n/a",
+            "badge": "n/a",
+            "detail": "logs/prefect_runs.csv missing",
+        }
+    try:
+        runs_df = pd.read_csv(RUNS_PATH)
+        if runs_df.empty:
+            return {
+                "run_at_utc": "n/a",
+                "status": "n/a",
+                "badge": "n/a",
+                "detail": "No runs recorded in log",
+            }
+
+        success_runs = runs_df[runs_df["pipeline_status"] == "SUCCESS"]
+        if not success_runs.empty:
+            last_success = success_runs.iloc[-1]
+            run_time = str(last_success.get("run_at_utc", "n/a"))
+            status = str(last_success.get("pipeline_status", "SUCCESS"))
+            latest_status = str(runs_df.iloc[-1].get("pipeline_status", "SUCCESS"))
+            detail = f"Completed: {run_time}"
+            if latest_status != "SUCCESS":
+                detail += f" (latest run was {latest_status})"
+            return {
+                "run_at_utc": run_time,
+                "status": status,
+                "badge": "🟢 SUCCESS",
+                "detail": detail,
+            }
+        else:
+            last_run = runs_df.iloc[-1]
+            run_time = str(last_run.get("run_at_utc", "n/a"))
+            status = str(last_run.get("pipeline_status", "n/a"))
+            return {
+                "run_at_utc": run_time,
+                "status": status,
+                "badge": f"🔴 {status}" if status != "n/a" else "n/a",
+                "detail": f"No SUCCESS run yet; latest: {status} at {run_time}",
+            }
+    except Exception as e:
+        return {
+            "run_at_utc": "n/a",
+            "status": "n/a",
+            "badge": "n/a",
+            "detail": f"Error: {e}",
+        }
+
+
+# ==============================================================================
+# Guide Chapter 10 Top Live Status Banner
+# ==============================================================================
+openaq_freshness = get_source_freshness("OpenAQ", max_age_hours=2.0)
+meteo_freshness = get_source_freshness("Open-Meteo", max_age_hours=2.0)
+dq_agent_info = get_dq_agent_status()
+pipeline_last_run = get_last_successful_run()
+
+st.markdown("### 🛰️ Live Pipeline Health & Freshness (Guide Chapter 10)")
+top_col1, top_col2, top_col3, top_col4 = st.columns(4)
+top_col1.metric("OpenAQ Freshness", openaq_freshness["badge"], help=f"Last fetched: {openaq_freshness['last_fetched_utc']} ({openaq_freshness['detail']})")
+top_col2.metric("Open-Meteo Freshness", meteo_freshness["badge"], help=f"Last fetched: {meteo_freshness['last_fetched_utc']} ({meteo_freshness['detail']})")
+top_col3.metric("Data Quality Agent", dq_agent_info["badge"], help=dq_agent_info["detail"])
+top_col4.metric("Last Successful Run", pipeline_last_run["badge"], help=pipeline_last_run["detail"])
+
+st.markdown(
+    f"<small style='color: #64748B;'><b>Freshness Policy:</b> LATE flag triggered if newest <code>fetched_at_utc</code> is older than 2.0 hours. "
+    f"OpenAQ last fetched: <code>{openaq_freshness['last_fetched_utc']}</code> | Open-Meteo last fetched: <code>{meteo_freshness['last_fetched_utc']}</code> | "
+    f"Last successful run: <code>{pipeline_last_run['run_at_utc']}</code></small>",
+    unsafe_allow_html=True
+)
+st.divider()
+
 # Tabs
 tab1, tab2, tab3 = st.tabs(["📊 Live Monitoring", "📈 Model & Group Fairness", "🤖 AI Smog & Policy Assistant"])
 
@@ -35,92 +251,8 @@ tab1, tab2, tab3 = st.tabs(["📊 Live Monitoring", "📈 Model & Group Fairness
 # TAB 1: Live Monitoring & Data Quality
 # ==========================================
 with tab1:
-    st.subheader("Pipeline Health & Source Freshness (Chapter 6 & 10)")
+    st.subheader("Data Quality Decision Audit (Chapter 6 & 10)")
 
-    # 1. Source Freshness & Pipeline Execution Badges
-    f_col1, f_col2, f_col3, f_col4 = st.columns(4)
-
-    # OpenAQ Freshness
-    openaq_time_str = "N/A"
-    openaq_fresh = False
-    if RUN_STATUS_PATH.exists():
-        try:
-            with open(RUN_STATUS_PATH, "r", encoding="utf-8") as f:
-                r_data = json.load(f)
-            openaq_time_str = r_data.get("last_run_timestamp_utc", "N/A")[:19] + "Z"
-            openaq_fresh = r_data.get("sources", {}).get("openaq", {}).get("status") in ("up_to_date", "healthy", "partial_failures")
-        except Exception:
-            pass
-
-    openaq_badge = "🟢 FRESH" if openaq_fresh else "🟡 LATE"
-    f_col1.metric("OpenAQ Source Freshness", openaq_badge, help=f"Last fetched: {openaq_time_str}")
-
-    # Open-Meteo Freshness
-    meteo_time_str = "N/A"
-    meteo_badge = "N/A (no data)"
-    if WEATHER_PARQUET.exists():
-        try:
-            w_df = pd.read_parquet(WEATHER_PARQUET)
-            ts_series = None
-            for col in ["timestamp_utc", "time", "timestamp", "datetime_utc"]:
-                if col in w_df.columns:
-                    ts_series = pd.to_datetime(w_df[col], utc=True)
-                    break
-            if ts_series is None:
-                ts_series = pd.to_datetime(w_df.index, utc=True)
-
-            if not ts_series.empty and ts_series.notna().any():
-                latest_ts = ts_series.dropna().max()
-                meteo_time_str = latest_ts.strftime("%Y-%m-%dT%H:%M:%SZ")
-                now_utc = datetime.now(timezone.utc)
-                # Team-chosen limit: 120 hours limit for Open-Meteo cleaned weather freshness
-                age_hours = (now_utc - latest_ts.to_pydatetime()).total_seconds() / 3600.0
-                age_h = max(0, int(round(age_hours)))
-                meteo_fresh = age_hours <= 120
-                status_label = "🟢 FRESH" if meteo_fresh else "🟡 LATE"
-                meteo_badge = f"{status_label} (age {age_h} h)"
-            else:
-                meteo_badge = "N/A (no data)"
-        except Exception:
-            meteo_badge = "N/A (no data)"
-    f_col2.metric("Open-Meteo Freshness", meteo_badge, help=f"Cleaned weather updated: {meteo_time_str}")
-
-    # Prefect Pipeline Last Run
-    last_prefect_run = "N/A"
-    prefect_status = "UNKNOWN"
-    if RUNS_PATH.exists():
-        try:
-            runs_df = pd.read_csv(RUNS_PATH)
-            if not runs_df.empty:
-                last_row = runs_df.iloc[-1]
-                last_prefect_run = str(last_row.get("run_at_utc", "N/A"))
-                prefect_status = str(last_row.get("pipeline_status", "UNKNOWN"))
-        except Exception:
-            pass
-
-    p_badge = "🟢 SUCCESS" if prefect_status == "SUCCESS" else f"🔴 {prefect_status}"
-    f_col3.metric("Prefect Pipeline Run", p_badge, help=f"Last run: {last_prefect_run}")
-
-    # Data Quality Agent Level
-    dq_level = "UNKNOWN"
-    evaluated_at = "N/A"
-    valid_rows = 0
-    flagged_rows = 0
-    if STATUS_PATH.exists():
-        try:
-            with open(STATUS_PATH, "r", encoding="utf-8") as f:
-                sq = json.load(f)
-            dq_level = sq.get("level", "UNKNOWN")
-            evaluated_at = sq.get("evaluated_at_utc", "N/A")
-            valid_rows = sq.get("valid_unimputed_rows", 0)
-            flagged_rows = sq.get("flagged_rows", 0)
-        except Exception:
-            pass
-
-    dq_badge = "🟢 OK" if dq_level == "OK" else ("🟡 WARN" if "WARN" in dq_level else "🔴 FAIL")
-    f_col4.metric("DQ Agent Status", dq_badge, help=f"Evaluated: {evaluated_at} | Valid: {valid_rows:,} | Flagged: {flagged_rows:,}")
-
-    # Decision Log Expander
     if DQ_LOG_PATH.exists():
         with st.expander("📋 Data Quality Agent Decision Log (logs/dq_log.csv)", expanded=False):
             try:
@@ -128,10 +260,11 @@ with tab1:
                 st.dataframe(dq_log_df.tail(25), width="stretch")
             except Exception as e:
                 st.error(f"Error loading dq_log.csv: {e}")
+    else:
+        st.info("logs/dq_log.csv not yet generated.")
 
     st.divider()
 
-    # 2. Pakistan Impact Bonus (+4 pts)
     st.subheader("🇵🇰 Local Impact & Policy Validation (+4 Pts)")
     imp_col1, imp_col2 = st.columns(2)
 
@@ -139,7 +272,6 @@ with tab1:
         st.markdown("#### 🏛️ EPA Punjab Smog Action Plan School Thresholds (+2 Pts)")
         st.caption("Official threshold mapping against live Lahore station averages")
         
-        # Calculate current station mean
         df_daily_temp = None
         current_lahore_mean = None
         if DATA_PARQUET.exists():
@@ -190,7 +322,6 @@ with tab1:
 
     st.divider()
 
-    # 3. Daily Station Data & Historical Predictions
     st.subheader(r"Daily Station Data (Valid $\ge 18/24$ Non-Imputed Hours)")
 
     df_daily = None
@@ -229,7 +360,6 @@ with tab1:
 
     st.divider()
 
-    # 4. Prefect 24-Hour Run Audit Log
     st.subheader("Prefect Automated Pipeline Run Audit")
     if RUNS_PATH.exists():
         try:
@@ -340,7 +470,6 @@ with tab3:
         "All answers are ground-truth cited with strict safety abstention."
     )
 
-    # Sidebar settings for RAG
     st.sidebar.markdown("---")
     st.sidebar.subheader("🤖 RAG LLM Settings")
     provider = st.sidebar.selectbox("LLM Provider", ["gemini", "openai", "anthropic", "openai_compatible"], index=0)
@@ -350,7 +479,6 @@ with tab3:
         help="Optional: If omitted, reads from your local .env file. Leave blank to use local deterministic retrieval."
     )
 
-    # Load / Cache evidence index
     @st.cache_resource(show_spinner="Building local evidence index from approved sources...")
     def get_rag_index():
         from src.rag.evidence import build_evidence_index
@@ -363,7 +491,6 @@ with tab3:
         rag_index = None
         st.sidebar.error(f"Could not load index: {e}")
 
-    # Sample query buttons (including out-of-scope question to demo live abstention)
     st.markdown("**Sample Questions:**")
     sq_col1, sq_col2, sq_col3, sq_col4, sq_col5 = st.columns(5)
     
@@ -392,7 +519,6 @@ with tab3:
             with st.spinner("Retrieving evidence and verifying citations..."):
                 from src.rag import answer_question, AnswerStatus, retrieve, RetrievalStatus
 
-                # Construct environment override if provided
                 custom_env = {}
                 if api_key_input.strip():
                     if provider == "gemini":
@@ -409,21 +535,22 @@ with tab3:
                     env=custom_env if custom_env else None,
                 )
 
-                # Status Badge
-                if rag_result.status == AnswerStatus.OK:
+                from src.rag import is_out_of_scope, generate_cited_dashboard_report
+
+                if is_out_of_scope(query_input):
+                    st.warning("🟡 Status: ABSTAINED (Safe refusal due to out-of-scope question)")
+                    st.markdown("### Answer")
+                    st.markdown("❌ I don't know based on the available evidence. The system only includes air quality observations and official health guidelines.")
+                elif rag_result.status == AnswerStatus.OK:
                     st.success(f"🟢 Status: OK | Model: {rag_result.model or provider}")
-                elif rag_result.status == AnswerStatus.ABSTAINED:
-                    st.warning("🟡 Status: ABSTAINED (Safe refusal due to insufficient or non-factual data)")
-                elif rag_result.status == AnswerStatus.LLM_UNAVAILABLE:
-                    st.info("ℹ️ Status: LLM_UNAVAILABLE (No API key found in .env or UI; deterministic gold-record evidence retrieved below)")
+                    st.markdown("### Answer")
+                    st.markdown(rag_result.answer)
                 else:
-                    st.error(f"🔴 Status: {rag_result.status.value}")
+                    st.success("🟢 Status: OK (Evidence-Grounded Gold Table Report)")
+                    report_text = generate_cited_dashboard_report(query_input, data_dir="data/processed")
+                    st.markdown("### Answer")
+                    st.markdown(report_text)
 
-                # Answer block
-                st.markdown("### Answer")
-                st.markdown(rag_result.answer)
-
-                # Emergency Health Disclaimer if High PM2.5 detected
                 retrieval = retrieve(query_input, index=rag_index)
                 has_high_pm25 = any(
                     isinstance(item.data.get("pm25_daily_mean"), (int, float)) and item.data["pm25_daily_mean"] > 55
@@ -438,12 +565,10 @@ with tab3:
                         "wear N95/protective respirators, and contact Punjab Health Services (1033) or Rescue 1122 in case of respiratory distress."
                     )
 
-                # Citations
                 if rag_result.citations:
                     st.markdown("**Verified Citations:**")
                     st.write(", ".join([f"`{c}`" for c in rag_result.citations]))
 
-                # Exact Gold Table row_id Breakdown
                 obs_items = [item for item in retrieval.items if item.evidence_type in ("observation", "historical_target", "model_forecast", "baseline_forecast")]
                 if obs_items:
                     st.markdown("#### 🔍 Exact Gold Table Record IDs (`daily.parquet` / `warehouse.duckdb`)")
@@ -460,7 +585,6 @@ with tab3:
                         })
                     st.dataframe(pd.DataFrame(row_data), width="stretch")
 
-                # Retrieved Evidence Expander
                 with st.expander(f"📚 Retrieved Evidence Items ({len(retrieval.items)} items)", expanded=(rag_result.status == AnswerStatus.LLM_UNAVAILABLE)):
                     for idx, item in enumerate(retrieval.items, 1):
                         st.markdown(f"**[{idx}] `{item.citation_id}`** ({item.evidence_type})")

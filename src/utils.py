@@ -90,11 +90,13 @@ def load_licence_evidence(evidence_csv_path: str = "config/licence_evidence.csv"
     if not path.exists():
         return {}
     try:
-        df = pd.read_csv(path)
+        df = pd.read_csv(path, dtype=str, keep_default_na=False)
         registry = {}
         for _, row in df.iterrows():
             st_key = str(row.get("station", "")).strip()
             loc_key = str(row.get("location_id", "")).strip()
+            if loc_key.endswith(".0"):
+                loc_key = loc_key[:-2]
             lic = str(row.get("licence", "")).strip()
             entry = {
                 "station": st_key,
@@ -102,11 +104,12 @@ def load_licence_evidence(evidence_csv_path: str = "config/licence_evidence.csv"
                 "licence": lic if lic and lic != "nan" else "UNKNOWN",
                 "checked_by": str(row.get("checked_by", "")).strip(),
                 "checked_at": str(row.get("checked_at", "")).strip(),
-                "evidence_path": str(row.get("evidence_path", "")).strip()
+                "evidence_path": str(row.get("evidence_path", "")).strip(),
+                "human_reviewed": str(row.get("human_reviewed", "")).strip()
             }
             if st_key:
                 registry[st_key] = entry
-            if loc_key and loc_key != "nan":
+            if loc_key and loc_key not in ("nan", "N/A", ""):
                 registry[f"loc_{loc_key}"] = entry
         return registry
     except Exception as e:
