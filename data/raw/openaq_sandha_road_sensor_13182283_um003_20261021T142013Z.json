@@ -1,0 +1,175 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "sandha_road",
+    "station_name": "Sandha Road",
+    "location_id": 4554729,
+    "sensor_id": 13182283,
+    "parameter": "um003",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T142013Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13182283/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/13182283/hours?limit=1000&page=1..N&datetime_from=2026-10-21T11:00:00Z",
+    "record_count": 3
+  },
+  "results": [
+    {
+      "value": 2950.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 125,
+        "name": "um003",
+        "units": "particles/cm³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 2952.0,
+        "q02": 2952.0,
+        "q25": 2952.0,
+        "median": 2952.0,
+        "q75": 2952.0,
+        "q98": 2952.0,
+        "max": 2952.0,
+        "avg": 2952.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 3600.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 125,
+        "name": "um003",
+        "units": "particles/cm³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 3599.0,
+        "q02": 3599.0,
+        "q25": 3599.0,
+        "median": 3599.0,
+        "q75": 3599.0,
+        "q98": 3599.0,
+        "max": 3599.0,
+        "avg": 3599.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 4690.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 125,
+        "name": "um003",
+        "units": "particles/cm³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T14:00:00Z",
+          "local": "2026-10-21T19:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 4690.0,
+        "q02": 4690.0,
+        "q25": 4690.0,
+        "median": 4690.0,
+        "q75": 4690.0,
+        "q98": 4690.0,
+        "max": 4690.0,
+        "avg": 4690.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T14:00:00Z",
+          "local": "2026-10-21T19:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

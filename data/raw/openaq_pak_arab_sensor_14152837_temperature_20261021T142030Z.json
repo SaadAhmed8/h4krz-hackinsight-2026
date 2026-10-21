@@ -1,0 +1,175 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "pak_arab",
+    "station_name": "Pak Arab",
+    "location_id": 4699919,
+    "sensor_id": 14152837,
+    "parameter": "temperature",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T142030Z",
+    "source_url": "https://api.openaq.org/v3/sensors/14152837/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/14152837/hours?limit=1000&page=1..N&datetime_from=2026-10-21T11:00:00Z",
+    "record_count": 3
+  },
+  "results": [
+    {
+      "value": 31.4,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 100,
+        "name": "temperature",
+        "units": "c",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 31.4,
+        "q02": 31.4,
+        "q25": 31.4,
+        "median": 31.4,
+        "q75": 31.4,
+        "q98": 31.4,
+        "max": 31.4,
+        "avg": 31.4,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 30.7,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 100,
+        "name": "temperature",
+        "units": "c",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 30.7,
+        "q02": 30.7,
+        "q25": 30.7,
+        "median": 30.7,
+        "q75": 30.7,
+        "q98": 30.7,
+        "max": 30.7,
+        "avg": 30.7,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 30.4,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 100,
+        "name": "temperature",
+        "units": "c",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T14:00:00Z",
+          "local": "2026-10-21T19:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 30.4,
+        "q02": 30.4,
+        "q25": 30.4,
+        "median": 30.4,
+        "q75": 30.4,
+        "q98": 30.4,
+        "max": 30.4,
+        "avg": 30.4,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T14:00:00Z",
+          "local": "2026-10-21T19:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

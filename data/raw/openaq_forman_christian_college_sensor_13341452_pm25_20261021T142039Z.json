@@ -1,0 +1,175 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "forman_christian_college",
+    "station_name": "Forman Christian College & Chartered University",
+    "location_id": 4757305,
+    "sensor_id": 13341452,
+    "parameter": "pm25",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T142039Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13341452/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/13341452/hours?limit=1000&page=1..N&datetime_from=2026-10-21T11:00:00Z",
+    "record_count": 3
+  },
+  "results": [
+    {
+      "value": 102.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 101.8,
+        "q02": 101.8,
+        "q25": 101.8,
+        "median": 101.8,
+        "q75": 101.8,
+        "q98": 101.8,
+        "max": 101.8,
+        "avg": 101.8,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 111.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 110.6,
+        "q02": 110.6,
+        "q25": 110.6,
+        "median": 110.6,
+        "q75": 110.6,
+        "q98": 110.6,
+        "max": 110.6,
+        "avg": 110.6,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 127.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T14:00:00Z",
+          "local": "2026-10-21T19:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 126.8,
+        "q02": 126.8,
+        "q25": 126.8,
+        "median": 126.8,
+        "q75": 126.8,
+        "q98": 126.8,
+        "max": 126.8,
+        "avg": 126.8,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T13:00:00Z",
+          "local": "2026-10-21T18:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T14:00:00Z",
+          "local": "2026-10-21T19:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

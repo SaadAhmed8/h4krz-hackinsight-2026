@@ -1,9 +1,9 @@
 {
-  "evaluated_at_utc": "2026-10-21T12:07:27Z",
+  "evaluated_at_utc": "2026-10-21T14:21:40Z",
   "level": "WARN",
   "reasons": [],
-  "total_rows": 86429,
-  "valid_unimputed_rows": 65933,
+  "total_rows": 86451,
+  "valid_unimputed_rows": 65955,
   "imputed_rows": 737,
   "missing_rows": 19759,
   "flagged_rows": 20496,

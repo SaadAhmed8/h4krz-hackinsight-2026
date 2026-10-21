@@ -6,7 +6,14 @@ import re
 import json
 import sys
 from pathlib import Path
-import pypdf
+try:
+    import fitz
+except ImportError:
+    fitz = None
+try:
+    import pypdf
+except ImportError:
+    pypdf = None
 import pandas as pd
 
 
@@ -98,13 +105,23 @@ def main():
         print("ERROR: Summary.pdf does not exist. Please generate it first.")
         sys.exit(1)
 
-    reader = pypdf.PdfReader(str(pdf_path))
-    num_pages = len(reader.pages)
-    print(f"Summary.pdf page count: {num_pages}")
-    if num_pages != 1:
-        print(f"ERROR: Summary.pdf must be exactly 1 page, found {num_pages} pages!")
-
-    page_text = reader.pages[0].extract_text()
+    if fitz:
+        doc = fitz.open(str(pdf_path))
+        num_pages = len(doc)
+        print(f"Summary.pdf page count: {num_pages}")
+        if num_pages != 1:
+            print(f"ERROR: Summary.pdf must be exactly 1 page, found {num_pages} pages!")
+        page_text = doc[0].get_text()
+    elif pypdf:
+        reader = pypdf.PdfReader(str(pdf_path))
+        num_pages = len(reader.pages)
+        print(f"Summary.pdf page count: {num_pages}")
+        if num_pages != 1:
+            print(f"ERROR: Summary.pdf must be exactly 1 page, found {num_pages} pages!")
+        page_text = reader.pages[0].extract_text()
+    else:
+        print("ERROR: Neither fitz nor pypdf is installed.")
+        sys.exit(1)
     print(f"Extracted {len(page_text)} characters from page 1.")
 
     artifact_values = load_artifact_values()

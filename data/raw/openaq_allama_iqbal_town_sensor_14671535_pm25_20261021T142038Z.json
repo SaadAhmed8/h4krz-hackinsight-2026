@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "allama_iqbal_town",
+    "station_name": "Allama Iqbal Town B LHE",
+    "location_id": 6135360,
+    "sensor_id": 14671535,
+    "parameter": "pm25",
+    "provider": "Hawanama",
+    "owner": "Pakistan Air Quality Initiative (PAQI)",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T142038Z",
+    "source_url": "https://api.openaq.org/v3/sensors/14671535/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/14671535/hours?limit=1000&page=1..N&datetime_from=2026-10-21T10:00:00Z",
+    "record_count": 2
+  },
+  "results": [
+    {
+      "value": 103.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T10:00:00Z",
+          "local": "2026-10-21T15:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 103.0,
+        "q02": 103.0,
+        "q25": 103.0,
+        "median": 103.0,
+        "q75": 103.0,
+        "q98": 103.0,
+        "max": 103.0,
+        "avg": 103.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T10:00:00Z",
+          "local": "2026-10-21T15:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        }
+      }
+    },
+    {
+      "value": 119.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 119.0,
+        "q02": 119.0,
+        "q25": 119.0,
+        "median": 119.0,
+        "q75": 119.0,
+        "q98": 119.0,
+        "max": 119.0,
+        "avg": 119.0,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T11:00:00Z",
+          "local": "2026-10-21T16:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T12:00:00Z",
+          "local": "2026-10-21T17:00:00+05:00"
+        }
+      }
+    }
+  ]
+}
