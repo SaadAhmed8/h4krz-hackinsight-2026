@@ -106,8 +106,40 @@ def resolve_station_slug(query: str, fallback_choice: str | None = None) -> str:
     return "model_town"
 
 
+def evaluate_outdoor_decision(forecast_pm25: float) -> dict[str, str]:
+    """Provide a direct, explicit decision answer on outdoor play and physical activity."""
+    if forecast_pm25 < 50.0:
+        return {
+            "verdict_en": "🟢 YES — PERMITTED (SAFE FOR OUTDOOR PLAY)",
+            "verdict_ur": "🟢 اجازت ہے — باہر کھیلنے کیلئے محفوظ",
+            "summary_en": "Forecasted air pollution is within acceptable limits (< 50 µg/m³). Regular outdoor games, recess, sports, and physical education are permitted tomorrow.",
+            "summary_ur": "کل کیلئے فضائی آلودگی محفوظ حد کے اندر متوقع ہے۔ اسکول کے بیرونی کھیل، پی ٹی اور عمومی سرگرمیاں بغیر کسی رکاوٹ کے جاری رکھی جا سکتی ہیں۔",
+        }
+    elif forecast_pm25 <= 150.0:
+        return {
+            "verdict_en": "🟡 CAUTION — RESTRICTED OUTDOOR PLAY",
+            "verdict_ur": "🟡 محتاط رہیں — محدود بیرونی سرگرمیاں",
+            "summary_en": "Air pollution is moderately degraded (50–150 µg/m³). Limit prolonged or vigorous outdoor physical exertion. Children with asthma, allergies, or respiratory sensitivity must remain indoors.",
+            "summary_ur": "کل فضائی آلودگی کا خدشہ ہے۔ سخت جسمانی مشقت اور طویل بیرونی کھیلوں سے گریز کریں۔ دمہ، سانس یا الرجی کے شکار بچے لازمی کمروں کے اندر رہیں۔",
+        }
+    elif forecast_pm25 <= 250.0:
+        return {
+            "verdict_en": "🟠 NO — OUTDOOR PLAY NOT RECOMMENDED",
+            "verdict_ur": "🟠 گریز کریں — باہر کھیلنے کی سفارش نہیں کی جاتی",
+            "summary_en": "Forecasted PM2.5 is at high-risk unhealthy levels (150–250 µg/m³). Outdoor play, sports, and open-air assemblies should be avoided or cancelled. Conduct student activities indoors.",
+            "summary_ur": "کل کیلئے فضائی آلودگی مضرِ صحت متوقع ہے۔ اسکول کے بیرونی کھیل، اسپورٹس اور کھلی اسمبلیاں منسوخ کر کے تمام سرگرمیاں کمروں کے اندر منتقل کریں۔",
+        }
+    else:
+        return {
+            "verdict_en": "🔴 STRICTLY PROHIBITED — HAZARDOUS SMOG EMERGENCY",
+            "verdict_ur": "🔴 سخت ممانعت — انتہائی خطرناک سموگ ایمرجنسی",
+            "summary_en": "Emergency hazard levels (> 250 µg/m³). Complete prohibition on outdoor student exposure. Windows must remain closed and protective N95 masks worn during necessary transit.",
+            "summary_ur": "انتہائی خطرناک ہنگامی کیفیت۔ بچوں کے باہر نکلنے پر مکمل پابندی عائد کی جائے۔ کھڑکیاں بند رکھی جائیں اور آمدورفت کے دوران N95 ماسک کا استعمال یقینی بنایا جائے۔",
+        }
+
+
 def evaluate_epa_punjab_tier(pm25_value: float) -> dict[str, Any]:
-    """Evaluate PM2.5 against EPA Punjab Smog Action Plan & WHO 2021 guidelines."""
+    """Evaluate PM2.5 against EPA Punjab Smog Action Plan guidelines & school safety directives."""
     if pm25_value < 50.0:
         return {
             "tier_en": "🟢 NORMAL / GOOD (< 50 µg/m³)",
@@ -159,7 +191,9 @@ def generate_cited_dashboard_report(
 ) -> str:
     """Generate a fully cited, evidence-grounded air quality report for dashboard UI.
 
-    Never raises an unhandled exception. Returns clean markdown in English or Urdu.
+    Directly answers decision inquiries upfront, labels all averaging periods rigorously,
+    explains predictive intervals, and grounds metrics in verified sources.
+    Never raises an unhandled exception.
     """
     try:
         if not query or not query.strip():
@@ -198,7 +232,6 @@ def generate_cited_dashboard_report(
                     recent_tail = st_hourly.tail(5)
                     for _, row in recent_tail.iterrows():
                         ts_raw = str(row.get("timestamp_pkt", ""))
-                        # Format timestamp nicely (e.g. 2026-10-21 08:00 PKT)
                         ts_fmt = ts_raw[:16].replace("T", " ") + " PKT" if len(ts_raw) >= 16 else ts_raw
                         pm_val = float(row.get("pm25", 0.0))
                         t_val = row.get("weather_temp_c")
@@ -275,54 +308,65 @@ def generate_cited_dashboard_report(
             except Exception:
                 pass
 
-        # 5. Determine active benchmark reading for EPA/WHO guidelines
+        # 5. Direct Decision & Health Grounding
+        decision = evaluate_outdoor_decision(forecast_pm25)
         eval_pm25 = latest_hourly_pm25 if latest_hourly_pm25 is not None else daily_pm25
         tier = evaluate_epa_punjab_tier(eval_pm25)
 
-        # WHO comparisons
+        # WHO 2021 Reference Benchmark Comparisons (Averaging periods strictly distinguished)
+        # WHO 2021 Guidelines: 24h Air Quality Guideline = 15 µg/m³, 24h Interim Target 1 = 75 µg/m³, Annual Interim Target 1 = 35 µg/m³
         who_24h_ratio = eval_pm25 / 15.0
-        who_it1_ratio = eval_pm25 / 35.0
+        who_it1_24h_ratio = eval_pm25 / 75.0
+        who_it1_annual_ratio = eval_pm25 / 35.0
 
         # 6. Compose Response
         if is_urdu:
-            # Build Urdu Table of Recent Hours if available
             hourly_table_ur = ""
             if hourly_records:
                 hourly_table_ur = "\n| وقت (PKT) | PM2.5 (µg/m³) | درجہ حرارت | ہوا میں نمی |\n| :--- | :---: | :---: | :---: |\n"
                 for r in hourly_records:
                     hourly_table_ur += f"| `{r['timestamp']}` | **{r['pm25']:.1f}** | {r['temp']} | {r['rh']} |\n"
 
-            report = f"""### 📋 شواہد پر مبنی فضائی رہنمائی و مشاورتی رپورٹ (RAG Intelligence)
+            report = f"""### 🎯 براہ راست فیصلہ و رہنمائی (Direct Decision: Can We Go Out to Play Tomorrow?)
+- **فیصلہ و تجویز:** **{decision['verdict_ur']}**
+- **خلاصہ برائے اسکول و والدین:** {decision['summary_ur']}
+*(نوٹ: یہ رہنمائی کل کی پیش گوئی **{forecast_pm25:.1f} µg/m³** [ہدف تاریخ: `{pred_target_date}`] پر مبنی فیصلہ ساز معاونت ہے، یہ مستقبل کے حتمی حالات کی گارنٹی نہیں)*
+
+---
+
+### 📋 شواہد پر مبنی تفصیلی مشاورتی رپورٹ (RAG Intelligence Report)
 
 **منتخب شدہ اسٹیشن:** **{st_name_ur}** (`{slug}`)  
-**تجزیاتی دائرہ کار:** لاہور میں فضائی آلودگی کے حالیہ رجحانات، تازہ ترین سائنسی مشاہدات اور سرکاری ضوابط۔  
+**تجزیاتی دائرہ کار:** لاہور میں فضائی آلودگی کے حالیہ رجحانات، اگلے دن کی پیش گوئی اور پنجاب اسکول سیفٹی ضوابط۔  
 
 ---
 
 #### ⏱️ پچھلے چند گھنٹوں کے مستند مشاہدات (Recent Hourly Trend):
 {f"- **تازہ ترین ریکارڈ شدہ ریڈنگ:** **{latest_hourly_pm25:.1f} µg/m³** [وقت: `{latest_hourly_ts}`] (ماخذ: `hourly_all.parquet`)" if latest_hourly_pm25 is not None else "- **حالیہ مشاہدات:** سائنسی سینسرز سے ڈیٹا کامیابی سے حاصل کیا گیا ہے۔"}
-{f"- **حالیہ اوسط (Past Hours Average):** **{recent_avg:.1f} µg/m³** [کم از کم: {min_pm25:.1f} µg/m³ تا زیادہ سے زیادہ: {max_pm25:.1f} µg/m³]" if recent_avg is not None else ""}
-{f"- **موسمی حالات:** درجہ حرارت {latest_temp} | رطوبت {latest_rh}" if latest_temp != "N/A" else ""}
+{f"- **حالیہ 5 گھنٹوں کی حسابی اوسط (5-Hour Mean):** **{recent_avg:.1f} µg/m³** [کم از کم: {min_pm25:.1f} µg/m³ تا زیادہ سے زیادہ: {max_pm25:.1f} µg/m³]" if recent_avg is not None else ""}
+{f"- **علاقائی موسمی حالات (اوپن میٹیو ری اینالیسس):** درجہ حرارت {latest_temp} | ہوا میں نمی {latest_rh} *(لاہور اربن گرڈ ماخذ)*" if latest_temp != "N/A" else ""}
 {hourly_table_ur}
 
-#### 📊 24 گھنٹے کی تاریخی اوسط و پیش گوئی (Gold Table Daily & ML Forecast):
-- **گزشتہ 24 گھنٹے کی سرکاری اوسط (`daily.parquet`):** **{daily_pm25:.1f} µg/m³** [تاریخ: `{daily_date}`]  
+#### 📊 24 گھنٹے کی تاریخی اوسط و اگلے دن کی پیش گوئی (Gold Table Daily & ML Forecast):
+- **گزشتہ 24 گھنٹے کی مصدقہ اوسط (`daily.parquet`):** **{daily_pm25:.1f} µg/m³** [تاریخ: `{daily_date}`]  
   *(ڈیٹا گراؤنڈنگ پرائمری کی: `[daily:{daily_record_id}]`)*
-- **اگلے دن کی مشین لرننگ پیش گوئی (`predictions.parquet`):** **{forecast_pm25:.1f} µg/m³**  
-  *(80% غیریقینی رینج: **{lower_80:.1f}** تا **{upper_80:.1f} µg/m³** | پرائمری کی: `[pred:{pred_record_id}]`)*
-- **روایتی پرزسٹنس بیس لائن (Persistence Baseline):** **{baseline_pm25:.1f} µg/m³**
+- **اگلے دن کی مشین لرننگ پیش گوئی (`predictions.parquet`):** **{forecast_pm25:.1f} µg/m³** [ہدف تاریخ: `{pred_target_date}`]  
+  *(80% کوانٹائل غیریقینی رینج: **{lower_80:.1f}** تا **{upper_80:.1f} µg/m³** | پرائمری کی: `[pred:{pred_record_id}]`)*
+- **روایتی پرزسٹنس بیس لائن (کل کا مشاہدہ):** **{baseline_pm25:.1f} µg/m³**
+- **ماڈل ایویلیوایشن کارکردگی:** ہسٹوریکل ٹیسٹ سیٹ ویلیڈیشن میں ماڈل روایتی بیس لائن کے مقابلے میں **7.35% غلطی (MAE) میں کمی** حاصل کرتا ہے (ماڈل MAE 12.594 بمقابلہ بیس لائن 13.593 µg/m³، ماخذ: `reports/pm25_hist_gradient_boosting_metrics.json`)۔
 
 ---
 
-#### 🏫 EPA پنجاب اسموگ ایکشن پلان — اسکول انتظامیہ کیلئے ہدایات:
-- **موجودہ سموگ الرٹ لیول:** **{tier['tier_ur']}**
+#### 🏫 پنجاب اسموگ ایکشن پلان — اسکول انتظامیہ کیلئے ہدایات:
+- **پروجیکٹ رسک کیٹیگری (مطابق ای پی اے پنجاب اسموگ نوٹیفکیشن):** **{tier['tier_ur']}**
 - **اسکول اسمبلی اور کھیلوں کی سرگرمیاں:** {tier['action_ur']}
 - **حساس طلبہ (دمہ / الرجی) کیلئے حفاظتی تدابیر:** {tier['vulnerable_ur']}
 
-#### 🌐 عالمی ادارہ صحت (WHO 2021) رہنما اصولوں سے تقابل:
-- **24 گھنٹے کی محفوظ حد (15 µg/m³):** موجودہ فضائی معیار محفوظ حد سے **{who_24h_ratio:.1f} گنا زائد** ہے `[who-aqg-2021:sec3.2]`۔
-- **عبوری ہدف 1 (35 µg/m³):** فضائی آلودگی کی سطح ابتدائی ہدف سے **{who_it1_ratio:.1f} گنا زائد** ہے۔
-*(نوٹ: ڈبلیو ایچ او کی حدود صحت کی تجاویز ہیں جبکہ قانونی اطلاق محکمہ تحفظ ماحول پنجاب کے احکامات کے تحت ہوتا ہے)*
+#### 🌐 عالمی ادارہ صحت (WHO 2021) رہنما اصولوں سے تقابل و اوسط کا دورانیہ:
+- **ڈبلیو ایچ او 24 گھنٹے کی محفوظ حد (15 µg/m³ 24h Mean):** ریڈنگ 24 گھنٹے کی محفوظ حد سے **{who_24h_ratio:.1f} گنا زائد** ہے `[who-aqg-2021:sec3.2]`۔
+- **ڈبلیو ایچ او 24 گھنٹے کا عبوری ہدف 1 (75 µg/m³ 24h IT-1):** ریڈنگ 24 گھنٹے کے پہلے ہدف سے **{who_it1_24h_ratio:.1f} گنا زائد** ہے۔
+- **ڈبلیو ایچ او سالانہ عبوری ہدف 1 (35 µg/m³ Annual Reference):** سالانہ بینچ مارک سے **{who_it1_annual_ratio:.1f} گنا زائد** ہے۔  
+*(وضاحت: ایک گھنٹے کے مشاہدے کا موازنہ صرف فوری خطرے کے تناظر میں کیا جاتا ہے؛ سائنسی طور پر یہ خود بخود 24 گھنٹے کی اوسط کی خلاف ورزی شمار نہیں ہوتا تاوقتیکہ پورا دن اوسط زیادہ نہ رہے)*۔
 
 ---
 
@@ -330,22 +374,28 @@ def generate_cited_dashboard_report(
 1. `[daily:{daily_record_id}]` — پنجاب گولڈ ویئر ہاؤس (`daily.parquet` اور `hourly_all.parquet`، اوپن اے کیو CC BY 4.0 لائسنس)۔
 2. `[pred:{pred_record_id}]` — ملٹی کوانٹائل ہسٹ گریڈینٹ بوسٹنگ ماڈل (`predictions.parquet`)۔
 3. `[punjab-smog-plan-2023:sec4]` — حکومت پنجاب ماحولیاتی تحفظ ایجنسی (EPA Punjab Smog Action Plan نوٹیفکیشن، سیکشن 4: اسکول بندش و ماسک ایس او پیز)۔
-4. `[who-aqg-2021:sec3.2]` — ورلڈ ہیلتھ آرگنائزیشن گلوبل ایئر کوالٹی گائیڈ لائنز 2021۔
+4. `[who-aqg-2021:sec3.2]` — ورلڈ ہیلتھ آرگنائزیشن گلوبل ایئر کوالٹی گائیڈ لائنز 2021 (ISBN 978-92-4-003422-8)۔
 
 ---
-⚠️ **طبی و ادارہ جاتی انتباہ (Health Notice):** یہ خودکار تجزیہ انتظامی اور اسکول کی منصوبہ بندی کیلئے فراہم کیا گیا ہے۔ یہ کلینیکل طبی مشورے کا نعم البدل نہیں۔ سانس کی شدید تکلیف کی صورت میں فوری طور پر قریبی سرکاری ہسپتال سے رجوع کریں یا ریسکیو 1122 پر کال کریں۔
+⚠️ **طبی و ادارہ جاتی انتباہ (Health Notice):** یہ خودکار تجزیہ انتظامی اور اسکول کی منصوبہ بندی کیلئے فراہم کیا گیا ہے اور یہ طبی تشخیص کا متبادل نہیں۔ سانس کی تکلیف کی صورت میں فوری طور پر قریبی سرکاری ہسپتال سے رجوع کریں یا ریسکیو 1122 پر کال کریں۔
 """
             return report.strip()
 
         else:
-            # Build English Table of Recent Hours if available
             hourly_table_en = ""
             if hourly_records:
                 hourly_table_en = "\n| Timestamp (PKT) | PM2.5 (µg/m³) | Temp (°C) | Rel. Humidity |\n| :--- | :---: | :---: | :---: |\n"
                 for r in hourly_records:
                     hourly_table_en += f"| `{r['timestamp']}` | **{r['pm25']:.1f}** | {r['temp']} | {r['rh']} |\n"
 
-            report = f"""### 📋 Evidence-Grounded Air Quality & Policy Advisory Report (RAG Intelligence)
+            report = f"""### 🎯 Direct Decision & Recommendation: Can We Go Out to Play Tomorrow?
+- **Outdoor Play Verdict:** **{decision['verdict_en']}**
+- **Actionable Decision Summary:** {decision['summary_en']}
+*(Decision Context: Grounded in tomorrow's ML PM2.5 prediction of **{forecast_pm25:.1f} µg/m³** [Target Date: `{pred_target_date}`] and EPA Punjab school health guidelines. This is a forecast-based risk assessment rather than a guarantee of actual tomorrow conditions).*
+
+---
+
+### 📋 Evidence-Grounded Air Quality & Policy Advisory Report (RAG Intelligence)
 
 **Station Analyzed:** **{st_name_en}** (`{slug}`)  
 **Scope of Inquiry:** Lahore recent hourly PM2.5 observations, next-day ML predictions, and Punjab school safety directives.
@@ -354,28 +404,31 @@ def generate_cited_dashboard_report(
 
 #### ⏱️ Recent Hourly Air Pollution Trend (Past Few Hours):
 {f"- **Latest Sensor Observation:** **{latest_hourly_pm25:.1f} µg/m³** [Recorded at `{latest_hourly_ts}`] (Retrieved from `hourly_all.parquet`)" if latest_hourly_pm25 is not None else "- **Recent Observations:** Live station telemetry verified from gold hourly table."}
-{f"- **Past Hours Mean:** **{recent_avg:.1f} µg/m³** [Hourly Range: {min_pm25:.1f} – {max_pm25:.1f} µg/m³]" if recent_avg is not None else ""}
-{f"- **Ambient Meteorology:** Temperature {latest_temp} | Relative Humidity {latest_rh}" if latest_temp != "N/A" else ""}
+{f"- **Past 5 Hours Mean:** **{recent_avg:.1f} µg/m³** [Hourly Range: {min_pm25:.1f} – {max_pm25:.1f} µg/m³]" if recent_avg is not None else ""}
+{f"- **Ambient Meteorology (Open-Meteo ERA5 Regional Reanalysis):** Temperature {latest_temp} | Relative Humidity {latest_rh} *(Shared Lahore urban grid baseline)*" if latest_temp != "N/A" else ""}
 {hourly_table_en}
 
 #### 📊 24-Hour Consolidated Baseline & Next-Day ML Forecast:
 - **Latest 24-Hour Gold Table Average (`daily.parquet`):** **{daily_pm25:.1f} µg/m³** [Date: `{daily_date}`]  
   *(Primary Key Grounding: `[daily:{daily_record_id}]`)*
-- **Next-Day ML Model Forecast (`predictions.parquet`):** **{forecast_pm25:.1f} µg/m³**  
+- **Next-Day ML Model Forecast (`predictions.parquet`):** **{forecast_pm25:.1f} µg/m³** [Target Date: `{pred_target_date}`]  
   *(80% Uncertainty Bounds: **{lower_80:.1f}** to **{upper_80:.1f} µg/m³** | Primary Key Grounding: `[pred:{pred_record_id}]`)*
-- **Persistence Baseline Forecast:** **{baseline_pm25:.1f} µg/m³** (Model achieves +18.05% error reduction over baseline)
+  *(Note on Uncertainty: 80% bounds represent 10th-to-90th percentile predictive interval from multi-quantile gradient boosting; provides statistical dispersion rather than a guaranteed limit).*
+- **Persistence Baseline Reference:** **{baseline_pm25:.1f} µg/m³** (Yesterday's 24-hour observed average)
+- **Model Benchmark Validation:** Quantile gradient boosting achieves a **7.35% Mean Absolute Error (MAE) reduction** over the persistence baseline across out-of-sample historical validation folds (Model MAE 12.594 vs Baseline 13.593 µg/m³; documented in `reports/pm25_hist_gradient_boosting_metrics.json`). An earlier 18.05% run was discarded because it used realized next-day weather.
 
 ---
 
-#### 🏫 EPA Punjab Smog Action Plan — School Safety Advisory:
-- **Regulatory Alert Tier:** **{tier['tier_en']}**
-- **School Outdoor Activities & Assemblies:** {tier['action_en']}
+#### 🏫 Punjab School Safety Advisory (EPA Punjab Smog Action Plan & Project Risk Tier):
+- **Project Risk Classification:** **{tier['tier_en']}** *(Mapped to EPA Punjab Smog Action Plan notifications & Punjab School Education Department directives)*
+- **School Outdoor Activities & Physical Education:** {tier['action_en']}
 - **Vulnerable Students Protocol (Asthma / Allergies):** {tier['vulnerable_en']}
 
-#### 🌐 WHO 2021 Air Quality Guideline Comparison:
-- **WHO 24-Hour Limit (15 µg/m³):** Current observation is **{who_24h_ratio:.1f}× higher** than WHO health recommendation `[who-aqg-2021:sec3.2]`.
-- **WHO Interim Target 1 (35 µg/m³):** Concentration is **{who_it1_ratio:.1f}× higher** than the initial interim mitigation threshold.
-*(Note: WHO guidelines provide health-based scientific targets, while EPA Punjab notifications establish mandatory legal operating limits).*
+#### 🌐 WHO 2021 Air Quality Guideline Comparison (Averaging Periods Defined):
+- **WHO 24-Hour Air Quality Guideline (15 µg/m³, 24-hour mean):** Sensor concentration is **{who_24h_ratio:.1f}× higher** than WHO guideline `[who-aqg-2021:sec3.2]`.
+- **WHO 24-Hour Interim Target 1 (75 µg/m³, 24-hour mean):** Concentration is **{who_it1_24h_ratio:.1f}× higher** than the 24-hour interim target 1.
+- **WHO Annual Interim Target 1 (35 µg/m³, Annual mean reference):** Reading is **{who_it1_annual_ratio:.1f}× higher** than the annual interim benchmark.  
+*(Averaging Period Distinction: Single-hour sensor readings and 24-hour daily averages have distinct averaging periods. A transient single-hour spike is compared against 24-hour guideline values for acute exposure context only; it does not mathematically establish that a 24-hour average guideline has been breached until averaged over a complete 24-hour cycle).*
 
 ---
 
@@ -391,7 +444,6 @@ def generate_cited_dashboard_report(
             return report.strip()
 
     except Exception as exc:
-        # Guarantee that a Python TypeError or unhandled exception NEVER bubbles up
         return (
             f"❌ An unexpected error occurred while compiling the evidence report: {exc}. "
             "Please check station sensor telemetry."

@@ -68,3 +68,23 @@ def test_error_free_execution_on_invalid_inputs():
     # Never raises TypeError or crashes
     assert isinstance(generate_cited_dashboard_report("", "Model Town"), str)
     assert isinstance(generate_cited_dashboard_report(None, "Model Town"), str)  # type: ignore[arg-type]
+
+
+def test_direct_decision_answering_upfront():
+    query = "Can we go out to play tomorrow in Model Town?"
+    report = generate_cited_dashboard_report(query, station_choice="Model Town", language_choice="English (انگریزی)")
+    # Must answer user's question upfront
+    assert "Direct Decision & Recommendation: Can We Go Out to Play Tomorrow?" in report
+    assert "Outdoor Play Verdict:" in report
+    assert "Target Date:" in report
+    # WHO distinctions
+    assert "24-hour mean" in report
+    assert "Annual mean reference" in report
+    assert "Averaging Period Distinction:" in report
+    # Model evaluation metrics
+    assert "7.35% Mean Absolute Error (MAE) reduction" in report
+    # Meteorology source attribution
+    assert "Open-Meteo ERA5 Regional Reanalysis" in report
+    # Project risk tier
+    assert "Project Risk Classification" in report
+
