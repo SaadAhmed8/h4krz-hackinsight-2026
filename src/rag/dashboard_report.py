@@ -325,6 +325,19 @@ def generate_cited_dashboard_report(
         who_it1_24h_ratio = eval_pm25 / 75.0
         who_it1_annual_ratio = eval_pm25 / 35.0
 
+        # Precompute meteorology lines to ensure backwards compatibility with Python <= 3.11 (no backslashes inside f-string expressions)
+        meteo_line_ur = ""
+        meteo_line_en = ""
+        if latest_temp != "N/A":
+            meteo_line_ur = (
+                f"- **علاقائی موسمیاتی صورتحال (اوپن میٹیو ERA5 علاقائی ماڈل):** درجہ حرارت **{latest_temp}** | ہوا میں نمی **{latest_rh}**  \n"
+                f"  *(علاقائی ماڈل کا پس منظر: یہ موسمیاتی اعداد و شمار اوپن میٹیو ERA5 کے علاقائی اربن گرڈ ماڈل سے لیے گئے ہیں اور یہ {st_name_ur} سینسر پر نصب براہ راست مقامی موسمیاتی آلات کی پیمائش نہیں ہیں)*"
+            )
+            meteo_line_en = (
+                f"- **Ambient Meteorology (Open-Meteo ERA5 Regional Reanalysis Grid):** Temperature **{latest_temp}** | Relative Humidity **{latest_rh}**  \n"
+                f"  *(Regional Grid Baseline: Derived from Open-Meteo ERA5 numerical weather model reanalysis for the metropolitan Lahore grid. These are NOT physical meteorological probe instruments co-located at the {st_name_en} sensor)*"
+            )
+
         # 6. Compose Response
         if is_urdu:
             hourly_table_ur = ""
@@ -350,7 +363,7 @@ def generate_cited_dashboard_report(
 #### ⏱️ پچھلے چند گھنٹوں کے مستند مشاہدات (Recent Hourly Trend):
 {f"- **تازہ ترین ریکارڈ شدہ ریڈنگ:** **{latest_hourly_pm25:.1f} µg/m³** [وقت: `{latest_hourly_ts}`] (ماخذ: `hourly_all.parquet`)" if latest_hourly_pm25 is not None else "- **حالیہ مشاہدات:** سائنسی سینسرز سے ڈیٹا کامیابی سے حاصل کیا گیا ہے۔"}
 {f"- **حالیہ 5 گھنٹوں کی حسابی اوسط (5-Hour Mean):** **{recent_avg:.1f} µg/m³** [کم از کم: {min_pm25:.1f} µg/m³ تا زیادہ سے زیادہ: {max_pm25:.1f} µg/m³]" if recent_avg is not None else ""}
-{f"- **علاقائی موسمیاتی صورتحال (اوپن میٹیو ERA5 علاقائی ماڈل):** درجہ حرارت **{latest_temp}** | ہوا میں نمی **{latest_rh}**  \n  *(علاقائی ماڈل کا پس منظر: یہ موسمیاتی اعداد و شمار اوپن میٹیو ERA5 کے علاقائی اربن گرڈ ماڈل سے لیے گئے ہیں اور یہ {st_name_ur} سینسر پر نصب براہ راست مقامی موسمیاتی آلات کی پیمائش نہیں ہیں)*" if latest_temp != "N/A" else ""}
+{meteo_line_ur}
 {hourly_table_ur}
 
 #### 📊 24 گھنٹے کی تاریخی اوسط و اگلے دن کی پیش گوئی (Gold Table Daily & ML Forecast):
@@ -413,7 +426,7 @@ def generate_cited_dashboard_report(
 #### ⏱️ Recent Hourly Air Pollution Trend (Past Few Hours):
 {f"- **Latest Sensor Observation:** **{latest_hourly_pm25:.1f} µg/m³** [Recorded at `{latest_hourly_ts}`] (Retrieved from `hourly_all.parquet`)" if latest_hourly_pm25 is not None else "- **Recent Observations:** Live station telemetry verified from gold hourly table."}
 {f"- **Past 5 Hours Mean:** **{recent_avg:.1f} µg/m³** [Hourly Range: {min_pm25:.1f} – {max_pm25:.1f} µg/m³]" if recent_avg is not None else ""}
-{f"- **Ambient Meteorology (Open-Meteo ERA5 Regional Reanalysis Grid):** Temperature **{latest_temp}** | Relative Humidity **{latest_rh}**  \n  *(Regional Grid Baseline: Derived from Open-Meteo ERA5 numerical weather model reanalysis for the metropolitan Lahore grid. These are NOT physical meteorological probe instruments co-located at the {st_name_en} sensor)*" if latest_temp != "N/A" else ""}
+{meteo_line_en}
 {hourly_table_en}
 
 #### 📊 24-Hour Consolidated Baseline & Next-Day ML Forecast:
