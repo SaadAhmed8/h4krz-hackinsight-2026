@@ -1,175 +1,226 @@
-# Lahore Air Quality Data Warehouse (HackInsight 2026 - H4krz)
+# Lahore Air Quality Data Warehouse & Decision System (HackInsight 2026 - Team H4krz)
 
-A robust, idempotent, and reproducible three-layer data warehouse for acquiring, cleaning, and processing hourly air quality (PM2.5) and ERA5 meteorological data for Lahore, Pakistan. Built for the HackInsight 2026 Hackathon (Data-to-Decision, Air Quality track).
+A robust, idempotent, and reproducible end-to-end data platform for acquiring, validating, forecasting, and querying hourly air quality (PM2.5) and ERA5 meteorological data for Lahore, Pakistan. Built for the HackInsight 2026 Hackathon (Data-to-Decision, Air Quality track).
 
 ---
 
-## Architecture Overview
+## 1. Repository File Tree
 
 ```text
 h4krz-hackinsight-2026/
+├── .env.example
+├── .gitattributes
+├── .gitignore
+├── AI_Use_Log.md
+├── DATASET_DECLARATION.md
+├── GLOSSARY.md
+├── Makefile
+├── README.md
+├── REPORT.md
+├── Summary.pdf
+├── app.py
 ├── config/
-│   └── stations.yaml         # Discovered Lahore stations, sensor IDs, provider & licence metadata
+│   ├── exclusions.yaml
+│   ├── licence_evidence.csv
+│   └── stations.yaml
 ├── data/
-│   ├── raw/                  # Immutable raw JSON files (OpenAQ + Open-Meteo ERA5)
-│   ├── cleaned/              # Cleaned Parquet series per station + quality_log.csv
-│   └── processed/            # hourly_all.parquet & daily.parquet mart
+│   ├── cleaned/
+│   │   ├── quality_log.csv
+│   │   ├── station_allama_iqbal_town.parquet
+│   │   ├── station_college_road.parquet
+│   │   ├── station_forman_christian_college.parquet
+│   │   ├── station_hbfc_society.parquet
+│   │   ├── station_model_town.parquet
+│   │   ├── station_pak_arab.parquet
+│   │   ├── station_sandha_road.parquet
+│   │   ├── station_trinity_school.parquet
+│   │   ├── stations_hourly_dq.parquet
+│   │   ├── weather_cleaned.parquet
+│   │   └── weather_daily.parquet
+│   ├── external/
+│   │   ├── rag_sources.json
+│   │   └── sources/
+│   │       ├── epd-punjab-aqi-forecasting-advisories.pdf
+│   │       ├── epd-punjab-aqi-forecasting-advisories.txt
+│   │       ├── epd-punjab-general-public-advice.pdf
+│   │       ├── epd-punjab-general-public-advice.txt
+│   │       ├── who-global-air-quality-guidelines-2021.pdf
+│   │       └── who-global-air-quality-guidelines-2021.txt
+│   ├── processed/
+│   │   ├── daily.parquet
+│   │   ├── daily_station_table.csv
+│   │   ├── daily_station_table.parquet
+│   │   ├── hourly_all.parquet
+│   │   ├── persistence_baseline_test_predictions.csv
+│   │   ├── pm25_hist_gradient_boosting_test_predictions.csv
+│   │   ├── predictions.csv
+│   │   └── predictions.parquet
+│   └── warehouse.duckdb
+├── dataset_proposal.pdf
 ├── docs/
-│   └── adr/                  # Architectural Decision Records (ADR 0001)
+│   ├── adr/
+│   │   └── 0001-warehouse-architecture-and-keys.md
+│   └── evidence/
+│       └── licences/
+│           └── README.md
+├── logs/
+│   ├── dq_log.csv
+│   ├── dq_status.json
+│   └── prefect_runs.csv
+├── manifest.csv
+├── pytest.ini
+├── reports/
+│   ├── model_errors_by_group.csv
+│   ├── monthly_validity.csv
+│   ├── optimization_log.csv
+│   ├── persistence_baseline_metrics.json
+│   ├── pm25_hist_gradient_boosting_metrics.json
+│   └── station_validity.csv
+├── requirements.txt
+├── run_data.ps1
+├── scripts/
+│   └── generate_summary_pdf.py
 ├── src/
-│   ├── discover_stations.py  # OpenAQ v3 API station and sensor discovery
-│   ├── fetch_openaq.py       # Incremental hourly OpenAQ data ingestion
-│   ├── fetch_weather.py      # Incremental Open-Meteo ERA5 historical weather ingestion
-│   ├── clean.py              # Cleaning, hourly regular grid reindexing & anomaly flagging
-│   ├── process.py            # Hourly join & daily mart with 18/24 rule & no-lookahead lags
-│   ├── manifest.py           # Integrity ledger & SHA-256 manifest generator
-│   ├── pipeline.py           # End-to-end pipeline orchestrator
-│   └── utils.py              # Key loader, exponential backoff HTTP retries & logging
-├── tests/
-│   └── test_pipeline.py      # Pytest suite (PKT day boundaries, 18/24 rule, lags, deterministic keys)
-├── .agents/skills/           # Agent skills (domain-modeling, codebase-design, minimal-run-and-audit)
-├── GLOSSARY.md               # Ubiquitous domain terminology and schema definitions
-├── REPORT.md                 # Complete data acquisition and station coverage report
-├── manifest.csv              # Audit evidence ledger with SHA-256 hashes for all files
-├── Makefile                  # Pipeline automation targets
-├── requirements.txt          # Pinned Python dependencies
-└── .env.example              # Template for API credentials
+│   ├── clean.py
+│   ├── discover_stations.py
+│   ├── dq_agent.py
+│   ├── dq_schema.py
+│   ├── fetch_openaq.py
+│   ├── fetch_weather.py
+│   ├── manifest.py
+│   ├── model.py
+│   ├── pipeline.py
+│   ├── prefect_pipeline.py
+│   ├── process.py
+│   ├── rag/
+│   │   ├── __init__.py
+│   │   ├── answer.py
+│   │   ├── evidence.py
+│   │   ├── external_sources.py
+│   │   └── retrieval.py
+│   ├── report_validity.py
+│   ├── utils.py
+│   └── warehouse.py
+├── status/
+│   └── run_status.json
+└── tests/
+    ├── conftest.py
+    ├── test_dq_agent.py
+    ├── test_pipeline.py
+    ├── test_rag_answer.py
+    └── test_rag_evidence.py
 ```
+*(Note: `data/raw/` containing immutable raw fetch evidence JSONs is tracked in git but omitted above for brevity).*
 
 ---
 
-## Quickstart
+## 2. Core System Components
 
-### 1. Prerequisites
-- Python 3.11+
-- An OpenAQ API key (register for free at [explore.openaq.org/register](https://explore.openaq.org/register))
+### A. Data Warehouse & Quality Agent (Chapters 4 & 6)
+- **Three-Layer Architecture:** Raw JSON payloads (`data/raw/`), cleaned hourly regular grids (`data/cleaned/`), and daily feature marts (`data/processed/daily.parquet`), synchronized to DuckDB (`data/warehouse.duckdb`).
+- **Data Quality Agent (`src/dq_agent.py`):** Automatically validates schemas via Pandera, logs decisions to `data/cleaned/quality_log.csv`, and issues non-fatal `WARN_STALE` alerts when sensors lag without stopping pipeline progress.
+- **Statistical Rules:** Midnight-to-midnight PKT day definition (UTC+5), strict 18-of-24 valid hours completeness threshold, and deterministic 16-character SHA-256 primary keys (`record_id`).
 
-### 2. Setup Environment
+### B. Predictive Model & Uncertainty (Chapters 7 & 8)
+- **Declared Baseline:** Persistence model ($\hat{y}_{t+1} = y_t$, MAE: $13.593\ \mu\text{g/m}^3$).
+- **Final Model:** Histogram Gradient Boosting Regressor (`HistGradientBoosting_ResidualDelta`) predicting the day-to-day residual change using past historical lags and cross-station spatial dynamics.
+- **Test Performance:** Test MAE: $12.594\ \mu\text{g/m}^3$ on 453 test rows (**7.35% improvement** over baseline).  
+  > **Target Status:** The declared $\ge 15\%$ improvement target is **NOT MET**. An earlier experiment showing 18.05% was discarded because it inadvertently used realized next-day weather features. The leak-free model achieves 7.35% improvement.
+- **Uncertainty Intervals:** 10th and 90th percentile pinball loss regressors producing 80% prediction intervals with **76.8% empirical test coverage**.
+- **Group Fairness:** Full disaggregated error audit across stations, smog seasons, and pollution tiers documented in [reports/model_errors_by_group.csv](reports/model_errors_by_group.csv).
+
+### C. Insight Agent / RAG Intelligence (Chapter 9)
+- **Deterministic Evidence Retrieval:** Hybrid BM25 retrieval over official policy documents (WHO 2021 Global Air Quality Guidelines and Punjab EPA Smog Action Plan) and daily gold records (`data/processed/daily.parquet`).
+- **Audit Traceability:** Numerical claims cite exact gold table `record_id` primary keys.
+- **Safe Abstention:** Safely abstains with `"I don't know based on the available evidence"` for ungrounded queries (e.g. traffic or crop yields).
+- **Pakistan Impact:** Bilingual Urdu emergency health advisories (`اردو ترجمہ`) and official Punjab EPA school activity thresholds.
+
+### D. Automated Hourly Pipeline (Prefect Orchestrator)
+- **Schedule:** Automated orchestration running at minute `:05` past every hour (`src/prefect_pipeline.py`).
+- **Execution Log:** Every run status, timestamp, and row count is recorded in [logs/prefect_runs.csv](logs/prefect_runs.csv).
+- **Resilience:** Incremental fetch only downloads newly elapsed hours; skips upstream errors gracefully.
+
+### E. Interactive Streamlit Dashboard (`app.py`)
+- **Tab 1: Live Monitoring:** Data freshness badges (`🟢 FRESH` / `🟡 LATE`), dynamic Open-Meteo parquet age calculation, DQ agent audit log, Punjab EPA school thresholds, and Urdu translation toggle.
+- **Tab 2: Model & Group Fairness:** Baseline vs. model metrics, target status, 80% uncertainty bounds, and fairness breakdowns across groups.
+- **Tab 3: AI Smog & Policy Assistant:** Interactive evidence-grounded Q&A with verifiable citations and exact gold record IDs.
+
+---
+
+## 3. How to Run
+
+### Environment Variables
+Configure credentials in `.env` using only variable names (never commit secrets):
+- `OPENAQ_API_KEY`: API key for OpenAQ v3 access (register free at explore.openaq.org).
+- `RAG_LLM_PROVIDER`: Optional LLM provider (`gemini`, `openai`, `anthropic`, or `openai_compatible`). Default: `gemini`.
+- `GEMINI_API_KEY`: API key if using Gemini provider.
+- `OPENAI_API_KEY`: API key if using OpenAI provider fallback.
+- `ANTHROPIC_API_KEY`: API key if using Anthropic provider fallback.
+- `RAG_LLM_MODEL`: Optional model override (e.g. `gemini-2.5-flash`).
+- `RAG_LLM_TIMEOUT`: Timeout in seconds for LLM calls (default: 30).
+- `RAG_LLM_MAX_TOKENS`: Maximum output tokens (default: 1024).
+- `RAG_LLM_TEMPERATURE`: Generation temperature (default: 0.0).
+
+### Execution Commands
+
 ```bash
-# Clone the repository
-git clone <repo-url>
-cd h4krz-hackinsight-2026
-
-# Create virtual environment and install dependencies
+# 1. Setup virtual environment
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-# Configure your API key
-cp .env.example .env
-# Edit .env and enter your key:
-# OPENAQ_API_KEY=your_key_here
-```
-
-### 3. Run Pipeline (`make data`)
-You can run the full pipeline end-to-end with a single command:
-
-```bash
+# 2. Run full warehouse pipeline (idempotent)
 make data
-```
+# Or on Windows:
+python -m src.pipeline
 
-> **Running on Windows:**
-> - If `make` is installed (via Chocolatey `choco install make`, Git Bash, or WSL), `make data` will execute directly.
-> - As a first-class alternative on Windows PowerShell/CMD, run:
->   ```powershell
->   python -m src.pipeline
->   ```
-> Both commands run the exact same orchestrator.
-
-### 4. Idempotency & Incremental Re-runs
-Re-running `make data` or `python -m src.pipeline` is completely idempotent. The pipeline inspects the latest stored timestamp in `data/raw/` for each sensor and only downloads newly elapsed hours. When already up-to-date, zero redundant network data is fetched.
-
----
-
-## Time Rules & Target Definition
-
-1. **Storage Timestamps:** All persistent datetime fields are stored in **timezone-aware UTC** (`UTC`).
-2. **PKT Day Definition:** A "day" runs midnight-to-midnight in Pakistan Standard Time (PKT, UTC+5, `Asia/Karachi`).
-   $$\text{PKT Date} = \text{Date of } (T_{\text{UTC}} + 5\text{ hours})$$
-   *(For example: `19:00 UTC` on Oct 19 belongs to the `2025-10-20` PKT day).*
-3. **The 18-of-24 Rule:** A `(station, pkt_date)` daily aggregation is considered statistically valid if and only if at least 18 of its 24 hourly values exist. Otherwise, the daily mean is `NaN` and the row is flagged `"insufficient_hours"`.
-4. **Deterministic Primary Keys:** In `daily.parquet`, each station-day row has a collision-resistant, reproducible identifier:
-   $$\text{record\_id} = \text{sha256}(\text{slug} + \text{"\_"} + \text{pkt\_date})[:16]$$
-5. **No Future Leakage:** All lag features (`pm25_lag_1d`, `pm25_lag_2d`, `pm25_lag_7d_rolling_mean`) strictly use prior days only.
-6. **Next-Day Target:** For day $D$, `target_next_day_pm25` is the daily mean of day $D+1$ (assigned only if day $D+1$ is valid).
-
----
-
-## Makefile Targets
-
-| Target | Description |
-| :--- | :--- |
-| `make data` | Runs full acquisition and warehouse pipeline (fetch -> clean -> process -> manifest) |
-| `make discover` | Discovers OpenAQ stations in Lahore and writes `config/stations.yaml` |
-| `make fetch` | Incrementally downloads raw OpenAQ and weather data into `data/raw/` |
-| `make clean` | Reindexes to regular hourly grid, validates values, and logs to `quality_log.csv` |
-| `make process` | Joins stations with weather (`hourly_all.parquet`) and generates daily mart (`daily.parquet`) |
-| `make manifest` | Recomputes SHA-256 hashes and row counts directly from physical files |
-| `make test` | Executes unit tests covering PKT boundaries, 18/24 rule, lags, and deterministic keys |
-| `make clean-data` | Resets cleaned and processed layers while keeping `data/raw/` immutable |
-
----
-
-## Running the Automated Pipeline & Dashboard
-
-### 1. Automated Hourly Pipeline (Prefect)
-The hourly pipeline runs automatically on its own at `:05` past each hour:
-```bash
-# Run a single immediate cycle (or verify pipeline execution):
-python -m src.prefect_pipeline --once
-
-# Run continuous hourly scheduler loop (triggers at minute :05 past every hour):
-python -m src.prefect_pipeline
-```
-All pipeline runs, statuses (`SUCCESS`), timestamps, and row counts are recorded in [logs/prefect_runs.csv](logs/prefect_runs.csv).
-
-### 2. Streamlit Live Monitoring & Decision Dashboard
-Launch the interactive dashboard:
-```bash
-streamlit run app.py
-```
-The dashboard features three tabs:
-- **📊 Live Monitoring:** Data freshness badges (`🟢 FRESH` / `🟡 LATE`), latest Data Quality Agent status (`logs/dq_status.json`), Prefect execution history, EPA Punjab Smog Action Plan school outdoor safety thresholds, and an Urdu language toggle (`اردو ترجمہ`).
-- **📈 Model & Group Fairness:** Declared persistence baseline vs. HistGradientBoosting model (7.35% MAE reduction, declared 15% target not met), 80% multi-quantile uncertainty intervals, and group fairness breakdown across stations, seasons, and pollution tiers.
-- **🤖 AI Smog & Policy Assistant (RAG):** Evidence-grounded answers citing WHO 2021 guidelines and EPA Punjab advisories. Numerical observations cite exact gold table row IDs (`daily.parquet` / `warehouse.duckdb`). Includes "I don't know" out-of-scope testing and emergency health disclaimers.
-
-### 3. Public Cloud Dashboard (Hugging Face Space)
-The live dashboard is deployed and publicly accessible on Hugging Face Spaces:  
-👉 **[https://huggingface.co/spaces/hasanshahir/lahore-air-quality-decision-system](https://huggingface.co/spaces/hasanshahir/lahore-air-quality-decision-system)**
-
----
-
-## Machine Learning & Group Fairness (Chapters 7 & 8)
-
-- **Declared Baseline:** Persistence baseline ($\hat{y}_{t+1} = y_t$, MAE: $13.593\ \mu\text{g/m}^3$).
-- **Final Model:** Histogram Gradient Boosting Regressor (HistGradientBoosting_ResidualDelta) with same-day lag differentials and cross-station dynamics (MAE: $12.594\ \mu\text{g/m}^3$, **7.35% improvement**, declared 15% target not met; an earlier reported 18.05% result was discarded because it used realized next-day weather).
-- **Uncertainty Bounds:** $10^{th}$ and $90^{th}$ percentile pinball loss regressors producing reliable 80% prediction intervals.
-- **Group Fairness:** Full error audit across stations, smog seasons (Oct-Feb vs Mar-Sep), and pollution tiers documented in [reports/model_errors_by_group.csv](reports/model_errors_by_group.csv).
-
----
-
-## Running the Test Suite
-
-Run the full automated test suite (52 tests covering pipeline, DQ agent, RAG evidence retrieval, and RAG answer generation):
-```bash
+# 3. Run automated test suite (52 tests)
 python -m pytest tests/
-```
-Output:
-```text
-tests/test_dq_agent.py ...........                                       [ 21%]
-tests/test_pipeline.py .......                                           [ 34%]
-tests/test_rag_answer.py ....................                            [ 73%]
-tests/test_rag_evidence.py ..............                                [100%]
-============================== 52 passed in 21.45s ==============================
+
+# 4. Launch Streamlit Dashboard
+streamlit run app.py
+
+# 5. Run single Prefect pipeline execution cycle
+python -m src.prefect_pipeline --once
 ```
 
 ---
 
-## Data Summary & Attribution
+## 4. Known Limitations & Documented Exclusions
 
-- **OpenAQ v3 API:** Air quality observations provided under Creative Commons Attribution 4.0 International (CC BY 4.0).
-- **Open-Meteo:** Historical weather reanalysis data provided by Open-Meteo.com under CC BY 4.0.
-- **Licensing Compliance:** Station `ieee_punjab_univ` is strictly excluded from cleaned/processed layers due to unverified licensing.
-- Detailed station metrics, coverage percentages, and validity counts are documented in [REPORT.md](REPORT.md).
-- Dataset declaration and problem analysis are documented in [DATASET_DECLARATION.md](DATASET_DECLARATION.md).
-- AI usage and human verification records are logged in [AI_Use_Log.md](AI_Use_Log.md).
+1. **IEEE Station Excluded:** Station `ieee_punjab_univ` has its owner recorded as `"unverified"` in OpenAQ v3 metadata. In compliance with the participant licensing policy, its raw data is retained in `data/raw/` for audit purposes but strictly excluded from `data/cleaned/` and `data/processed/`.
+2. **Model Town Link Road Upstream Error:** Station `model_town_link_rd` was discovered at OpenAQ sensor `16034758`, but OpenAQ upstream servers return `HTTP 500 Internal Server Error`. The failure is documented in [config/exclusions.yaml](config/exclusions.yaml) and skipped without fabricating data.
+3. **Trinity School Completeness:** Station `trinity_school` exhibits low temporal completeness (35.01% valid PKT days; 10 test set samples) due to prolonged upstream sensor downtime.
+4. **Weakest Station Performance:** `sandha_road` exhibits the lowest model improvement (+1.7% MAE reduction; 10.98 vs 11.17 baseline) due to erratic local diurnal variance.
+5. **Declared Target Not Met:** The declared $\ge 15\%$ improvement target is **not met**; the leak-free model achieves +7.35% MAE reduction ($12.594\ \mu\text{g/m}^3$ vs $13.593\ \mu\text{g/m}^3$).
+6. **Hourly Scheduler Gap:** The live run log in `logs/prefect_runs.csv` contains an unedited historical gap between `2026-10-20T16:56:53Z` and `2026-10-20T20:59:29Z` reflecting local machine downtime.
+
+---
+
+## 5. Process Notes & Early Commit History
+
+The repository was initiated on 19 October 2026. Per the Participant Guide, the suggested milestone for the dataset declaration and proposal was Monday 19 Oct 12:00 PM PKT. The initial proposal commits occurred on the evening of 19 Oct 2026; these timestamps are truthfully recorded below and preserved without modification:
+
+| Hash | Timestamp (PKT) | Commit Subject |
+| :--- | :--- | :--- |
+| `cfea4ea` | 2026-10-19T20:19:44+05:00 | Initial commit |
+| `4187eb0` | 2026-10-19T20:25:46+05:00 | Delete README.md |
+| `dce3b42` | 2026-10-19T20:21:14+05:00 | Add dataset declaration |
+| `40eb664` | 2026-10-19T20:31:36+05:00 | Add dataset declaration with corrected volume estimate |
+| `b5cb96b` | 2026-10-19T20:53:42+05:00 | Data proposal |
+| `338cd28` | 2026-10-19T20:59:12+05:00 | Data proposal |
+| `83120e1` | 2026-10-19T23:41:14+05:00 | feat: robust air quality warehouse with integrity audits, failure handling, and validity reporting |
+| `d32b481` | 2026-10-20T00:10:23+05:00 | fix: resolve test isolation bugs and upgrade immutability guard |
+
+---
+
+## 6. Project Verification & External Links
+
+- **Automated Test Suite:** 52 tests passing (`python -m pytest tests/`).
+- **Hugging Face Space Live Demo:** TO CONFIRM BY TEAM
+- **Demo Video Link:** TO CONFIRM BY TEAM
+- **Audit & Governance Documentation:**
+  - Complete data acquisition and station coverage audit: [REPORT.md](REPORT.md)
+  - Dataset declaration & contract adherence: [DATASET_DECLARATION.md](DATASET_DECLARATION.md)
+  - Full AI assistance log with verified commit hashes: [AI_Use_Log.md](AI_Use_Log.md)
+  - Physical file hash ledger: [manifest.csv](manifest.csv)
