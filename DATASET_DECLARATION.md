@@ -3,7 +3,7 @@
 **HackInsight 2026 | Data-to-Decision | Air Quality Track**  
 **Team:** H4krz  
 **Members:** M. Saad Ahmed, Arbish, Hasan Shahir, Noman Khursheed  
-**Date:** Mon 19 Oct 2026, 12:00 PM PKT  
+**Date Note:** Original declaration committed 19 Oct 20:31 PKT (commit 40eb664), replaced by dataset_proposal.pdf (commit 338cd28, 20:59 PKT) after the organisers' instruction; this file rewritten 21 Oct.
 
 ---
 
@@ -45,7 +45,7 @@
 
 ---
 
-## 4. Declared Baseline & Success Metric (Fixed in Advance)
+## 4. Declared Baseline & Success Metric
 - **Baseline:** Persistence baseline ($\hat{y}_{t+1} = y_t$, tomorrow's mean $\text{PM}_{2.5}$ equals today's mean $\text{PM}_{2.5}$ at the same station).
 - **Success Measure:** Machine learning model (Histogram Gradient Boosting Regressor) must achieve at least a **15% MAE reduction** over the persistence baseline on the chronological held-out test split.
-- **Achieved Result:** Baseline MAE = $13.593\ \mu\text{g/m}^3$, Model MAE = $11.139\ \mu\text{g/m}^3$ (**18.05% improvement**).
+- **Achieved Result:** Baseline MAE = $13.593\ \mu\text{g/m}^3$, Model MAE = $12.594\ \mu\text{g/m}^3$ (**7.35% improvement**, target NOT MET). An earlier run showing 18.05% was discarded because it used realized next-day weather.

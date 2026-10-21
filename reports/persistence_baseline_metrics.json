@@ -12,96 +12,89 @@
     "train": {
       "name": "train",
       "start_date": "2025-05-30",
-      "end_date": "2026-05-20",
-      "unique_dates": 352,
-      "sample_count": 1848,
-      "station_count": 9
+      "end_date": "2026-05-21",
+      "unique_dates": 351,
+      "sample_count": 1587,
+      "station_count": 8
     },
     "validation": {
       "name": "validation",
-      "start_date": "2026-05-21",
-      "end_date": "2026-08-03",
+      "start_date": "2026-05-22",
+      "end_date": "2026-08-04",
       "unique_dates": 75,
-      "sample_count": 409,
-      "station_count": 8
+      "sample_count": 367,
+      "station_count": 7
     },
     "test": {
       "name": "test",
-      "start_date": "2026-08-04",
-      "end_date": "2026-10-18",
+      "start_date": "2026-08-05",
+      "end_date": "2026-10-19",
       "unique_dates": 76,
-      "sample_count": 519,
-      "station_count": 9
+      "sample_count": 453,
+      "station_count": 8
     }
   },
   "test_metrics": {
     "overall": {
-      "mae": 13.400364192379476,
-      "rmse": 17.6287888214321,
-      "sample_count": 519
+      "mae": 13.592839340583744,
+      "rmse": 17.77404438245903,
+      "sample_count": 453
     },
     "by_station": [
       {
         "station_slug": "allama_iqbal_town",
-        "mae": 15.048643529598237,
-        "rmse": 20.78735958621887,
+        "mae": 15.209071337084865,
+        "rmse": 20.876369600483365,
         "sample_count": 68,
         "station_name": "Allama Iqbal Town B LHE"
       },
       {
         "station_slug": "college_road",
-        "mae": 12.313227632051742,
-        "rmse": 15.56037286088127,
+        "mae": 12.336775611849724,
+        "rmse": 15.576516132362677,
         "sample_count": 66,
         "station_name": "College Road"
       },
       {
         "station_slug": "forman_christian_college",
-        "mae": 15.358552656703342,
-        "rmse": 20.23313207679341,
+        "mae": 15.56086381173189,
+        "rmse": 20.375456286048053,
         "sample_count": 69,
         "station_name": "Forman Christian College & Chartered University"
       },
       {
         "station_slug": "hbfc_society",
-        "mae": 11.21812839673913,
-        "rmse": 14.475242967306302,
+        "mae": 11.124313292572463,
+        "rmse": 14.442625324691083,
         "sample_count": 64,
         "station_name": "HBFC Society, DHA Phase 5 (Hussainy House)"
       },
       {
-        "station_slug": "ieee_punjab_univ",
-        "mae": 12.451377710543833,
-        "rmse": 16.85771080813519,
-        "sample_count": 67,
-        "station_name": "IEEE, Punjab University, LHR"
-      },
-      {
         "station_slug": "model_town",
-        "mae": 13.717764483851441,
-        "rmse": 17.774279588426698,
+        "mae": 13.81230277213973,
+        "rmse": 17.83521972147561,
         "sample_count": 74,
         "station_name": "Model Town"
       },
       {
         "station_slug": "pak_arab",
-        "mae": 14.731679304192685,
-        "rmse": 18.439803449349885,
+        "mae": 14.784080434136188,
+        "rmse": 18.466212721281135,
         "sample_count": 59,
         "station_name": "Pak Arab"
       },
       {
         "station_slug": "sandha_road",
-        "mae": 11.120336198179979,
-        "rmse": 14.260573043151046,
+        "mae": 11.17237108190091,
+        "rmse": 14.268697052065406,
         "sample_count": 43,
         "station_name": "Sandha Road"
       },
       {
         "station_slug": "trinity_school",
-        "mae": 16.04527417027417,
-        "rmse": 18.39567660400053,
-        "sample_count": 9,
+        "mae": 14.8673418972332,
+        "rmse": 17.471220011732964,
+        "sample_count": 10,
         "station_name": "Trinity School Lahore"
       }
     ]

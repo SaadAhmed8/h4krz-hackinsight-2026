@@ -1,4 +1,4 @@
 iteration,model_name,valid_mae,test_mae,baseline_test_mae,improvement_pct,runtime_seconds,peak_memory_mb,status,notes
-1,HistGradientBoosting_DirectTarget,10.578,13.775,13.593,-1.34,0.889,2.22,baseline,Direct next-day PM2.5 prediction using core historical features.
-2,HistGradientBoosting_ResidualDelta,9.917,12.594,13.593,7.35,1.043,2.34,kept,Persistence residual delta framing with lag differences and citywide cross-station dynamics.
-3,HistGradientBoosting_ForecastEnsemble_Final,10.216,11.139,13.593,18.05,2.427,4.13,kept,"Full production model: weather forecast leads, city trend momentum, L2 regularization (beats baseline MAE by >=15%)."
+1,HistGradientBoosting_DirectTarget,10.578,13.775,13.593,-1.34,1.183,2.32,not_selected,Direct next-day PM2.5 prediction using core historical features.
+2,HistGradientBoosting_ResidualDelta,9.917,12.594,13.593,7.35,1.218,2.33,selected_by_validation_mae,Persistence residual delta framing with lag differences and citywide cross-station dynamics. Selected: lowest validation MAE.
+3,HistGradientBoosting_CityTrendL2,10.222,12.764,13.593,6.09,2.672,3.12,not_selected,"City trend momentum, quantile loss, L2 regularization. Same-day information only."

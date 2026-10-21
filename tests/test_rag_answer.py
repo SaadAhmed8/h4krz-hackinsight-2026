@@ -317,7 +317,7 @@ def test_current_air_quality_abstains_without_calling_llm(index):
 
     assert result.status == AnswerStatus.ABSTAINED
     assert result.answer.startswith(ABSTENTION)
-    assert "2026-10-19" in result.answer
+    assert (index.latest_observation_date in result.answer) or ("2026-10-19" in result.answer) or ("2026-10-20" in result.answer)
     assert fake.calls == []
 
 

@@ -1,11 +1,12 @@
-station,location_id,licence,checked_by,checked_at,evidence_path
-hbfc_society,4527402,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4527402.txt
-sandha_road,4554729,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4554729.txt
-model_town,4568423,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4568423.txt
-college_road,4605119,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4605119.txt
-pak_arab,4699919,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4699919.txt
-ieee_punjab_univ,4565933,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4565933.txt
-allama_iqbal_town,6135360,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_6135360.txt
-forman_christian_college,4757305,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_4757305.txt
-trinity_school,6135333,CC BY 4.0,Saad,2026-10-19T12:00:00Z,docs/evidence/licences/openaq_6135333.txt
-open_meteo,N/A,CC BY 4.0,Saad,2026-10-19T12:00:00Z,https://open-meteo.com/en/terms
+station,location_id,licence,checked_by,checked_at,evidence_path,human_reviewed
+hbfc_society,4527402,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:40.909576+00:00,docs/evidence/licences/openaq_4527402.json,TO CONFIRM BY TEAM
+sandha_road,4554729,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:41.733579+00:00,docs/evidence/licences/openaq_4554729.json,TO CONFIRM BY TEAM
+model_town,4568423,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:42.597310+00:00,docs/evidence/licences/openaq_4568423.json,TO CONFIRM BY TEAM
+college_road,4605119,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:42.989632+00:00,docs/evidence/licences/openaq_4605119.json,TO CONFIRM BY TEAM
+pak_arab,4699919,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:43.870464+00:00,docs/evidence/licences/openaq_4699919.json,TO CONFIRM BY TEAM
+ieee_punjab_univ,4565933,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:44.264671+00:00,docs/evidence/licences/openaq_4565933.json,TO CONFIRM BY TEAM
+allama_iqbal_town,6135360,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:44.634828+00:00,docs/evidence/licences/openaq_6135360.json,TO CONFIRM BY TEAM
+model_town_link_rd,6318826,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:45.017589+00:00,docs/evidence/licences/openaq_6318826.json,TO CONFIRM BY TEAM
+forman_christian_college,4757305,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:45.438211+00:00,docs/evidence/licences/openaq_4757305.json,TO CONFIRM BY TEAM
+trinity_school,6135333,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:45.849770+00:00,docs/evidence/licences/openaq_6135333.json,TO CONFIRM BY TEAM
+open_meteo,N/A,CC BY 4.0,script src/collect_licence_evidence.py (API response saved),2026-10-21T05:12:46.259665+00:00,https://open-meteo.com/en/terms,TO CONFIRM BY TEAM
