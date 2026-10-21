@@ -157,7 +157,7 @@ streamlit run app.py
 ```
 The dashboard features three tabs:
 - **📊 Live Monitoring:** Data freshness badges (`🟢 FRESH` / `🟡 LATE`), latest Data Quality Agent status (`logs/dq_status.json`), Prefect execution history, EPA Punjab Smog Action Plan school outdoor safety thresholds, and an Urdu language toggle (`اردو ترجمہ`).
-- **📈 Model & Group Fairness:** Declared persistence baseline vs. HistGradientBoosting model (18.05% MAE reduction), 80% multi-quantile uncertainty intervals, and group fairness breakdown across stations, seasons, and pollution tiers.
+- **📈 Model & Group Fairness:** Declared persistence baseline vs. HistGradientBoosting model (7.35% MAE reduction, declared 15% target not met), 80% multi-quantile uncertainty intervals, and group fairness breakdown across stations, seasons, and pollution tiers.
 - **🤖 AI Smog & Policy Assistant (RAG):** Evidence-grounded answers citing WHO 2021 guidelines and EPA Punjab advisories. Numerical observations cite exact gold table row IDs (`daily.parquet` / `warehouse.duckdb`). Includes "I don't know" out-of-scope testing and emergency health disclaimers.
 
 ### 3. Public Cloud Dashboard (Hugging Face Space)
@@ -169,7 +169,7 @@ The live dashboard is deployed and publicly accessible on Hugging Face Spaces:
 ## Machine Learning & Group Fairness (Chapters 7 & 8)
 
 - **Declared Baseline:** Persistence baseline ($\hat{y}_{t+1} = y_t$, MAE: $13.593\ \mu\text{g/m}^3$).
-- **Final Model:** Histogram Gradient Boosting Regressor with weather forecast leads and cross-station dynamics (MAE: $11.139\ \mu\text{g/m}^3$, **18.05% improvement**).
+- **Final Model:** Histogram Gradient Boosting Regressor (HistGradientBoosting_ResidualDelta) with same-day lag differentials and cross-station dynamics (MAE: $12.594\ \mu\text{g/m}^3$, **7.35% improvement**, declared 15% target not met; an earlier reported 18.05% result was discarded because it used realized next-day weather).
 - **Uncertainty Bounds:** $10^{th}$ and $90^{th}$ percentile pinball loss regressors producing reliable 80% prediction intervals.
 - **Group Fairness:** Full error audit across stations, smog seasons (Oct-Feb vs Mar-Sep), and pollution tiers documented in [reports/model_errors_by_group.csv](reports/model_errors_by_group.csv).
 

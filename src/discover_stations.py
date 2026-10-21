@@ -59,7 +59,7 @@ TARGET_STATIONS = [
         "search_name": "IEEE, Punjab Univers",
         "slug": "ieee_punjab_univ",
         "expected_provider": "AirGradient",
-        "expected_owner": "unverified",  # per instructions: IEEE owner not yet confirmed -> record as "unverified"
+        "expected_owner": "unverified",  # IEEE owner not yet confirmed -> record as "unverified"
         "since": "2025-05-30",
         "is_owner_verified": False
     },
@@ -142,6 +142,16 @@ def fetch_location_sensors(location_data: Dict[str, Any], api_key: str) -> List[
         return []
 
 
+def _loc_name(loc: Dict[str, Any]) -> str:
+    """Lower-cased location name, safe when the API returns null."""
+    return (loc.get("name") or "").lower()
+
+
+def _provider_name(loc: Dict[str, Any]) -> str:
+    """Lower-cased provider name, safe when provider or its name is null."""
+    return ((loc.get("provider") or {}).get("name") or "").lower()
+
+
 def match_station(target: Dict[str, Any], candidate_locations: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     """Find the best matching location in candidates for a target specification."""
     search_name = target["search_name"].lower()
@@ -150,26 +160,22 @@ def match_station(target: Dict[str, Any], candidate_locations: List[Dict[str, An
 
     matched_candidates = []
     for loc in candidate_locations:
-        loc_name = loc.get("name", "").lower()
-        provider_name = (loc.get("provider", {}) or {}).get("name", "").lower()
-        
+        loc_name = _loc_name(loc)
+
         # Check provider match
-        if exp_provider not in provider_name:
+        if exp_provider not in _provider_name(loc):
             continue
 
-        # Check substring / keyword match
-        # Clean special chars
+        # Check substring / keyword match (clean special chars)
         target_tokens = [t.strip(",()") for t in search_name.split() if len(t.strip(",()")) > 2]
         if all(token in loc_name for token in target_tokens) or (search_name in loc_name):
             matched_candidates.append(loc)
-    
+
     if not matched_candidates:
-        # Fallback: check starts with or partial match
+        # Fallback: partial match on the first word of the target name
         first_token = target["search_name"].split()[0].lower()
         for loc in candidate_locations:
-            loc_name = loc.get("name", "").lower()
-            provider_name = (loc.get("provider", {}) or {}).get("name", "").lower()
-            if exp_provider in provider_name and first_token in loc_name:
+            if exp_provider in _provider_name(loc) and first_token in _loc_name(loc):
                 matched_candidates.append(loc)
 
     if not matched_candidates:
@@ -180,7 +186,7 @@ def match_station(target: Dict[str, Any], candidate_locations: List[Dict[str, An
         return matched_candidates[0]
 
     for cand in matched_candidates:
-        cand_start = (cand.get("datetimeFirst") or {}).get("utc", "")
+        cand_start = (cand.get("datetimeFirst") or {}).get("utc", "") or ""
         if exp_since in cand_start:
             return cand
 
@@ -189,9 +195,12 @@ def match_station(target: Dict[str, Any], candidate_locations: List[Dict[str, An
 
 
 def discover_and_build_config(output_path: Path = Path("config/stations.yaml")) -> Dict[str, Any]:
-    """Run discovery, verify licenses, and generate config/stations.yaml."""
+    """Run discovery, verify licences, and generate config/stations.yaml."""
     api_key = get_openaq_api_key()
     candidate_locations = fetch_all_pk_locations(api_key)
+
+    # Load the licence evidence register once, not once per station.
+    evidence_reg = load_licence_evidence() or {}
 
     stations_config = []
     unmatched_stations = []
@@ -204,32 +213,40 @@ def discover_and_build_config(output_path: Path = Path("config/stations.yaml")) 
             continue
 
         loc_id = matched_loc["id"]
-        loc_name = matched_loc["name"]
-        provider = (matched_loc.get("provider") or {}).get("name", target["expected_provider"])
-        
-        # Determine owner
-        # Hard constraint: "Owners: AirGradient stations -> The Urban Unit (IEEE owner not yet confirmed, record as 'unverified'); Hawanama stations -> Pakistan Air Quality Initiative (PAQI)."
+        loc_name = matched_loc.get("name") or target["search_name"]
+        provider = (matched_loc.get("provider") or {}).get("name") or target["expected_provider"]
+
+        # Owner is fixed by the project spec: AirGradient -> The Urban Unit (IEEE: "unverified"),
+        # Hawanama -> Pakistan Air Quality Initiative (PAQI).
         owner = target["expected_owner"]
-        
-        # Determine licence strictly - no blind defaults to CC BY 4.0
-        evidence_reg = load_licence_evidence()
+
+        # Licence: taken strictly from API metadata or the evidence file. No blind default to CC BY 4.0.
         licenses = matched_loc.get("licenses") or []
-        api_licence_name = licenses[0].get("name").strip() if licenses and licenses[0].get("name") else None
-        
+        first_licence = licenses[0] if licenses else {}
+        api_licence_name = (first_licence.get("name") or "").strip() or None
+
         evidence_entry = evidence_reg.get(target["slug"]) or evidence_reg.get(f"loc_{loc_id}")
         evidence_licence = evidence_entry.get("licence") if evidence_entry else None
-        
+
+        licence_flag: Optional[str] = None  # stays None when the licence is verified
+
         if api_licence_name:
             licence_name = api_licence_name
             licence_verified = True
         elif evidence_licence and evidence_licence != "UNKNOWN":
             licence_name = evidence_licence
             licence_verified = True
-            logger.info(f"Station {target['slug']} licence verified via config/licence_evidence.csv: {licence_name}")
+            logger.info(
+                f"Station {target['slug']} licence verified via config/licence_evidence.csv: {licence_name}"
+            )
         else:
             licence_name = "UNKNOWN"
             licence_verified = False
-            logger.warning(f"Station {loc_name} (ID {loc_id}) has no API licence and no evidence entry. Setting licence=UNKNOWN, licence_verified=False.")
+            licence_flag = "no API licence and no evidence entry"
+            logger.warning(
+                f"Station {loc_name} (ID {loc_id}) has no API licence and no evidence entry. "
+                f"Setting licence=UNKNOWN, licence_verified=False."
+            )
 
         # Fetch sensors for this location
         sensors = fetch_location_sensors(matched_loc, api_key)
@@ -238,7 +255,7 @@ def discover_and_build_config(output_path: Path = Path("config/stations.yaml")) 
 
         for s in sensors:
             param = s.get("parameter") or {}
-            param_name = param.get("name", "").lower()
+            param_name = (param.get("name") or "").lower()
             sensor_id = s.get("id")
 
             if param_name == "pm25":
@@ -257,7 +274,7 @@ def discover_and_build_config(output_path: Path = Path("config/stations.yaml")) 
             "provider": provider,
             "owner": owner,
             "licence": licence_name,
-            "licence_verified": (licence_flag is None),
+            "licence_verified": licence_verified,
             "since": target["since"],
             "coordinates": matched_loc.get("coordinates"),
             "pm25_sensor_id": pm25_sensor_id,
@@ -268,7 +285,8 @@ def discover_and_build_config(output_path: Path = Path("config/stations.yaml")) 
 
         stations_config.append(station_entry)
         logger.info(
-            f"Matched '{target['search_name']}' -> ID: {loc_id} | Name: '{loc_name}' | PM2.5 Sensor: {pm25_sensor_id} | Provider: {provider} | Licence: {licence_name}"
+            f"Matched '{target['search_name']}' -> ID: {loc_id} | Name: '{loc_name}' | "
+            f"PM2.5 Sensor: {pm25_sensor_id} | Provider: {provider} | Licence: {licence_name}"
         )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -280,7 +298,7 @@ def discover_and_build_config(output_path: Path = Path("config/stations.yaml")) 
     if unmatched_stations:
         logger.error(f"Unmatched stations requiring human inspection: {unmatched_stations}")
     else:
-        logger.info("All 10 stations successfully discovered and mapped!")
+        logger.info(f"All {len(TARGET_STATIONS)} stations successfully discovered and mapped!")
 
     return {"stations": stations_config, "unmatched": unmatched_stations}
 

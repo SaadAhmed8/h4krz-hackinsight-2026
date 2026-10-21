@@ -4,7 +4,7 @@ Features:
 - Chronological time-based split on data/processed/daily.parquet (70% train, 15% validation, 15% test).
 - Preprocessing imputers/scalers fit strictly on train set only (prevent data leakage).
 - Baseline persistence model comparison: pred = today's mean (pm25_daily_mean).
-- Outperforms persistence baseline MAE by >= 15% via residual delta learning with weather forecast leads and spatial signals.
+- Reports MAE improvement over the persistence baseline on the chronological test split (no next-day weather features).
 - Uncertainty intervals via quantile HistGradientBoostingRegressor (10th and 90th percentiles).
 - Slice-based group fairness error breakdown saved to reports/model_errors_by_group.csv.
 - Experimental optimization log saved to reports/optimization_log.csv.
@@ -13,6 +13,7 @@ Features:
 import os
 import sys
 import time
+import json
 import logging
 import tracemalloc
 from pathlib import Path
@@ -80,20 +81,6 @@ def prepare_features(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[str]]:
     work["city_mean_lag1"] = work.groupby(st_col)["city_mean"].shift(1)
     work["city_trend"] = work["city_mean"] - work["city_mean_lag1"]
     num_cols.extend(["city_mean", "city_diff", "city_trend"])
-
-    # Next-day weather leads (from Open-Meteo weather forecast)
-    work["next_temp_mean"] = work.groupby(st_col)["weather_temp_mean_c"].shift(-1)
-    work["next_rh_mean"] = work.groupby(st_col)["weather_rh_mean_pct"].shift(-1)
-    work["next_wind_mean"] = work.groupby(st_col)["weather_wind_mean_kmh"].shift(-1)
-    work["next_precip_sum"] = work.groupby(st_col)["weather_precip_sum_mm"].shift(-1)
-
-    work["temp_change"] = work["next_temp_mean"] - work["weather_temp_mean_c"]
-    work["wind_change"] = work["next_wind_mean"] - work["weather_wind_mean_kmh"]
-    work["rh_change"] = work["next_rh_mean"] - work["weather_rh_mean_pct"]
-    num_cols.extend([
-        "next_temp_mean", "next_rh_mean", "next_wind_mean", "next_precip_sum",
-        "temp_change", "wind_change", "rh_change"
-    ])
 
     # Cyclical calendar features
     if "calendar_month" in work.columns:
@@ -373,6 +360,8 @@ def run_model_pipeline(daily_path: Path = DAILY_PATH) -> bool:
 
     # Feature Engineering
     df, all_num_cols = prepare_features(df)
+    assert not [c for c in all_num_cols if c.startswith("next_") or c.endswith("_change")], \
+        "next-day weather leaked into features"
 
     # Chronological Split: 70% Train, 15% Val, 15% Test
     train_df, val_df, test_df = chronological_split(df, train_frac=0.70, val_frac=0.15)
@@ -407,7 +396,7 @@ def run_model_pipeline(daily_path: Path = DAILY_PATH) -> bool:
         "improvement_pct": res_it1["improvement_pct"],
         "runtime_seconds": res_it1["runtime_seconds"],
         "peak_memory_mb": res_it1["peak_memory_mb"],
-        "status": "baseline",
+        "status": "pending",
         "notes": "Direct next-day PM2.5 prediction using core historical features."
     })
 
@@ -449,14 +438,14 @@ def run_model_pipeline(daily_path: Path = DAILY_PATH) -> bool:
         "improvement_pct": res_it2["improvement_pct"],
         "runtime_seconds": res_it2["runtime_seconds"],
         "peak_memory_mb": res_it2["peak_memory_mb"],
-        "status": "kept",
+        "status": "pending",
         "notes": "Persistence residual delta framing with lag differences and citywide cross-station dynamics."
     })
 
-    # Iteration 3: Final Optimized HistGradientBoosting with Weather Forecast Leads & L2 Regularization
+    # Iteration 3: HistGradientBoosting City Trend Momentum & L2 Regularization (Same-day only)
     final_features = all_num_cols
     res_it3 = train_and_evaluate_iteration(
-        name="HistGradientBoosting_ForecastEnsemble_Final",
+        name="HistGradientBoosting_CityTrendL2",
         feature_cols=final_features,
         train_df=train_df,
         val_df=val_df,
@@ -481,18 +470,21 @@ def run_model_pipeline(daily_path: Path = DAILY_PATH) -> bool:
         "improvement_pct": res_it3["improvement_pct"],
         "runtime_seconds": res_it3["runtime_seconds"],
         "peak_memory_mb": res_it3["peak_memory_mb"],
-        "status": "kept",
-        "notes": "Full production model: weather forecast leads, city trend momentum, L2 regularization (beats baseline MAE by >=15%)."
+        "status": "pending",
+        "notes": "City trend momentum, quantile loss, L2 regularization. Same-day information only."
     })
 
-    # Save Optimization Log
+    # Save Optimization Log and select best model by VALIDATION MAE only
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    opt_df = pd.DataFrame(opt_records)
-    opt_df.to_csv(OPTIMIZATION_LOG_CSV, index=False)
-    logger.info(f"Saved optimization experimental log to {OPTIMIZATION_LOG_CSV}")
-
-    # Verify requirement: Must beat baseline MAE on test set by >= 15%
-    best_res = res_it3
+    candidates = [res_it1, res_it2, res_it3]
+    best_res = min(candidates, key=lambda r: r["valid_mae"])
+    for rec, res in zip(opt_records, candidates):
+        rec["status"] = "selected_by_validation_mae" if res is best_res else "not_selected"
+    opt_records[candidates.index(best_res)]["notes"] += " Selected: lowest validation MAE."
+    pd.DataFrame(opt_records).to_csv(OPTIMIZATION_LOG_CSV, index=False)
+    TARGET_IMPROVEMENT_PCT = 15.0  # declared on 19 Oct (commits 40eb664 / 338cd28)
+    verdict = "MET" if best_res["improvement_pct"] >= TARGET_IMPROVEMENT_PCT else "NOT MET"
+    logger.info(f"Declared target >= {TARGET_IMPROVEMENT_PCT}% MAE improvement: {verdict}")
     logger.info(
         f"Final Model Test MAE: {best_res['test_mae']} vs Baseline MAE: {best_res['baseline_test_mae']} "
         f"({best_res['improvement_pct']}% improvement)"
@@ -592,7 +584,226 @@ def run_model_pipeline(daily_path: Path = DAILY_PATH) -> bool:
         f"Saved {len(pred_out_df)} predictions to {PREDICTIONS_PARQUET} and {PREDICTIONS_CSV}."
     )
 
+    export_evidence_artifacts(
+        train_df=train_df,
+        val_df=val_df,
+        test_df=test_df,
+        best_res=best_res,
+        opt_records=opt_records,
+        st_col=st_col,
+        date_col=date_col,
+        target_col=target_col,
+    )
+
     return True
+
+
+def export_evidence_artifacts(
+    train_df: pd.DataFrame,
+    val_df: pd.DataFrame,
+    test_df: pd.DataFrame,
+    best_res: Dict[str, Any],
+    opt_records: List[Dict[str, Any]],
+    st_col: str,
+    date_col: str,
+    target_col: str,
+) -> None:
+    """Export synchronized metrics JSONs and test predictions CSVs for RAG and dashboard."""
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+
+    y_test_true = test_df[target_col].values.astype(float)
+    y_test_base = test_df["pm25_daily_mean"].values.astype(float)
+    y_test_ml = best_res["test_preds"].astype(float)
+
+    # 1. Test prediction CSVs
+    station_names = test_df["station_name"].values if "station_name" in test_df.columns else test_df[st_col].values
+    record_ids = test_df["record_id"].values if "record_id" in test_df.columns else (test_df[st_col] + "_" + test_df[date_col]).values
+
+    ml_residual = y_test_true - y_test_ml
+    base_residual = y_test_true - y_test_base
+    ml_abs_err = np.abs(ml_residual)
+    base_abs_err = np.abs(base_residual)
+
+    ml_preds_df = pd.DataFrame({
+        "record_id": record_ids,
+        "station_slug": test_df[st_col].values,
+        "station_name": station_names,
+        "pkt_date": test_df[date_col].values,
+        "pm25_daily_mean": y_test_base,
+        "target_next_day_pm25": y_test_true,
+        "persistence_prediction": y_test_base,
+        "ml_prediction": y_test_ml,
+        "persistence_residual": base_residual,
+        "ml_residual": ml_residual,
+        "persistence_absolute_error": base_abs_err,
+        "ml_absolute_error": ml_abs_err,
+    })
+    ml_preds_csv_path = PROCESSED_DIR / "pm25_hist_gradient_boosting_test_predictions.csv"
+    ml_preds_df.to_csv(ml_preds_csv_path, index=False)
+    logger.info(f"Saved {len(ml_preds_df)} test predictions to {ml_preds_csv_path}")
+
+    base_preds_df = pd.DataFrame({
+        "record_id": record_ids,
+        "station_slug": test_df[st_col].values,
+        "station_name": station_names,
+        "pkt_date": test_df[date_col].values,
+        "is_valid_day": test_df["is_valid_day"].values if "is_valid_day" in test_df.columns else True,
+        "pm25_daily_mean": y_test_base,
+        "prediction_next_day_pm25": y_test_base,
+        "target_next_day_pm25": y_test_true,
+        "residual": base_residual,
+        "absolute_error": base_abs_err,
+    })
+    base_preds_csv_path = PROCESSED_DIR / "persistence_baseline_test_predictions.csv"
+    base_preds_df.to_csv(base_preds_csv_path, index=False)
+    logger.info(f"Saved {len(base_preds_df)} test predictions to {base_preds_csv_path}")
+
+    # Helper for split metadata
+    def get_split_meta(split_name: str, split_df: pd.DataFrame) -> Dict[str, Any]:
+        dates = sorted(split_df[date_col].dropna().unique())
+        return {
+            "name": split_name,
+            "start_date": str(dates[0]) if dates else "",
+            "end_date": str(dates[-1]) if dates else "",
+            "unique_dates": int(len(dates)),
+            "sample_count": int(len(split_df)),
+            "station_count": int(split_df[st_col].nunique()),
+        }
+
+    splits_dict = {
+        "train": get_split_meta("train", train_df),
+        "validation": get_split_meta("validation", val_df),
+        "test": get_split_meta("test", test_df),
+    }
+
+    # Station-wise test metrics
+    overall_sample_count = int(len(test_df))
+    overall_base_mae = float(mean_absolute_error(y_test_true, y_test_base))
+    overall_base_rmse = float(root_mean_squared_error(y_test_true, y_test_base))
+    overall_ml_mae = float(mean_absolute_error(y_test_true, y_test_ml))
+    overall_ml_rmse = float(root_mean_squared_error(y_test_true, y_test_ml))
+    overall_mae_impr = float(((overall_base_mae - overall_ml_mae) / overall_base_mae) * 100.0) if overall_base_mae > 0 else 0.0
+    overall_rmse_impr = float(((overall_base_rmse - overall_ml_rmse) / overall_base_rmse) * 100.0) if overall_base_rmse > 0 else 0.0
+
+    by_station_ml = []
+    by_station_base = []
+    for slug, grp in test_df.groupby(st_col):
+        idxs = grp.index
+        # Locate indices in test_df
+        locs = test_df.index.get_indexer(idxs)
+        st_true = y_test_true[locs]
+        st_base = y_test_base[locs]
+        st_ml = y_test_ml[locs]
+        st_count = int(len(st_true))
+        st_name = str(grp["station_name"].iloc[0]) if "station_name" in grp.columns else str(slug)
+
+        st_base_mae = float(mean_absolute_error(st_true, st_base))
+        st_base_rmse = float(root_mean_squared_error(st_true, st_base))
+        st_ml_mae = float(mean_absolute_error(st_true, st_ml))
+        st_ml_rmse = float(root_mean_squared_error(st_true, st_ml))
+        st_mae_impr = float(((st_base_mae - st_ml_mae) / st_base_mae) * 100.0) if st_base_mae > 0 else 0.0
+        st_rmse_impr = float(((st_base_rmse - st_ml_rmse) / st_base_rmse) * 100.0) if st_base_rmse > 0 else 0.0
+
+        by_station_ml.append({
+            "station_slug": str(slug),
+            "sample_count": st_count,
+            "persistence": {
+                "mae": st_base_mae,
+                "rmse": st_base_rmse,
+            },
+            "ml": {
+                "mae": st_ml_mae,
+                "rmse": st_ml_rmse,
+            },
+            "mae_improvement_pct": st_mae_impr,
+            "rmse_improvement_pct": st_rmse_impr,
+            "station_name": st_name,
+        })
+
+        by_station_base.append({
+            "station_slug": str(slug),
+            "mae": st_base_mae,
+            "rmse": st_base_rmse,
+            "sample_count": st_count,
+            "station_name": st_name,
+        })
+
+    # Persistence baseline metrics JSON
+    persistence_metrics_data = {
+        "model": "persistence",
+        "prediction_column": "pm25_daily_mean",
+        "target_column": target_col,
+        "split_method": "chronological by unique eligible PKT dates",
+        "fractions": {
+            "train": 0.70,
+            "validation": 0.15,
+            "test": 0.15,
+        },
+        "splits": splits_dict,
+        "test_metrics": {
+            "overall": {
+                "mae": overall_base_mae,
+                "rmse": overall_base_rmse,
+                "sample_count": overall_sample_count,
+            },
+            "by_station": by_station_base,
+        },
+    }
+    persistence_json_path = REPORTS_DIR / "persistence_baseline_metrics.json"
+    with open(persistence_json_path, "w", encoding="utf-8") as f:
+        json.dump(persistence_metrics_data, f, indent=2)
+    logger.info(f"Saved persistence baseline metrics to {persistence_json_path}")
+
+    # ML model metrics JSON
+    candidates_meta = []
+    for idx, rec in enumerate(opt_records):
+        candidates_meta.append({
+            "candidate_index": idx,
+            "model_name": rec["model_name"],
+            "validation_mae": float(rec["valid_mae"]),
+            "test_mae": float(rec["test_mae"]),
+            "improvement_pct": float(rec["improvement_pct"]),
+        })
+
+    ml_metrics_data = {
+        "model": "HistGradientBoostingRegressor",
+        "selected_iteration": best_res["name"],
+        "target_column": target_col,
+        "prediction_time_information": "end of completed prediction day",
+        "features": {
+            "categorical": [st_col],
+            "numeric": best_res["feature_cols"],
+        },
+        "model_selection": {
+            "selection_metric": "validation_mae",
+            "candidates": candidates_meta,
+            "selected_candidate_iteration": best_res["name"],
+            "selected_validation_mae": float(best_res["valid_mae"]),
+        },
+        "split_method": "chronological by unique eligible PKT dates",
+        "splits": splits_dict,
+        "test_metrics": {
+            "overall": {
+                "sample_count": overall_sample_count,
+                "persistence": {
+                    "mae": overall_base_mae,
+                    "rmse": overall_base_rmse,
+                },
+                "ml": {
+                    "mae": overall_ml_mae,
+                    "rmse": overall_ml_rmse,
+                },
+                "mae_improvement_pct": overall_mae_impr,
+                "rmse_improvement_pct": overall_rmse_impr,
+            },
+            "by_station": by_station_ml,
+        },
+    }
+    ml_json_path = REPORTS_DIR / "pm25_hist_gradient_boosting_metrics.json"
+    with open(ml_json_path, "w", encoding="utf-8") as f:
+        json.dump(ml_metrics_data, f, indent=2)
+    logger.info(f"Saved model metrics to {ml_json_path}")
 
 
 if __name__ == "__main__":
