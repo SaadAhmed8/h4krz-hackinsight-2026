@@ -57,14 +57,32 @@ with tab1:
 
     # Open-Meteo Freshness
     meteo_time_str = "N/A"
-    meteo_fresh = True
+    meteo_badge = "N/A (no data)"
     if WEATHER_PARQUET.exists():
         try:
-            mtime = datetime.fromtimestamp(WEATHER_PARQUET.stat().st_mtime, tz=timezone.utc)
-            meteo_time_str = mtime.strftime("%Y-%m-%dT%H:%M:%SZ")
+            w_df = pd.read_parquet(WEATHER_PARQUET)
+            ts_series = None
+            for col in ["timestamp_utc", "time", "timestamp", "datetime_utc"]:
+                if col in w_df.columns:
+                    ts_series = pd.to_datetime(w_df[col], utc=True)
+                    break
+            if ts_series is None:
+                ts_series = pd.to_datetime(w_df.index, utc=True)
+
+            if not ts_series.empty and ts_series.notna().any():
+                latest_ts = ts_series.dropna().max()
+                meteo_time_str = latest_ts.strftime("%Y-%m-%dT%H:%M:%SZ")
+                now_utc = datetime.now(timezone.utc)
+                # Team-chosen limit: 120 hours limit for Open-Meteo cleaned weather freshness
+                age_hours = (now_utc - latest_ts.to_pydatetime()).total_seconds() / 3600.0
+                age_h = max(0, int(round(age_hours)))
+                meteo_fresh = age_hours <= 120
+                status_label = "🟢 FRESH" if meteo_fresh else "🟡 LATE"
+                meteo_badge = f"{status_label} (age {age_h} h)"
+            else:
+                meteo_badge = "N/A (no data)"
         except Exception:
-            pass
-    meteo_badge = "🟢 FRESH" if meteo_fresh else "🟡 LATE"
+            meteo_badge = "N/A (no data)"
     f_col2.metric("Open-Meteo Freshness", meteo_badge, help=f"Cleaned weather updated: {meteo_time_str}")
 
     # Prefect Pipeline Last Run
