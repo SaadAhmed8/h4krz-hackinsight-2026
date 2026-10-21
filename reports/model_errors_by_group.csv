@@ -1,15 +1,15 @@
 group_category,group_value,n_samples,baseline_mae,model_mae,mae_improvement_pct,rmse,coverage_80pct
-overall,all_test_samples,453,13.59,12.59,7.4,16.35,76.8
-station,allama_iqbal_town,68,15.21,13.99,8.0,18.84,80.9
-station,college_road,66,12.34,11.88,3.7,14.94,74.2
-station,forman_christian_college,69,15.56,14.34,7.9,18.54,71.0
-station,hbfc_society,64,11.12,10.32,7.2,13.58,78.1
-station,model_town,74,13.81,12.61,8.7,16.26,73.0
-station,pak_arab,59,14.78,13.55,8.4,17.28,81.4
-station,sandha_road,43,11.17,10.98,1.7,13.16,79.1
-station,trinity_school,10,14.87,11.47,22.8,14.65,90.0
-season,Non-Smog (Mar-Sep),330,12.9,12.13,6.0,15.85,72.7
-season,Smog (Oct-Feb),123,15.45,13.85,10.4,17.64,87.8
-pollution_tier,<55 (Low/Mod),235,10.94,10.78,1.5,13.75,77.4
-pollution_tier,55-150 (Unhealthy),218,16.45,14.55,11.6,18.76,76.1
+overall,all_test_samples,453,13.59,11.14,18.1,14.43,73.3
+station,allama_iqbal_town,68,15.21,12.52,17.7,16.99,75.0
+station,college_road,66,12.34,10.27,16.8,12.77,78.8
+station,forman_christian_college,69,15.56,12.32,20.8,15.62,66.7
+station,hbfc_society,64,11.12,9.35,16.0,12.36,76.6
+station,model_town,74,13.81,10.85,21.4,13.89,70.3
+station,pak_arab,59,14.78,11.57,21.7,14.95,72.9
+station,sandha_road,43,11.17,10.9,2.4,13.48,72.1
+station,trinity_school,10,14.87,11.43,23.1,14.33,80.0
+season,Non-Smog (Mar-Sep),330,12.9,10.77,16.5,13.8,70.6
+season,Smog (Oct-Feb),123,15.45,12.13,21.5,16.01,80.5
+pollution_tier,<55 (Low/Mod),235,10.94,10.12,7.5,12.48,70.6
+pollution_tier,55-150 (Unhealthy),218,16.45,12.24,25.6,16.28,76.1
 pollution_tier,>150 (Hazardous),0,,,,,
