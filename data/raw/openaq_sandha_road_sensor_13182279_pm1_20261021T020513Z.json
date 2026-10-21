@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "sandha_road",
+    "station_name": "Sandha Road",
+    "location_id": 4554729,
+    "sensor_id": 13182279,
+    "parameter": "pm1",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T020513Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13182279/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/13182279/hours?limit=1000&page=1..N&datetime_from=2026-10-21T00:00:00Z",
+    "record_count": 1
+  },
+  "results": [
+    {
+      "value": 107.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 19,
+        "name": "pm1",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-21T00:00:00Z",
+          "local": "2026-10-21T05:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T01:00:00Z",
+          "local": "2026-10-21T06:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 106.7,
+        "q02": 106.7,
+        "q25": 106.7,
+        "median": 106.7,
+        "q75": 106.7,
+        "q98": 106.7,
+        "max": 106.7,
+        "avg": 106.7,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-21T00:00:00Z",
+          "local": "2026-10-21T05:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T01:00:00Z",
+          "local": "2026-10-21T06:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

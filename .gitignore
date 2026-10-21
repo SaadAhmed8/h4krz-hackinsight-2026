@@ -10,3 +10,4 @@ __pycache__/
 .agents/
 # data/raw/ is intentionally NOT ignored: guide ch.5 requires make data to
 # reload every raw file and verify its SHA-256 against manifest.csv.
+hf_space/

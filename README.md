@@ -133,6 +133,10 @@ The dashboard features three tabs:
 - **📈 Model & Group Fairness:** Declared persistence baseline vs. HistGradientBoosting model (18.05% MAE reduction), 80% multi-quantile uncertainty intervals, and group fairness breakdown across stations, seasons, and pollution tiers.
 - **🤖 AI Smog & Policy Assistant (RAG):** Evidence-grounded answers citing WHO 2021 guidelines and EPA Punjab advisories. Numerical observations cite exact gold table row IDs (`daily.parquet` / `warehouse.duckdb`). Includes "I don't know" out-of-scope testing and emergency health disclaimers.
 
+### 3. Public Cloud Dashboard (Hugging Face Space)
+The live dashboard is deployed and publicly accessible on Hugging Face Spaces:  
+👉 **[https://huggingface.co/spaces/hasanshahir/lahore-air-quality-decision-system](https://huggingface.co/spaces/hasanshahir/lahore-air-quality-decision-system)**
+
 ---
 
 ## Machine Learning & Group Fairness (Chapters 7 & 8)

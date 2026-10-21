@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "source": "OpenAQ v3",
+    "station_slug": "college_road",
+    "station_name": "College Road",
+    "location_id": 4605119,
+    "sensor_id": 13223107,
+    "parameter": "pm25",
+    "provider": "AirGradient",
+    "owner": "The Urban Unit",
+    "licence": "CC BY 4.0",
+    "fetched_at_utc": "20261021T010516Z",
+    "source_url": "https://api.openaq.org/v3/sensors/13223107/hours",
+    "query": "GET https://api.openaq.org/v3/sensors/13223107/hours?limit=1000&page=1..N&datetime_from=2026-10-20T23:00:00Z",
+    "record_count": 1
+  },
+  "results": [
+    {
+      "value": 214.0,
+      "flagInfo": {
+        "hasFlags": false
+      },
+      "parameter": {
+        "id": 2,
+        "name": "pm25",
+        "units": "µg/m³",
+        "displayName": null
+      },
+      "period": {
+        "label": "1hour",
+        "interval": "01:00:00",
+        "datetimeFrom": {
+          "utc": "2026-10-20T23:00:00Z",
+          "local": "2026-10-21T04:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T00:00:00Z",
+          "local": "2026-10-21T05:00:00+05:00"
+        }
+      },
+      "coordinates": null,
+      "summary": {
+        "min": 214.3,
+        "q02": 214.3,
+        "q25": 214.3,
+        "median": 214.3,
+        "q75": 214.3,
+        "q98": 214.3,
+        "max": 214.3,
+        "avg": 214.3,
+        "sd": null
+      },
+      "coverage": {
+        "expectedCount": 1,
+        "expectedInterval": "01:00:00",
+        "observedCount": 1,
+        "observedInterval": "01:00:00",
+        "percentComplete": 100.0,
+        "percentCoverage": 100.0,
+        "datetimeFrom": {
+          "utc": "2026-10-20T23:00:00Z",
+          "local": "2026-10-21T04:00:00+05:00"
+        },
+        "datetimeTo": {
+          "utc": "2026-10-21T00:00:00Z",
+          "local": "2026-10-21T05:00:00+05:00"
+        }
+      }
+    }
+  ]
+}

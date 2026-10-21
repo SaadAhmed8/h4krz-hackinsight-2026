@@ -1,13 +1,45 @@
 {
-  "evaluated_at_utc": "2026-10-20T21:40:07Z",
-  "level": "WARN",
-  "reasons": [],
-  "total_rows": 86315,
-  "valid_unimputed_rows": 65819,
+  "evaluated_at_utc": "2026-10-21T04:07:07Z",
+  "level": "WARN_STALE",
+  "reasons": [
+    "2 stations/sources are stale."
+  ],
+  "total_rows": 86363,
+  "valid_unimputed_rows": 65867,
   "imputed_rows": 737,
   "missing_rows": 19759,
   "flagged_rows": 20496,
-  "stale_entities": [],
-  "stale_sources": [],
+  "stale_entities": [
+    {
+      "station_id": "allama_iqbal_town",
+      "source": "openaq",
+      "latest_ts_utc": "2026-10-21T01:00:00Z",
+      "lag_hours": 3.12,
+      "limit_hours": 3.0
+    },
+    {
+      "station_id": "trinity_school",
+      "source": "openaq",
+      "latest_ts_utc": "2026-10-21T01:00:00Z",
+      "lag_hours": 3.12,
+      "limit_hours": 3.0
+    }
+  ],
+  "stale_sources": [
+    {
+      "station_id": "allama_iqbal_town",
+      "source": "openaq",
+      "latest_ts_utc": "2026-10-21T01:00:00Z",
+      "lag_hours": 3.12,
+      "limit_hours": 3.0
+    },
+    {
+      "station_id": "trinity_school",
+      "source": "openaq",
+      "latest_ts_utc": "2026-10-21T01:00:00Z",
+      "lag_hours": 3.12,
+      "limit_hours": 3.0
+    }
+  ],
   "stations_evaluated": 8
 }
