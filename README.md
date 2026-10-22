@@ -332,4 +332,4 @@ The repository was initiated on 19 October 2026. Per the Participant Guide, the 
 | **Saad Ahmed** | **Team Lead / Lead Data & Software Engineer** | Data warehouse design & construction (DuckDB/Parquet layers), repository architecture, GitHub release & tagging (`v1.0-final`), and system integration. |
 | **Hasan Shahir** | **MLOps & Pipeline Engineer** | Prefect hourly data orchestration pipeline, OpenAQ & Open-Meteo integrations, and Hugging Face deployment. |
 | **Noman Khursheed** | **ML & RAG Architecture Lead** | `HistGradientBoosting` PM2.5 forecasting model, uncertainty interval bounds, and cited RAG policy assistant. |
-| **Arbish** | **Documentation & Compliance Specialist** | Manifest tracking, `AI_Use_Log.md` compliance, data quality audits, and submission deliverables. |
+| **Arbish Tehseen** | **Documentation & Compliance Specialist** | Manifest tracking, `AI_Use_Log.md` compliance, data quality audits, and submission deliverables. |
